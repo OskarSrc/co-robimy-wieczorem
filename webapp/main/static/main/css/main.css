@@ -82,6 +82,45 @@ font-family: "Space Grotesk", sans-serif;;
     
 }
 
+.section-spacing {
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+.my-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.my-box:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(0, 123, 255, 0.5); /* Niebieski akcent */
+    box-shadow: 0 10px 40px -10px rgba(0, 123, 255, 0.3);
+}
+
+.my-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+}
+
+.my-box:hover::before {
+    left: 125%;
+}
+
+
 .custom-footer {
     background-color: #000000;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
