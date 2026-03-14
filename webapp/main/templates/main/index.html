@@ -35,8 +35,8 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button class="btn-custom-outline">Zaloguj</button>
-                <button class="btn-custom-solid">Rejestracja</button>
+                <a href="{% url 'login_user' %}" class="btn-custom-outline text-decoration-none">Zaloguj</a>
+                <a href="{% url 'register_user' %}" class="btn-custom-solid text-decoration-none">Rejestracja</a>
             </div>
         </div>
     </nav>
@@ -47,7 +47,7 @@
             <h1 class="display-2 fw-bold">Koniec kłótni o wspólny wieczór.</h1>
             <p class="lead">Co Robimy Wieczorem? - pomaga grupom znajomych błyskawicznie wybrać film, grę lub serial.</p>
             <div class="mt-4">
-                <button class="btn-custom-solid btn-lg">Zarejestruj się</button>
+                <a href="{% url 'register_user' %}" class="btn-custom-solid btn-lg text-decoration-none">Zarejestruj się</a>
                 <button class="btn-blue btn-lg">Przeglądaj katalog</button>
             </div>
         </div>
@@ -76,7 +76,7 @@
     <section class="section-spacing">
         <div class="container text-center py-5 ">
             <h2 class="mb-4">Znasz to uczucie?</h2>
-            <p class="fs-4 opacity-75">Spędzacie dwie godziny na Discordzie tylko po to, żeby ustalić, że... nikt nie wie, w co zagrać.</p>
+            <p class="fs-4 opacity-75">Spędzacie dwie godziny na Discordzie tylko po to, żeby ustalić, że... nikt nie wie, w co zagrać lub obejrzeć.</p>
             <div class="row mt-5">
                 <div class="col-md-4"><i class="fa-solid fa-clock fa-3x mb-3 text-accent"></i> <p>Strata czasu</p></div>
                 <div class="col-md-4"><i class="fa-solid fa-face-angry fa-3x mb-3 text-accent"></i> <p>Zbędne kłótnie</p></div>
