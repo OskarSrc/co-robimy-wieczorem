@@ -3,12 +3,76 @@ body {
 margin: 0;
 min-height: 100vh; 
 width: 100%;   
-background: radial-gradient(125% 125% at 50% 100%, #000000 40%, #010133 100%);
-background-attachment: fixed;
+background: radial-gradient(75% 75% at 50% -35%, #4d4177 10%, #0b1838 100%);
+
+/*background-attachment: fixed;*/
 color: white;
-font-family: "Space Grotesk", sans-serif;;
+font-family: "Space Grotesk", sans-serif;
+position: relative;
+overflow-x: hidden;
+
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  /*punkt zbieżności promieni*/
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250vw; 
+  height: 200vh;
+  z-index: -1;
+  pointer-events: none;
+
+  /* Używamy jednego gęstego gradientu stożkowego dla cienkich linii */
+  background: conic-gradient(
+    from 140deg at 50% -20%,
+    transparent 0%,
+    /* Powtarzaj ten blok, aby dodawać kolejne linie */
+    rgba(255, 255, 255, 0.2) 2deg, transparent 4deg,
+    rgba(255, 255, 255, 0.15) 8deg, transparent 12deg,
+    rgba(255, 255, 255, 0.2) 18deg, transparent 20deg,
+    rgba(255, 255, 255, 0.1) 25deg, transparent 30deg,
+    rgba(255, 255, 255, 0.2) 35deg, transparent 38deg,
+    rgba(255, 255, 255, 0.15) 45deg, transparent 50deg,
+    rgba(255, 255, 255, 0.2) 58deg, transparent 62deg,
+    rgba(255, 255, 255, 0.1) 70deg, transparent 75deg,
+    rgba(255, 255, 255, 0.2) 82deg, transparent 85deg,
+    /* Koniec wachlarza */
+    transparent 100deg
+
+  );
+
+  /* Maska, która łagodnie wycina dół i boki */
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 0%, 
+    black 0%, 
+    black 20%, 
+    transparent 35%
+  );
+  mask-image: radial-gradient(
+    circle at 50% 0%, 
+    black 0%, 
+    black 20%, 
+    transparent 35%
+  );
+
+  /* Mniejszy blur czyli ostrzejsze, cieńsze linie */
+  filter: blur(5px);
+  opacity: 0.3;
+  mix-blend-mode: screen;
+
+  /* Delikatne pływanie na boki */
+  animation: sway 12s infinite alternate ease-in-out;
+}
+
+@keyframes sway {
+  0% { transform: translateX(-50%) rotate(-3deg); }
+  100% { transform: translateX(-50%) rotate(3deg); }
+}
+
+/*background: radial-gradient(125% 125% at 50% 100%, #0b1838 50%, #4d4177 100%);*/
 /* Navbar po przyciski */
 
 .custom-navbar {
