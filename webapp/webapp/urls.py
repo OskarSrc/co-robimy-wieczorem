@@ -23,6 +23,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls), # default, part of django
     path('', include('main.urls')),
-    path('news/', include('news.urls')), 
+    path('katalog/', include('katalog.urls')),
     path('forum/', include('forum.urls')) #delegating authority to an internal application to forum.urls that is needed to be created
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

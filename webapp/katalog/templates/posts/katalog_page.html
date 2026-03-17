@@ -1,0 +1,28 @@
+{% extends 'posts/catalog_layout.html' %}
+{% load static %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell catalog-detail-shell">
+        <div class="catalog-detail-card">
+            <img
+                class="banner catalog-detail-image"
+                src="{{ post.banner.url }}"
+                alt="{{ post.title }}"
+            />
+            <div class="catalog-detail-content">
+                <span class="catalog-card-category">{{ post.get_category_display }}</span>
+                <h1>{{ post.title }}</h1>
+                <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.date|date:"d.m.Y H:i" }}</p>
+                <p class="catalog-detail-description">{{ post.body }}</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

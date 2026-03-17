@@ -21,12 +21,12 @@ def get_links():
         'href': '/about',
         'icon': 'fa-address-card',
     },{
-        'name': 'News',
-        'href': '/news/',
-        'icon': 'fa-newspaper',
+        'name': 'Katalog',
+        'href': '/katalog/',
+        'icon': 'fa-book-open',
     },{
-        'name': 'Add news',
-        'href': '/news/create',
+        'name': 'Add to katalog',
+        'href': '/katalog/new-post/',
         'icon': 'fa-plus',
     },{
         'name': 'Forum',

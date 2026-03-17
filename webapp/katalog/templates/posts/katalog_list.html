@@ -1,0 +1,58 @@
+{% extends 'posts/catalog_layout.html' %}
+{% load static %}
+
+{% block title %}
+    Katalog
+{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="catalog-shell">
+        <div class="catalog-layout">
+            <aside class="catalog-sidebar">
+                <div class="catalog-panel">
+                    <h1>Katalog</h1>
+                    <p class="catalog-sidebar-copy">Wybierz kategorię albo przeglądaj wszystkie propozycje.</p>
+                    <ul class="catalog-category-list">
+                        <li>
+                            <a class="{% if not active_category %}is-active{% endif %}" href="{% url 'posts:list' %}">Wszystkie</a>
+                        </li>
+                        {% for value, label in categories %}
+                            <li>
+                                <a class="{% if active_category == value %}is-active{% endif %}" href="{% url 'posts:list' %}?category={{ value }}">{{ label }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% if user.is_authenticated %}
+                        <a class="btn-custom-solid catalog-add-button" href="{% url 'posts:new-post' %}">Dodaj do katalogu</a>
+                    {% endif %}
+                </div>
+            </aside>
+
+            <div class="catalog-grid">
+                {% for post in posts %}
+                    <article class="catalog-card">
+                        <a class="catalog-card-image-wrap" href="{% url 'posts:page' slug=post.slug %}">
+                            <img class="catalog-card-image" src="{{ post.banner.url }}" alt="{{ post.title }}">
+                        </a>
+                        <div class="catalog-card-body">
+                            <span class="catalog-card-category">{{ post.get_category_display }}</span>
+                            <h2>
+                                <a href="{% url 'posts:page' slug=post.slug %}">{{ post.title }}</a>
+                            </h2>
+                            <p>{{ post.body|truncatechars:115 }}</p>
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="catalog-empty">
+                        <h2>Brak pozycji w katalogu</h2>
+                        <p>Dodaj pierwszy film, serial, grę albo aktywność.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
