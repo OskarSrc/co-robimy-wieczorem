@@ -1,0 +1,24 @@
+{% extends 'posts/catalog_layout.html' %}
+{% load static %}
+
+{% block title %}
+   Dodaj do katalogu
+{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell catalog-form-shell">
+        <div class="catalog-form-header">
+            <h1>Dodaj do katalogu</h1>
+            <p>Uzupełnij kategorię, tytuł, okładkę i krótki opis.</p>
+        </div>
+        <form class="form-with-validation" action="{% url 'posts:new-post' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form }}
+            <button class="form-submit">Zapisz w katalogu</button>
+        </form>
+    </section>
+{% endblock %}

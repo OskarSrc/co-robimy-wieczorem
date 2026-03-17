@@ -26,7 +26,7 @@
                     <a class="nav-link custom-link" href="#">Wydarzenia</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link custom-link" href="#">Katalog</a>
+                    <a class="nav-link custom-link" href="{% url 'posts:list' %}">Katalog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link custom-link" href="#">Społeczność</a>
@@ -48,7 +48,7 @@
             <p class="lead">Co Robimy Wieczorem? - pomaga grupom znajomych błyskawicznie wybrać film, grę lub serial.</p>
             <div class="mt-4">
                 <a href="{% url 'register_user' %}" class="btn-custom-solid btn-lg text-decoration-none">Zarejestruj się</a>
-                <button class="btn-blue btn-lg">Przeglądaj katalog</button>
+                <a href="{% url 'posts:list' %}" class="btn-blue btn-lg text-decoration-none">Przeglądaj katalog</a>
             </div>
         </div>
     </section>
@@ -132,7 +132,7 @@
                     <h5>Nawigacja</h5>
                     <ul class="list-unstyled">
                         <li><a href="#" class="footer-link">Strona Główna</a></li>
-                        <li><a href="#" class="footer-link">Katalog</a></li>
+                        <li><a href="{% url 'posts:list' %}" class="footer-link">Katalog</a></li>
                         <li><a href="#" class="footer-link">Rejestracja</a></li>
                     </ul>
                 </div>
