@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages #to show message back for errors
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 # Create your views here.
 def index(request):
@@ -89,3 +90,17 @@ def logout_user(request):
     logout(request)
      
     return redirect('home')
+
+@login_required
+def profile_user(request):
+    return render(request, 'main/users/profile.html')
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        logout(request)
+        return redirect('home')
+    
+    return redirect('profile_user')

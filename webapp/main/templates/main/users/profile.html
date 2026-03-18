@@ -1,0 +1,102 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}Mój Profil{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell profile-shell mt-5">
+        <div class="catalog-form-header mb-4">
+            <h1>Mój Profil</h1>
+            <p>Zarządzaj swoimi danymi i ustawieniami konta.</p>
+        </div>
+        <div class="profile-glass-card">
+            <div class="text-center mb-4">
+                <i class="fa-solid fa-user-astronaut profile-avatar-icon"></i>
+            </div>
+            <div class="d-flex flex-column gap-3">
+                <div>
+                    <label class="profile-label">Nazwa użytkownika</label>
+                    <div class="profile-value">{{ user.username }}</div>
+                </div>
+                <div>
+                    <label class="profile-label">Adres Email</label>
+                    <div class="profile-value">
+                        {% if user.email %}
+                            {{ user.email }}
+                        {% else %}
+                            <span class="text-muted fst-italic">Nie podano adresu email</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <label class="profile-label">Data dołączenia</label>
+                    <div class="profile-value">{{ user.date_joined|date:"d F Y" }}</div>
+                </div>
+                    <div>
+                    <label class="profile-label">O mnie</label>
+                    <div class="profile-value fst-italic" style="color: var(--muted);">
+                        Brak opisu o mnie. Edytuj profil, aby go dodać.
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    {% if user.is_superuser %}
+                        <div class="user-role admin-role">
+                            <i class="fa-solid fa-crown me-2"></i>Jesteś administratorem
+                        </div>
+                    {% else %}
+                        <div class="user-role user-default">
+                            <i class="fa-solid fa-user me-2"></i>Jesteś użytkownikiem
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <hr class="profile-kreska">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="btn-custom-outline btn-delete-account" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                    <i class="fa-solid fa-trash me-2"></i>Usuń konto
+                </button>
+                
+                <a href="#" class="form-submit m-0">
+                    <i class="fa-solid fa-pen me-2"></i>Edytuj profil
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+<div class="modal fade" id="deleteAccountModal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content profile-modal-content">
+          
+          <div class="modal-header profile-modal-header">
+            <h5 class="modal-title text-danger">
+                <i class="fa-solid fa-triangle-exclamation me-2"></i>Ostrzeżenie
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          
+          <div class="modal-body text-start">
+            Czy na pewno chcesz usunąć konto? Tej operacji nie można cofnąć.
+          </div>
+          
+          <div class="modal-footer profile-modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            <form action="{% url 'delete_account' %}" method="POST" class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Tak, usuń</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+{% endblock %}
