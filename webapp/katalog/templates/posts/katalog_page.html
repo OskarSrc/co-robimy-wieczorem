@@ -12,15 +12,21 @@
 {% block content %}
     <section class="content-shell catalog-detail-shell">
         <div class="catalog-detail-card">
-            <img
-                class="banner catalog-detail-image"
-                src="{{ post.banner.url }}"
-                alt="{{ post.title }}"
-            />
+            <div class="catalog-detail-hero">
+                <img
+                    class="banner catalog-detail-image"
+                    src="{{ post.banner.url }}"
+                    alt="{{ post.title }}"
+                />
+            </div>
             <div class="catalog-detail-content">
                 <span class="catalog-card-category">{{ post.get_category_display }}</span>
                 <h1>{{ post.title }}</h1>
                 <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.date|date:"d.m.Y H:i" }}</p>
+                <div class="catalog-detail-actions">
+                    <a href="#" class="catalog-detail-action">Dodaj do ulubionych</a>
+                    <a href="#" class="catalog-detail-action">Udostępnij na forum</a>
+                </div>
                 <p class="catalog-detail-description">{{ post.body }}</p>
             </div>
         </div>

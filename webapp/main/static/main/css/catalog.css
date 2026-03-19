@@ -1,11 +1,46 @@
-/* Glowny kontener strony katalogu. */
+/* Dodatkowe zmienne kolorystyczne dla katalogu. */
+:root {
+    --text: #f5f5f7;
+    --muted: rgba(245, 245, 247, 0.72);
+}
+
+/* Domyślny wygląd linków w katalogu. */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Zachowuje kolor linku po najechaniu kursorem. */
+a:hover {
+    color: inherit;
+}
+
+/* Zeruje domyślne marginesy podstawowych elementów tekstowych. */
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+ul {
+    margin: 0;
+}
+
+/* Wspólny kontener dla widoków szczegółów, formularza i profilu. */
+.content-shell {
+    width: min(100%, 980px);
+    margin: 0 auto;
+    padding: 2.5rem 1rem 4rem;
+}
+
+/* Główny kontener strony katalogu. */
 .catalog-shell {
     width: min(100%, 1320px);
     margin: 0 auto;
     padding: 2.5rem 1rem 4rem;
 }
 
-/* Uklad panelu kategorii i sekcji z kartami. */
+/* Układ panelu kategorii i sekcji z kartami. */
 .catalog-layout {
     display: grid;
     grid-template-columns: 280px minmax(0, 1fr);
@@ -13,7 +48,7 @@
     align-items: start;
 }
 
-/* Wspolny wyglad paneli, kart i pustego stanu. */
+/* Wspólny wygląd paneli, kart i pustego stanu. */
 .catalog-panel,
 .catalog-card,
 .catalog-detail-card,
@@ -31,13 +66,13 @@
     top: 88px;
 }
 
-/* Naglowek panelu bocznego. */
+/* Nagłówek panelu bocznego. */
 .catalog-panel h1 {
     margin-bottom: 0.75rem;
     font-size: 2.1rem;
 }
 
-/* Opis pomocniczy pod tytulem katalogu. */
+/* Tekst pomocniczy pod tytułem katalogu. */
 .catalog-sidebar-copy {
     margin-bottom: 1.5rem;
     color: var(--muted);
@@ -54,7 +89,7 @@
     gap: 0.5rem;
 }
 
-/* Pojedynczy przycisk kategorii. */
+/* Styl pojedynczego przycisku kategorii. */
 .catalog-category-list a {
     display: block;
     padding: 0.85rem 1rem;
@@ -66,7 +101,7 @@
     transition: 0.2s ease;
 }
 
-/* Hover i aktywna kategoria. */
+/* Efekt hover i aktywna kategoria. */
 .catalog-category-list a:hover,
 .catalog-category-list a.is-active {
     color: var(--text);
@@ -74,22 +109,25 @@
     border-color: rgba(255, 255, 255, 0.12);
 }
 
-/* Ujednolica wygląd głównych przycisków w katalogu. */
+/* Wspólny wygląd głównych przycisków i przycisku formularza. */
 .btn-custom-solid,
 .form-submit {
-    display: inline-flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.9rem 1.2rem;
+    min-height: 38px;
+    padding: 0.55rem 1.35rem;
     border: 0;
     border-radius: 14px;
     background: #f5f7ff;
     color: #111827;
+    font-size: 0.75rem;
     font-weight: 700;
+    line-height: 1;
     text-decoration: none;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
 }
 
 /* Dodaje animację hover dla głównych przycisków katalogu. */
@@ -98,6 +136,20 @@
     transform: translateY(-2px);
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
     background: #ffffff;
+    color: #111827;
+}
+
+/* Wygląd głównego przycisku wysyłania formularza. */
+.form-submit {
+    border: 1px solid #ffffff;
+    background: #ffffff;
+    color: #222222 !important;
+    box-shadow: 0 8px 18px rgba(255, 255, 255, 0.14);
+}
+
+/* Efekt hover dla przycisku wysyłania formularza. */
+.form-submit:hover {
+    background: #f2f2f2;
 }
 
 /* Rozciąga przycisk dodawania wpisu na pełną szerokość panelu. */
@@ -105,7 +157,7 @@
     width: 100%;
 }
 
-/* Siatka kafelkow z wpisami katalogu. */
+/* Siatka kafelków z wpisami katalogu. */
 .catalog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -115,9 +167,18 @@
 /* Karta pojedynczego wpisu. */
 .catalog-card {
     overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
 
-/* Wrapper obrazka w karcie. */
+/* Delikatnie unosi kartę po najechaniu lub ustawieniu fokusu. */
+.catalog-card:hover,
+.catalog-card:focus-within {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28);
+}
+
+/* Kontener obrazka w karcie. */
 .catalog-card-image-wrap {
     display: block;
     aspect-ratio: 4 / 3;
@@ -130,9 +191,17 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.35s ease, filter 0.35s ease;
 }
 
-/* Dolna czesc karty z tekstem. */
+/* Delikatnie ożywia zdjęcie przy hoverze karty. */
+.catalog-card:hover .catalog-card-image,
+.catalog-card:focus-within .catalog-card-image {
+    transform: scale(1.04);
+    filter: saturate(1.05) brightness(1.03);
+}
+
+/* Dolna część karty z tekstem. */
 .catalog-card-body {
     padding: 1rem 1rem 1.15rem;
 }
@@ -151,42 +220,54 @@
     text-transform: uppercase;
 }
 
-/* Tytul wpisu na karcie. */
+/* Tytuł wpisu na karcie. */
 .catalog-card h2 {
     margin-bottom: 0.55rem;
     font-size: 1.15rem;
     line-height: 1.2;
 }
 
-/* Krotki opis wpisu na karcie. */
+/* Płynne przejście dla linku w tytule karty. */
+.catalog-card h2 a {
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* Delikatnie podświetla tytuł aktywnej karty. */
+.catalog-card:hover h2 a,
+.catalog-card:focus-within h2 a {
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.14);
+}
+
+/* Krótki opis wpisu na karcie. */
 .catalog-card p {
     color: var(--muted);
     font-size: 0.92rem;
     line-height: 1.5;
 }
 
-/* Widok pustego katalogu bez wpisow. */
+/* Widok pustego katalogu bez wpisów. */
 .catalog-empty {
     grid-column: 1 / -1;
     padding: 2rem;
 }
 
-/* Naglowek pustego stanu. */
+/* Nagłówek pustego stanu. */
 .catalog-empty h2 {
     margin-bottom: 0.6rem;
 }
 
-/* Ogranicza szerokosc widoku formularza. */
+/* Ogranicza szerokość widoku formularza. */
 .catalog-form-shell {
     max-width: 920px;
 }
 
-/* Naglowek strony dodawania wpisu. */
+/* Nagłówek formularza oraz sekcji pomocniczych. */
 .catalog-form-header {
     text-align: center;
 }
 
-/* Tytul formularza. */
+/* Tytuł formularza. */
 .catalog-form-header h1 {
     margin-bottom: 0.75rem;
 }
@@ -194,128 +275,6 @@
 /* Opis formularza. */
 .catalog-form-header p {
     color: var(--muted);
-}
-
-/* Karta szczegolow pojedynczego wpisu. */
-.catalog-detail-card {
-    overflow: hidden;
-}
-
-/* Duzy obrazek na stronie szczegolow. */
-.catalog-detail-image {
-    max-width: none;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-radius: 0;
-}
-
-/* Tresc strony szczegolow wpisu. */
-.catalog-detail-content {
-    padding: 1.5rem;
-}
-
-/* Glowny tytul wpisu na stronie szczegolow. */
-.catalog-detail-content h1 {
-    margin-bottom: 0.75rem;
-    font-size: 2.4rem;
-}
-
-/* Meta dane wpisu, np. autor i data. */
-.catalog-detail-meta {
-    margin-bottom: 1rem;
-    color: var(--muted);
-    font-size: 0.9rem;
-}
-
-/* Pelny opis wpisu na stronie szczegolow. */
-.catalog-detail-description {
-    font-size: 1rem;
-    line-height: 1.7;
-}
-
-/* Uklad mobilny dla katalogu. */
-@media (max-width: 991px) {
-    .catalog-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .catalog-panel {
-        position: static;
-    }
-}
-
-/* Tutaj reszta css dla katalogu */
-/* Dodatkowe zmienne kolorystyczne dla drugiej czesci stylow. */
-:root {
-    --text: #f5f5f7;
-    --muted: rgba(245, 245, 247, 0.72);
-}
-
-/* Domyslny wyglad linkow w katalogu. */
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-/* Zachowuje kolor linku po najechaniu. */
-a:hover {
-    color: inherit;
-}
-
-/* Zeruje domyslne marginesy podstawowych elementow tekstowych. */
-h1,
-h2,
-h3,
-h4,
-h5,
-p,
-ul {
-    margin: 0;
-}
-
-/* Wspolny kontener dla widokow szczegolow i formularza. */
-.content-shell {
-    width: min(100%, 980px);
-    margin: 0 auto;
-    padding: 2.5rem 1rem 4rem;
-}
-
-/* Wspolny wyglad glownych przyciskow i przycisku formularza. */
-.btn-custom-solid,
-.form-submit {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    min-height: 38px;
-    padding: 0.55rem 1.35rem;
-    border-radius: 14px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
-
-/* Wyglad glownego przycisku wyslania formularza. */
-.form-submit {
-    border: 1px solid #ffffff;
-    background: #ffffff;
-    color: #222222 !important;
-    box-shadow: 0 8px 18px rgba(255, 255, 255, 0.14);
-}
-
-/* Hover dla przycisku wyslania formularza. */
-.form-submit:hover {
-    background: #f2f2f2;
-}
-
-/* Bazowy styl duzego obrazka wpisu. */
-.banner {
-    display: block;
-    width: 100%;
-    max-width: 800px;
-    border-radius: 20px;
 }
 
 /* Karta formularza dodawania wpisu. */
@@ -331,14 +290,14 @@ ul {
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Uklad pojedynczego pola formularza. */
+/* Układ pojedynczego pola formularza. */
 .form-with-validation div {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-/* Wyglad pol formularza. */
+/* Wygląd pól formularza. */
 .form-with-validation input,
 .form-with-validation textarea,
 .form-with-validation select {
@@ -350,19 +309,19 @@ ul {
     color: var(--text);
 }
 
-/* Wyglad listy wyboru. */
+/* Wygląd listy wyboru. */
 .form-with-validation select {
     background-color: rgba(14, 16, 52, 0.96);
     color: #ffffff;
 }
 
-/* Wyglad opcji wewnatrz selecta. */
+/* Wygląd opcji wewnątrz pola `select`. */
 .form-with-validation select option {
     background: #f4f4f6;
     color: #111111;
 }
 
-/* Etykiety pol formularza. */
+/* Etykiety pól formularza. */
 .form-with-validation label {
     font-size: 0.92rem;
     font-weight: 600;
@@ -374,22 +333,174 @@ ul {
     font-size: 0.9rem;
 }
 
-/* Lista w sekcji helptext. */
+/* Lista w sekcji `helptext`. */
 .helptext ul {
     list-style: none;
     padding-left: 0;
 }
 
-/* Komunikaty bledow formularza. */
+/* Komunikaty błędów formularza. */
 .errorlist {
     margin-left: 1rem;
     color: #ff7e7e;
 }
 
-/* Mobilne zachowanie przyciskow. */
+/* Karta szczegółów pojedynczego wpisu. */
+.catalog-detail-card {
+    overflow: hidden;
+    padding: 1.2rem;
+    background:
+        radial-gradient(circle at top center, rgba(255, 255, 255, 0.06), transparent 45%),
+        linear-gradient(180deg, rgba(35, 47, 98, 0.92), rgba(18, 28, 63, 0.96));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Oprawa obrazka w widoku szczegółów. */
+.catalog-detail-hero {
+    position: relative;
+    margin-bottom: 1.35rem;
+    padding: 0.9rem;
+    border-radius: 28px;
+    background:
+        linear-gradient(180deg, rgba(4, 8, 24, 0.78), rgba(10, 16, 38, 0.92));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        inset 0 0 0 1px rgba(122, 148, 255, 0.08),
+        inset 0 0 22px rgba(58, 84, 185, 0.2),
+        0 0 18px rgba(34, 56, 148, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 18px 40px rgba(0, 0, 0, 0.24);
+    transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
+}
+
+/* Delikatnie wzmacnia swiecenie ciemnej ramki wokol obrazka. */
+.catalog-detail-hero:hover {
+    border-color: rgba(154, 178, 255, 0.14);
+    box-shadow:
+        inset 0 0 0 1px rgba(150, 176, 255, 0.1),
+        inset 0 0 28px rgba(78, 106, 220, 0.24),
+        0 0 24px rgba(52, 78, 182, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 20px 44px rgba(0, 0, 0, 0.26);
+}
+
+/* Bazowy styl dużego obrazka wpisu. */
+.banner {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+/* Duży obrazek na stronie szczegółów. */
+.catalog-detail-image {
+    width: 100%;
+    aspect-ratio: 16 / 7.2;
+    object-fit: cover;
+    object-position: center 36%;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28);
+}
+
+/* Treść strony szczegółów wpisu. */
+.catalog-detail-content {
+    padding: 0.25rem 0.5rem 0.85rem;
+}
+
+/* Główny tytuł wpisu na stronie szczegółów. */
+.catalog-detail-content h1 {
+    margin-bottom: 0.7rem;
+    font-size: clamp(2.4rem, 5vw, 4.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    text-shadow: 0 0 24px rgba(255, 248, 238, 0.18);
+}
+
+/* Metadane wpisu, np. autor i data. */
+.catalog-detail-meta {
+    margin-bottom: 1.2rem;
+    color: var(--muted);
+    font-size: 0.98rem;
+}
+
+/* Przyciski akcji pod nazwą wpisu. */
+.catalog-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Wygląd dodatkowych akcji w szczegółach wpisu. */
+.catalog-detail-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0.8rem 1.2rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #f5f5f7;
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 10px 24px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Delikatny efekt hover dla przycisków w szczegółach. */
+.catalog-detail-action:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 14px 26px rgba(0, 0, 0, 0.2);
+}
+
+/* Pełny opis wpisu na stronie szczegółów. */
+.catalog-detail-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(245, 245, 247, 0.88);
+}
+
+/* Układ mobilny dla katalogu i strony szczegółów. */
+@media (max-width: 991px) {
+    .catalog-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-panel {
+        position: static;
+    }
+
+    .catalog-detail-card {
+        padding: 0.9rem;
+    }
+
+    .catalog-detail-hero {
+        padding: 0.6rem;
+        border-radius: 24px;
+    }
+
+    .catalog-detail-image {
+        border-radius: 20px;
+    }
+
+    .catalog-detail-content {
+        padding: 0.15rem 0.2rem 0.5rem;
+    }
+}
+
+/* Zachowanie przycisków i akcji na urządzeniach mobilnych. */
 @media (max-width: 576px) {
     .btn-custom-solid,
-    .form-submit {
+    .form-submit,
+    .catalog-detail-action {
         width: 100%;
     }
 }
