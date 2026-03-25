@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import UserUpdateForm, ProfileUpdateForm
 from .models import Profile
+from django.contrib.auth import update_session_auth_hash
+from .forms import CustomPasswordChangeForm
 
 # Create your views here.
 def index(request):
@@ -97,22 +99,29 @@ def logout_user(request):
 def profile_user(request):
     Profile.objects.get_or_create(user=request.user)
 
-    if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
-        
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            return redirect('profile_user')
-    else:
-        # Puste okna jak sie wywali
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
+    u_form = UserUpdateForm(instance=request.user)
+    p_form = ProfileUpdateForm(instance=request.user.profile)
+    pass_form = CustomPasswordChangeForm(user=request.user)
+
+    if 'update_profile' in request.POST:
+            u_form = UserUpdateForm(request.POST, instance=request.user)
+            p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+            if u_form.is_valid() and p_form.is_valid():
+                u_form.save()
+                p_form.save()
+                return redirect('profile_user')
+
+    elif 'change_password' in request.POST:
+            pass_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+            if pass_form.is_valid():
+                user = pass_form.save()
+                update_session_auth_hash(request, user)
+                return redirect('profile_user')
 
     context = {
         'u_form': u_form,
-        'p_form': p_form
+        'p_form': p_form,
+        'pass_form': pass_form
     }
     return render(request, 'main/users/profile.html', context)
 
