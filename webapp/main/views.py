@@ -7,6 +7,8 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages #to show message back for errors
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from .forms import UserUpdateForm, ProfileUpdateForm
+from .models import Profile
 
 # Create your views here.
 def index(request):
@@ -93,7 +95,26 @@ def logout_user(request):
 
 @login_required
 def profile_user(request):
-    return render(request, 'main/users/profile.html')
+    Profile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect('profile_user')
+    else:
+        # Puste okna jak sie wywali
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'main/users/profile.html', context)
 
 @login_required
 def delete_account(request):
