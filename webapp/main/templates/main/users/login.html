@@ -1,11 +1,17 @@
-{% extends 'main/layout/clean_layout.html' %}
+{% extends 'main/layout/base.html' %}
+{% load static %} 
+
+{% block title %}Zaloguj się{% endblock %}
  
-{% block title%}Log in{% endblock %}
- 
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+{% endblock %}
+
 {% block content%}
  <div class="d-flex align-items-center justify-content-center px-4" style="height: 80vh">
      <div style="max-width: 500px" class="w-100">
-         <h1>Log in</h1>
+         <h1>Zaloguj się</h1>
          {% if messages %}
          <div class="alert alert-danger" role="alert">
            <ul class="mb-0">
@@ -20,16 +26,16 @@
              {% csrf_token %}
  
              <div class="mb-3">
-               <label for="username" class="form-label">Username</label>
+               <label for="username" class="form-label">Nazwa użytkownika</label>
                <input type="text" class="form-control" id="username" name="username" aria-describedby="username" required>
              </div>
  
              <div class="mb-3">
-               <label for="password" class="form-label">Password</label>
+               <label for="password" class="form-label">Hasło</label>
                <input type="password" class="form-control" id="password" name="password" required>
              </div>
  
-             <button type="submit" class="btn btn-primary btn-block">Log in</button>
+             <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
            </form>
      </div>
  </div>
