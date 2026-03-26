@@ -219,6 +219,19 @@ ul {
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
+/* tego używwa forum */
+.catalog-card-favorite {
+    display: inline-block;
+    margin: 0 0 0.6rem 0.45rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(255, 232, 133, 0.14);
+    border: 1px solid rgba(255, 232, 133, 0.18);
+    color: #fff2b1;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
 
 /* Tytuł wpisu na karcie. */
 .catalog-card h2 {
@@ -449,6 +462,15 @@ ul {
         inset 0 1px 0 rgba(255, 255, 255, 0.04),
         0 10px 24px rgba(0, 0, 0, 0.18);
     transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+/* tego używwa forum */
+.catalog-detail-action-form {
+    margin: 0;
+}
+
+.catalog-detail-action-form .catalog-detail-action {
+    width: 100%;
+    cursor: pointer;
 }
 
 /* Delikatny efekt hover dla przycisków w szczegółach. */

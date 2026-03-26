@@ -1,0 +1,29 @@
+{% extends 'posts/catalog_layout.html' %}
+{% load static %}
+
+{% block title %}{{ post.subject }}{% endblock %}
+
+{% block katalog_nav_class %}{% endblock %}
+{% block forum_nav_class %}active{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell forum-shell">
+        <article class="catalog-detail-card forum-detail-card">
+            <div class="catalog-detail-content forum-detail-content">
+                <span class="catalog-card-category">{{ post.catalog_post.get_category_display }}</span>
+                <p class="forum-linked-item">
+                    Dyskusja o:
+                    <a href="{% url 'posts:page' slug=post.catalog_post.slug %}">{{ post.catalog_post.title }}</a>
+                </p>
+                <h1>{{ post.subject }}</h1>
+                <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
+                <p class="catalog-detail-description">{{ post.body|linebreaksbr }}</p>
+            </div>
+        </article>
+    </section>
+{% endblock %}

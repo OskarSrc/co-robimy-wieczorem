@@ -24,8 +24,14 @@
                 <h1>{{ post.title }}</h1>
                 <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.date|date:"d.m.Y H:i" }}</p>
                 <div class="catalog-detail-actions">
-                    <a href="#" class="catalog-detail-action">Dodaj do ulubionych</a>
-                    <a href="#" class="catalog-detail-action">Udostępnij na forum</a>
+                    <form action="{% url 'posts:favorite' slug=post.slug %}" method="post" class="catalog-detail-action-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="catalog-detail-action">
+                            {% if is_favorite %}Usuń z ulubionych{% else %}Dodaj do ulubionych{% endif %}
+                        </button>
+                    </form>
+                    <a href="{% url 'forum:new-post' %}?catalog={{ post.slug }}" class="catalog-detail-action">Udostępnij na forum</a>
                 </div>
                 <p class="catalog-detail-description">{{ post.body }}</p>
             </div>

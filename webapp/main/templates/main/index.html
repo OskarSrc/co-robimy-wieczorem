@@ -7,7 +7,7 @@
     <section class="hero-section">
         <div class="container py-5">
             <h1 class="display-2 fw-bold">Koniec kłótni o wspólny wieczór.</h1>
-            <p class="lead">Co Robimy Wieczorem? - pomaga grupom znajomych błyskawicznie wybrać film, grę lub serial.</p>
+            <p class="lead">Co Robimy Wieczorem? pomaga grupom znajomych błyskawicznie wybrać film, grę lub serial.</p>
             <div class="mt-4">
                 <a href="{% url 'register_user' %}" class="btn-custom-solid btn-lg text-decoration-none">Zarejestruj się</a>
                 <a href="{% url 'posts:list' %}" class="btn-blue btn-lg text-decoration-none">Przeglądaj katalog</a>
@@ -15,7 +15,7 @@
         </div>
     </section>
 
-    <section class="section-spacing ">
+    <section class="section-spacing">
         <div class="container">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
@@ -36,9 +36,9 @@
     </section>
 
     <section class="section-spacing">
-        <div class="container text-center py-5 ">
+        <div class="container text-center py-5">
             <h2 class="mb-4">Znasz to uczucie?</h2>
-            <p class="fs-4 opacity-75">Spędzacie dwie godziny na Discordzie tylko po to, żeby ustalić, że... nikt nie wie, w co zagrać lub obejrzeć.</p>
+            <p class="fs-4 opacity-75">Spędzacie dwie godziny na Discordzie tylko po to, żeby ustalić, że nikt nie wie, w co zagrać lub obejrzeć.</p>
             <div class="row mt-5">
                 <div class="col-md-4"><i class="fa-solid fa-clock fa-3x mb-3 text-accent"></i> <p>Strata czasu</p></div>
                 <div class="col-md-4"><i class="fa-solid fa-face-angry fa-3x mb-3 text-accent"></i> <p>Zbędne kłótnie</p></div>
@@ -66,18 +66,22 @@
 
     <section class="section-spacing">
         <div class="container mt-5 mb-5">
-            <div class="row text-center g-4 mt-5 ">
+            <div class="row text-center g-4 mt-5">
                 <div class="col-md-6">
-                    <div class="my-box h-100">
-                        <h3>Katalog Propozycji</h3>
-                        <p>Wszystko w jednym miejscu: filmy, gry, seriale. Podzielone na czytelne kategorie.</p>
-                    </div>
+                    <a href="{% url 'posts:list' %}" class="home-card-link text-decoration-none d-block h-100">
+                        <div class="my-box h-100">
+                            <h3>Katalog Propozycji</h3>
+                            <p>Wszystko w jednym miejscu: filmy, gry, seriale. Podzielone na czytelne kategorie.</p>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-md-6">
-                    <div class="my-box h-100">
-                        <h3>Forum Dyskusyjne</h3>
-                        <p>Wymieniaj opinie, pisz recenzje i polecaj najlepsze tytuły swojej społeczności.</p>
-                    </div>
+                    <a href="{% url 'forum:index' %}" class="home-card-link text-decoration-none d-block h-100">
+                        <div class="my-box h-100">
+                            <h3>Forum Dyskusyjne</h3>
+                            <p>Wymieniaj opinie, pisz recenzje i polecaj najlepsze tytuły swojej społeczności.</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

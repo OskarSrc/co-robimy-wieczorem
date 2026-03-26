@@ -184,6 +184,14 @@ body::before {
     left: 125%;
 }
 
+.home-card-link {
+    color: inherit;
+}
+
+.home-card-link:hover {
+    color: inherit;
+}
+
 
 .custom-footer {
     background-color: #000000;

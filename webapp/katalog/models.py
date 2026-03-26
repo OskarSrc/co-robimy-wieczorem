@@ -33,3 +33,16 @@ class Post(models.Model):
                 counter += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+
+class FavoritePost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorite_posts")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="favorited_by")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "post")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.post.title}"
