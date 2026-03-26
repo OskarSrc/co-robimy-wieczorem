@@ -15,4 +15,4 @@
 ## 🛠️ Technologie
 * **Backend:** Python, Django
 * **Frontend:** HTML5, CSS3, Bootstrap 5, FontAwesome
-* **Baza danych:** SQLite
+* **Baza danych:** 
