@@ -1,0 +1,26 @@
+{% extends 'posts/catalog_layout.html' %}
+{% load static %}
+
+{% block title %}Nowy post na forum{% endblock %}
+
+{% block katalog_nav_class %}{% endblock %}
+{% block forum_nav_class %}active{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell catalog-form-shell forum-shell">
+        <div class="catalog-form-header forum-header">
+            <h1>Utwórz post na forum</h1>
+            <p>Wybierz pozycję z katalogu, dodaj temat i opisz, o czym chcesz pogadać.</p>
+        </div>
+        <form class="form-with-validation forum-form" action="{% url 'forum:new-post' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button class="form-submit" type="submit">Opublikuj na forum</button>
+        </form>
+    </section>
+{% endblock %}

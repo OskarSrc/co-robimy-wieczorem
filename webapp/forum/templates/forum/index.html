@@ -1,10 +1,52 @@
-{% extends 'main/layout/layout.html' %}
+{% extends 'posts/catalog_layout.html' %}
+{% load static %}
 
-{% block title%}Forum{% endblock %}
+{% block title %}Forum{% endblock %}
 
-{% block content%}
-    <h1>Forum</h1>
-    <div class="d-flex flex-column gap-4">
+{% block katalog_nav_class %}{% endblock %}
+{% block forum_nav_class %}active{% endblock %}
 
-    </div>
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="catalog-shell forum-shell">
+        <div class="catalog-layout forum-layout">
+            <aside class="catalog-sidebar">
+                <div class="catalog-panel forum-panel">
+                    <h1>Forum</h1>
+                    <p class="catalog-sidebar-copy">Rozpocznij rozmowę o filmie, serialu, grze albo aktywności z katalogu.</p>
+                    {% if user.is_authenticated %}
+                        <a class="btn-custom-solid catalog-add-button" href="{% url 'forum:new-post' %}">Nowy post</a>
+                    {% endif %}
+                </div>
+            </aside>
+
+            <div class="catalog-grid forum-grid">
+                {% for post in posts %}
+                    <article class="catalog-card forum-card">
+                        <div class="catalog-card-body">
+                            <span class="catalog-card-category">{{ post.catalog_post.get_category_display }}</span>
+                            <p class="forum-card-link">
+                                O pozycji:
+                                <a href="{% url 'posts:page' slug=post.catalog_post.slug %}">{{ post.catalog_post.title }}</a>
+                            </p>
+                            <h2>
+                                <a href="{% url 'forum:detail' post_id=post.id %}">{{ post.subject }}</a>
+                            </h2>
+                            <p>{{ post.body|truncatechars:160 }}</p>
+                            <p class="forum-card-meta">Dodano przez {{ post.author }} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
+                        </div>
+                    </article>
+                {% empty %}
+                    <div class="catalog-empty">
+                        <h2>Na forum nie ma jeszcze postów</h2>
+                        <p>Rozpocznij pierwszą dyskusję na podstawie pozycji z katalogu.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 {% endblock %}

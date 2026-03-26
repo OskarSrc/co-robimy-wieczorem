@@ -40,6 +40,9 @@
                         </a>
                         <div class="catalog-card-body">
                             <span class="catalog-card-category">{{ post.get_category_display }}</span>
+                            {% if user.is_authenticated and post.is_favorite %}
+                                <span class="catalog-card-favorite">Ulubione</span>
+                            {% endif %}
                             <h2>
                                 <a href="{% url 'posts:page' slug=post.slug %}">{{ post.title }}</a>
                             </h2>
