@@ -13,7 +13,9 @@
 
 {% block content %}
     <section class="community-shell">
-        {# Hero ma od razu ustawić klimat strony i pokazać najważniejsze wejścia. #}
+        {% comment %}
+            Hero ma od razu ustawić klimat strony i pokazać najważniejsze wejścia.
+        {% endcomment %}
         <section class="community-hero">
             <div class="community-hero-copy">
                 <p class="community-eyebrow">Społeczność</p>
@@ -29,8 +31,10 @@
             </div>
 
             <div class="community-hero-panel">
-                {# Panel z prawej ma szybko pokazać, że społeczność nie jest tylko ozdobą,
-                   ale stoi na prawdziwych liczbach z forum i katalogu. #}
+                {% comment %}
+                    Panel z prawej ma szybko pokazać, że społeczność nie jest tylko ozdobą,
+                    ale stoi na prawdziwych liczbach z forum i katalogu.
+                {% endcomment %}
                 <p class="community-panel-title">W skrócie</p>
                 <div class="community-stat-grid">
                     <div class="community-stat-card">
@@ -49,7 +53,9 @@
             </div>
         </section>
 
-        {# Część kafli prowadzi już do gotowych miejsc, a część tylko ustawia kierunek rozwoju społeczności. #}
+        {% comment %}
+            Część kafli prowadzi już do gotowych miejsc, a część tylko ustawia kierunek rozwoju społeczności.
+        {% endcomment %}
         <section class="community-section" id="community-activities">
             <div class="community-section-heading">
                 <p class="community-eyebrow">Wybierz aktywność</p>
@@ -58,7 +64,9 @@
 
             <div class="community-activity-grid">
                 {% for card in community_cards %}
-                    {# Karta jest jednocześnie krótkim opisem funkcji i przyciskiem przejścia dalej. #}
+                    {% comment %}
+                        Karta jest jednocześnie krótkim opisem funkcji i przyciskiem przejścia dalej.
+                    {% endcomment %}
                     <a class="community-activity-card" href="{{ card.href }}">
                         <div class="community-icon">
                             <i class="fa-solid {{ card.icon }}"></i>
@@ -71,7 +79,9 @@
             </div>
         </section>
 
-        {# Mieszamy tu katalog i forum, żeby "top tygodnia" nie był pustą dekoracją. #}
+        {% comment %}
+            Mieszamy tu katalog i forum, żeby "top tygodnia" nie był pustą dekoracją.
+        {% endcomment %}
         <section class="community-section" id="community-top">
             <div class="community-section-heading">
                 <p class="community-eyebrow">Popularne w tym tygodniu</p>
@@ -81,8 +91,10 @@
 
             <div class="community-top-grid">
                 <article class="community-top-card">
-                    {# Tu pokazujemy nie "najlepsze" obiekty ręcznie,
-                       tylko te, które już dostały sygnał od użytkowników. #}
+                    {% comment %}
+                        Tu pokazujemy nie "najlepsze" obiekty ręcznie,
+                        tylko te, które już dostały sygnał od użytkowników.
+                    {% endcomment %}
                     <h3>Najczęściej polecane</h3>
                     <div class="community-mini-list">
                         {% for post in top_recommended %}
@@ -97,8 +109,10 @@
                 </article>
 
                 <article class="community-top-card">
-                    {# Najbardziej aktywne tematy bierzemy z forum,
-                       żeby społeczność nie kończyła się na samym katalogu. #}
+                    {% comment %}
+                        Najbardziej aktywne tematy bierzemy z forum,
+                        żeby społeczność nie kończyła się na samym katalogu.
+                    {% endcomment %}
                     <h3>Najbardziej aktywne tematy</h3>
                     <div class="community-mini-list">
                         {% for topic in top_topics %}
@@ -113,8 +127,10 @@
                 </article>
 
                 <article class="community-top-card">
-                    {# Klimaty są dobrym mostem między społecznością a katalogiem,
-                       bo pozwalają wejść w projekt od nastroju, a nie od kategorii. #}
+                    {% comment %}
+                        Klimaty są dobrym mostem między społecznością a katalogiem,
+                        bo pozwalają wejść w projekt od nastroju, a nie od kategorii.
+                    {% endcomment %}
                     <h3>Najpopularniejsze klimaty</h3>
                     <div class="community-mini-list">
                         {% for climate in top_climates %}
@@ -130,7 +146,9 @@
             </div>
         </section>
 
-        {# Na razie klimaty działają jako skróty do istniejących widoków, zamiast osobnych klubów. #}
+        {% comment %}
+            Na razie klimaty działają jako skróty do istniejących widoków, zamiast osobnych klubów.
+        {% endcomment %}
         <section class="community-section" id="community-climates">
             <div class="community-section-heading">
                 <p class="community-eyebrow">Kluby i klimaty</p>
@@ -140,8 +158,10 @@
 
             <div class="community-climate-grid">
                 {% for climate in climate_cards %}
-                    {# Te kafle na razie są skrótami do istniejących widoków,
-                       ale później mogą urosnąć do osobnych podstron lub klubów. #}
+                    {% comment %}
+                        Te kafle na razie są skrótami do istniejących widoków,
+                        ale później mogą urosnąć do osobnych podstron lub klubów.
+                    {% endcomment %}
                     <a class="community-climate-card" href="{{ climate.href }}">
                         <h3>{{ climate.title }}</h3>
                         <p>{{ climate.description }}</p>
@@ -150,7 +170,9 @@
             </div>
         </section>
 
-        {# To ma być lekki pretekst do wejścia w interakcję, nawet bez pisania nowego posta. #}
+        {% comment %}
+            To ma być lekki pretekst do wejścia w interakcję, nawet bez pisania nowego posta.
+        {% endcomment %}
         <section class="community-question-card">
             <div>
                 <p class="community-eyebrow">Pytanie społeczności</p>
@@ -160,7 +182,9 @@
             <a class="community-secondary-button" href="{% url 'forum:index' %}">Zobacz, co już dzieje się na forum</a>
         </section>
 
-        {# Dolne CTA domyka stronę prostymi akcjami, które użytkownik może zrobić od razu. #}
+        {% comment %}
+            Dolne CTA domyka stronę prostymi akcjami, które użytkownik może zrobić od razu.
+        {% endcomment %}
         <section class="community-cta" id="community-cta">
             <div>
                 <p class="community-eyebrow">Dołącz do społeczności</p>

@@ -12,8 +12,10 @@
 {% block content %}
     <section class="catalog-shell">
         <div class="catalog-layout">
-            {# Lewa kolumna działa jak "panel sterowania" katalogiem:
-               pokazuje liczbę wyników, kategorie i filtry w jednym miejscu. #}
+            {% comment %}
+                Lewa kolumna działa jak "panel sterowania" katalogiem:
+                pokazuje liczbę wyników, kategorie i filtry w jednym miejscu.
+            {% endcomment %}
             <aside class="catalog-sidebar">
                 <div class="catalog-panel">
                     <h1>Katalog</h1>
@@ -30,15 +32,19 @@
                         </li>
                         {% for value, label in categories %}
                             <li>
-                                {# Link kategorii zachowuje pozostałe filtry,
-                                   żeby przełączanie między kategoriami nie resetowało całego widoku. #}
+                                {% comment %}
+                                    Link kategorii zachowuje pozostałe filtry,
+                                    żeby przełączanie między kategoriami nie resetowało całego widoku.
+                                {% endcomment %}
                                 <a class="{% if active_category == value %}is-active{% endif %}" href="{% url 'posts:list' %}?category={{ value }}{% if filter_query %}&{{ filter_query }}{% endif %}">{{ label }}</a>
                             </li>
                         {% endfor %}
                     </ul>
 
-                    {# Formularz filtrów działa metodą GET,
-                       więc użytkownik może odświeżyć stronę albo skopiować link do aktualnego widoku. #}
+                    {% comment %}
+                        Formularz filtrów działa metodą GET,
+                        więc użytkownik może odświeżyć stronę albo skopiować link do aktualnego widoku.
+                    {% endcomment %}
                     <form class="catalog-filter-form" method="get" action="{% url 'posts:list' %}">
                         {% if active_category %}
                             <input type="hidden" name="category" value="{{ active_category }}">
@@ -76,8 +82,10 @@
             </aside>
 
             <div class="catalog-main">
-                {# Hero streszcza aktywny widok katalogu:
-                   pokazuje, po czym użytkownik właśnie przegląda wpisy. #}
+                {% comment %}
+                    Hero streszcza aktywny widok katalogu:
+                    pokazuje, po czym użytkownik właśnie przegląda wpisy.
+                {% endcomment %}
                 <section class="catalog-hero-card">
                     <p class="catalog-eyebrow">Pomysły na wieczór</p>
                     <h2>Wybierz klimat, nie tylko kategorię.</h2>
@@ -98,8 +106,10 @@
                     </div>
                 </section>
 
-                {# Losowanie jest osobnym krokiem nad listą,
-                   bo ma działać jako szybka decyzja bez przeglądania wszystkich kart. #}
+                {% comment %}
+                    Losowanie jest osobnym krokiem nad listą,
+                    bo ma działać jako szybka decyzja bez przeglądania wszystkich kart.
+                {% endcomment %}
                 <section class="catalog-spotlight">
                     <div class="catalog-spotlight-copy">
                         <p class="catalog-eyebrow">Nie wiesz co wybrać?</p>
@@ -121,8 +131,10 @@
                     </form>
 
                     {% if random_pick %}
-                        {# Wylosowana karta wygląda podobnie do zwykłej karty katalogu,
-                           żeby decyzja "biorę to" nie wymagała uczenia się nowego układu. #}
+                        {% comment %}
+                            Wylosowana karta wygląda podobnie do zwykłej karty katalogu,
+                            żeby decyzja "biorę to" nie wymagała uczenia się nowego układu.
+                        {% endcomment %}
                         <a class="catalog-random-pick" href="{% url 'posts:page' slug=random_pick.slug %}">
                             <div class="catalog-card-badges">
                                 <span class="catalog-card-category">{{ random_pick.get_category_display }}</span>
@@ -144,7 +156,9 @@
                     {% endif %}
                 </section>
 
-                {# Tematy działają jako skróty do gotowych, "redakcyjnych" widoków katalogu. #}
+                {% comment %}
+                    Tematy działają jako skróty do gotowych, "redakcyjnych" widoków katalogu.
+                {% endcomment %}
                 <section class="catalog-topic-grid">
                     {% for theme in theme_cards %}
                         <a class="catalog-topic-card" href="{% url 'posts:theme' theme_slug=theme.slug %}">
@@ -159,7 +173,9 @@
                     {% endfor %}
                 </section>
 
-                {# To jest już zwykła lista wyników po wszystkich aktywnych filtrach. #}
+                {% comment %}
+                    To jest już zwykła lista wyników po wszystkich aktywnych filtrach.
+                {% endcomment %}
                 <section class="catalog-results-header">
                     <div>
                         <p class="catalog-eyebrow">Pełna lista</p>
@@ -170,8 +186,10 @@
 
                 <div class="catalog-grid">
                     {% for post in posts %}
-                        {# Każda karta ma ten sam rytm:
-                           okładka -> badge'e -> tytuł -> hook -> autor i sygnały społeczne. #}
+                        {% comment %}
+                            Każda karta ma ten sam rytm:
+                            okładka -> badge'e -> tytuł -> hook -> autor i sygnały społeczne.
+                        {% endcomment %}
                         <article class="catalog-card">
                             <a class="catalog-card-image-wrap" href="{% url 'posts:page' slug=post.slug %}">
                                 <img class="catalog-card-image" src="{{ post.banner.url }}" alt="{{ post.title }}">

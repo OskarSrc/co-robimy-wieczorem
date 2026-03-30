@@ -20,7 +20,9 @@
 
             {{ form.non_field_errors }}
 
-            {# Start zbiera tylko podstawy wpisu, żeby użytkownik nie dostał od razu całej ściany pól. #}
+            {% comment %}
+                Start zbiera tylko podstawy wpisu, żeby użytkownik nie dostał od razu całej ściany pól.
+            {% endcomment %}
             <section class="catalog-form-section">
                 <p class="catalog-eyebrow">Start</p>
                 <h2>Najpierw nadaj wpisowi klimat.</h2>
@@ -47,8 +49,10 @@
                 </div>
             </section>
 
-            {# Ta sekcja buduje faktyczny charakter wpisu:
-               po kategorii najważniejsze są podkategoria, tagi i krótki opis. #}
+            {% comment %}
+                Ta sekcja buduje faktyczny charakter wpisu:
+                po kategorii najważniejsze są podkategoria, tagi i krótki opis.
+            {% endcomment %}
             <section class="catalog-form-section">
                 <p class="catalog-eyebrow">Doprecyzuj</p>
                 <h2>Ułóż wpis w kolejności, w jakiej ktoś szybko go oceni.</h2>
@@ -66,8 +70,10 @@
                         <p class="helptext">{{ form.tags.help_text }}</p>
                         {{ form.tags.errors }}
 
-                        {# Tagi wspólne zostają niezależnie od kategorii,
-                           bo opisują bardziej klimat wieczoru niż typ pozycji. #}
+                        {% comment %}
+                            Tagi wspólne zostają niezależnie od kategorii,
+                            bo opisują bardziej klimat wieczoru niż typ pozycji.
+                        {% endcomment %}
                         <div class="catalog-tag-group">
                             <p class="catalog-tag-group-title">Tagi wspólne</p>
                             <div class="catalog-tag-options">
@@ -95,8 +101,10 @@
                         {% endfor %}
                     </fieldset>
 
-                    {# Opis i "dlaczego warto" są rozdzielone,
-                       bo jedno rozwija kontekst, a drugie ma działać jak hook na karcie. #}
+                    {% comment %}
+                        Opis i "dlaczego warto" są rozdzielone,
+                        bo jedno rozwija kontekst, a drugie ma działać jak hook na karcie.
+                    {% endcomment %}
                     <div>
                         {{ form.body.label_tag }}
                         {{ form.body }}
@@ -111,8 +119,10 @@
                 </div>
             </section>
 
-            {# Preview ma być ostatnim krokiem, żeby przed zapisem szybko ocenić,
-               czy karta wygląda zachęcająco bez wchodzenia na listę katalogu. #}
+            {% comment %}
+                Preview ma być ostatnim krokiem, żeby przed zapisem szybko ocenić,
+                czy karta wygląda zachęcająco bez wchodzenia na listę katalogu.
+            {% endcomment %}
             <section class="catalog-form-section catalog-form-preview-section">
                 <p class="catalog-eyebrow">Podgląd</p>
                 <h2>Tak mniej więcej wpis pokaże się w katalogu.</h2>

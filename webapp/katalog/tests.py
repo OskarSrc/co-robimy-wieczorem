@@ -152,6 +152,12 @@ class CatalogViewsTests(TestCase):
         self.assertEqual([post.pk for post in response.context["posts"]], [self.romantic_post.pk])
         self.assertEqual(response.context["results_count"], 1)
 
+    def test_catalog_list_does_not_render_template_comments(self):
+        response = self.client.get(reverse("posts:list"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "{#")
+
     def test_random_pick_respects_active_filters(self):
         response = self.client.get(
             reverse("posts:list"),
@@ -396,3 +402,17 @@ class CatalogViewsTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(self.romantic_post, response.context["posts"])
         self.assertNotIn(self.group_post, response.context["posts"])
+
+    def test_new_post_page_does_not_render_template_comments(self):
+        self.client.login(username="marty", password="pass12345")
+
+        response = self.client.get(reverse("posts:new-post"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "{#")
+
+    def test_post_page_does_not_render_template_comments(self):
+        response = self.client.get(reverse("posts:page", args=[self.group_post.slug]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "{#")

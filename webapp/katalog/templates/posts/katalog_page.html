@@ -12,8 +12,10 @@
 {% block content %}
     <section class="content-shell catalog-detail-shell">
         <div class="catalog-detail-card">
-            {# Górna część szczegółu wzmacnia okładkę,
-               bo tutaj użytkownik przestaje tylko skanować i zaczyna wchodzić w konkretny wpis. #}
+            {% comment %}
+                Górna część szczegółu wzmacnia okładkę,
+                bo tutaj użytkownik przestaje tylko skanować i zaczyna wchodzić w konkretny wpis.
+            {% endcomment %}
             <div class="catalog-detail-hero">
                 <img
                     class="banner catalog-detail-image"
@@ -22,8 +24,10 @@
                 />
             </div>
             <div class="catalog-detail-content">
-                {# Badge'e na szczególe zostają na górze,
-                   żeby nadal było od razu widać kategorię, podkategorię i klimat wpisu. #}
+                {% comment %}
+                    Badge'e na szczególe zostają na górze,
+                    żeby nadal było od razu widać kategorię, podkategorię i klimat wpisu.
+                {% endcomment %}
                 <div class="catalog-card-badges">
                     <span class="catalog-card-category">{{ post.get_category_display }}</span>
                     {% if post.subcategory_label %}
@@ -35,14 +39,18 @@
                 </div>
                 <h1>{{ post.title }}</h1>
                 <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.date|date:"d.m.Y H:i" }}</p>
-                {# Te dwa liczniki są uproszczonym sygnałem społecznym:
-                   pokazują, czy wpis żyje już poza samym katalogiem. #}
+                {% comment %}
+                    Te dwa liczniki są uproszczonym sygnałem społecznym:
+                    pokazują, czy wpis żyje już poza samym katalogiem.
+                {% endcomment %}
                 <div class="catalog-detail-community">
                     <span>{{ post.favorite_count_label }}</span>
                     <span>{{ post.forum_status_label }}</span>
                 </div>
-                {# Akcje są ułożone obok siebie, bo to główne rzeczy,
-                   które można zrobić z wpisem po wejściu na szczegół. #}
+                {% comment %}
+                    Akcje są ułożone obok siebie, bo to główne rzeczy,
+                    które można zrobić z wpisem po wejściu na szczegół.
+                {% endcomment %}
                 <div class="catalog-detail-actions">
                     <form action="{% url 'posts:favorite' slug=post.slug %}" method="post" class="catalog-detail-action-form">
                         {% csrf_token %}
@@ -56,14 +64,18 @@
                         <a href="{% url 'posts:edit' slug=post.slug %}" class="catalog-detail-action">Edytuj wpis</a>
                     {% endif %}
                 </div>
-                {# "Dlaczego warto" ma własny blok,
-                   bo to najkrótszy argument sprzedażowy wpisu i powinien się wyróżniać. #}
+                {% comment %}
+                    "Dlaczego warto" ma własny blok,
+                    bo to najkrótszy argument sprzedażowy wpisu i powinien się wyróżniać.
+                {% endcomment %}
                 <div class="catalog-detail-reason">
                     <span>Dlaczego warto</span>
                     <p>{{ post.pick_reason }}</p>
                 </div>
-                {# Dopiero pod hookiem pokazujemy pełniejszy opis,
-                   bo opis rozwija wpis, a nie ma pełnić roli zachęty na pierwszy rzut oka. #}
+                {% comment %}
+                    Dopiero pod hookiem pokazujemy pełniejszy opis,
+                    bo opis rozwija wpis, a nie ma pełnić roli zachęty na pierwszy rzut oka.
+                {% endcomment %}
                 <p class="catalog-detail-description">{{ post.body }}</p>
             </div>
         </div>

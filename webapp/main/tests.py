@@ -52,3 +52,9 @@ class CommunityPageTests(TestCase):
         self.assertContains(response, self.post.title)
         self.assertContains(response, "Czy ten film nadaje się na wspólny wieczór?")
         self.assertContains(response, self.shared_tag.name)
+
+    def test_community_page_does_not_render_template_comments(self):
+        response = self.client.get(reverse("community"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "{#")
