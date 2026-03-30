@@ -1,0 +1,56 @@
+@media (max-width: 991px) {
+    .catalog-layout,
+    .catalog-topic-grid,
+    .catalog-spotlight {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-panel {
+        position: static;
+    }
+
+    .catalog-results-header {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .catalog-form-grid,
+    .form-with-validation fieldset > div {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-detail-card {
+        padding: 0.9rem;
+    }
+
+    .catalog-detail-hero {
+        padding: 0.6rem;
+        border-radius: 24px;
+    }
+
+    .catalog-detail-image {
+        border-radius: 20px;
+    }
+
+    .catalog-detail-content {
+        padding: 0.15rem 0.2rem 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-custom-solid,
+    .form-submit,
+    .catalog-detail-action,
+    .catalog-back-link {
+        width: 100%;
+    }
+
+    .catalog-random-form {
+        width: 100%;
+    }
+
+    .catalog-topic-meta {
+        flex-direction: column;
+        align-items: start;
+    }
+}

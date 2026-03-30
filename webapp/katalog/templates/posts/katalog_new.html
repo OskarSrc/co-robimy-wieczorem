@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-   Dodaj do katalogu
+   {{ page_heading }}
 {% endblock %}
 
 {% block extra_head %}
@@ -12,13 +12,141 @@
 {% block content %}
     <section class="content-shell catalog-form-shell">
         <div class="catalog-form-header">
-            <h1>Dodaj do katalogu</h1>
-            <p>Uzupełnij kategorię, tytuł, okładkę i krótki opis.</p>
+            <h1>{{ page_heading }}</h1>
+            <p>{{ page_copy }}</p>
         </div>
-        <form class="form-with-validation" action="{% url 'posts:new-post' %}" method="post" enctype="multipart/form-data">
+        <form class="form-with-validation" action="{{ form_action }}" method="post" enctype="multipart/form-data" data-catalog-form>
             {% csrf_token %}
-            {{ form }}
-            <button class="form-submit">Zapisz w katalogu</button>
+
+            {{ form.non_field_errors }}
+
+            {# Start zbiera tylko podstawy wpisu, żeby użytkownik nie dostał od razu całej ściany pól. #}
+            <section class="catalog-form-section">
+                <p class="catalog-eyebrow">Start</p>
+                <h2>Najpierw nadaj wpisowi klimat.</h2>
+                <p class="catalog-form-section-copy">Wybierz kategorię, wpisz tytuł i dodaj okładkę, a potem dopracuj resztę.</p>
+                <div class="catalog-form-grid catalog-form-grid-start">
+                    <div>
+                        {{ form.category.label_tag }}
+                        {{ form.category }}
+                        {{ form.category.errors }}
+                    </div>
+
+                    <div>
+                        {{ form.title.label_tag }}
+                        {{ form.title }}
+                        {{ form.title.errors }}
+                    </div>
+
+                    <div class="catalog-form-grid-full">
+                        {{ form.banner.label_tag }}
+                        {{ form.banner }}
+                        <p class="helptext">Zdjęcie od razu robi większy efekt na karcie.</p>
+                        {{ form.banner.errors }}
+                    </div>
+                </div>
+            </section>
+
+            {# Ta sekcja buduje faktyczny charakter wpisu:
+               po kategorii najważniejsze są podkategoria, tagi i krótki opis. #}
+            <section class="catalog-form-section">
+                <p class="catalog-eyebrow">Doprecyzuj</p>
+                <h2>Ułóż wpis w kolejności, w jakiej ktoś szybko go oceni.</h2>
+                <p class="catalog-form-section-copy">Podkategoria, tagi, opis i jedno konkretne „dlaczego warto”.</p>
+
+                <div class="catalog-form-stack">
+                    <div data-subcategory-wrapper {% if not show_subcategory %}class="is-hidden"{% endif %}>
+                        <label for="{{ form.subcategory.id_for_label }}" data-subcategory-label>{{ selected_subcategory_label }}</label>
+                        {{ form.subcategory }}
+                        {{ form.subcategory.errors }}
+                    </div>
+
+                    <fieldset class="catalog-tag-field">
+                        <legend>{{ form.tags.label }}</legend>
+                        <p class="helptext">{{ form.tags.help_text }}</p>
+                        {{ form.tags.errors }}
+
+                        {# Tagi wspólne zostają niezależnie od kategorii,
+                           bo opisują bardziej klimat wieczoru niż typ pozycji. #}
+                        <div class="catalog-tag-group">
+                            <p class="catalog-tag-group-title">Tagi wspólne</p>
+                            <div class="catalog-tag-options">
+                                {% for tag in shared_tags %}
+                                    <label>
+                                        <input type="checkbox" name="tags" value="{{ tag.pk }}" {% if tag.pk|stringformat:"s" in selected_tag_values %}checked{% endif %}>
+                                        <span>{{ tag.name }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% for group in category_tag_groups %}
+                            <div class="catalog-tag-group{% if selected_category != group.category %} is-hidden{% endif %}" data-category-specific="{{ group.category }}">
+                                <p class="catalog-tag-group-title">{{ group.title }}</p>
+                                <div class="catalog-tag-options">
+                                    {% for tag in group.tags %}
+                                        <label>
+                                            <input type="checkbox" name="tags" value="{{ tag.pk }}" {% if tag.pk|stringformat:"s" in selected_tag_values %}checked{% endif %}>
+                                            <span>{{ tag.name }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </fieldset>
+
+                    {# Opis i "dlaczego warto" są rozdzielone,
+                       bo jedno rozwija kontekst, a drugie ma działać jak hook na karcie. #}
+                    <div>
+                        {{ form.body.label_tag }}
+                        {{ form.body }}
+                        {{ form.body.errors }}
+                    </div>
+
+                    <div>
+                        {{ form.pick_reason.label_tag }}
+                        {{ form.pick_reason }}
+                        {{ form.pick_reason.errors }}
+                    </div>
+                </div>
+            </section>
+
+            {# Preview ma być ostatnim krokiem, żeby przed zapisem szybko ocenić,
+               czy karta wygląda zachęcająco bez wchodzenia na listę katalogu. #}
+            <section class="catalog-form-section catalog-form-preview-section">
+                <p class="catalog-eyebrow">Podgląd</p>
+                <h2>Tak mniej więcej wpis pokaże się w katalogu.</h2>
+                <p class="catalog-form-section-copy">Podgląd odświeża się na żywo, więc przed zapisem szybko zobaczysz, czy karta ma dobry hook.</p>
+
+                <article class="catalog-card catalog-card-preview" data-preview-card>
+                    <div class="catalog-card-image-wrap catalog-card-preview-image-wrap">
+                        <img
+                            class="catalog-card-image catalog-card-preview-image is-hidden"
+                            alt="Podgląd okładki"
+                            data-preview-image
+                            {% if form.instance.pk and form.instance.banner %}
+                                data-initial-src="{{ form.instance.banner.url }}"
+                            {% endif %}
+                        >
+                        <div class="catalog-card-preview-empty" data-preview-image-empty>
+                            Okładka pojawi się tutaj
+                        </div>
+                    </div>
+                    <div class="catalog-card-body">
+                        <div class="catalog-card-badges" data-preview-tags>
+                            <span class="catalog-card-category" data-preview-category>Kategoria</span>
+                            <span class="catalog-card-subcategory is-hidden" data-preview-subcategory></span>
+                        </div>
+                        <h2><span data-preview-title>Tu pojawi się tytuł wpisu.</span></h2>
+                        <p class="catalog-card-hook" data-preview-reason>Tu pojawi się krótkie „dlaczego warto”.</p>
+                        <p class="catalog-card-author">Dodane przez {{ request.user.username }}</p>
+                    </div>
+                </article>
+            </section>
+
+            <button class="form-submit">{{ submit_label }}</button>
         </form>
     </section>
+    {{ subcategory_configs|json_script:"catalog-subcategory-config" }}
+    <script src="{% static 'main/js/script.js' %}"></script>
 {% endblock %}
