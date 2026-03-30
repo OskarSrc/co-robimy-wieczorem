@@ -29,8 +29,8 @@ def get_links():
         'href': '/katalog/new-post/',
         'icon': 'fa-plus',
     },{
-        'name': 'Forum',
-        'href': '/forum',
+        'name': 'Społeczność',
+        'href': '/spolecznosc/',
         'icon': 'fa-comment', #look for your icon here https://fontawesome.com/search?ic=free
     }]
     

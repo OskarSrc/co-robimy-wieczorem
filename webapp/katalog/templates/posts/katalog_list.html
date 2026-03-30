@@ -12,49 +12,201 @@
 {% block content %}
     <section class="catalog-shell">
         <div class="catalog-layout">
+            {# Lewa kolumna działa jak "panel sterowania" katalogiem:
+               pokazuje liczbę wyników, kategorie i filtry w jednym miejscu. #}
             <aside class="catalog-sidebar">
                 <div class="catalog-panel">
                     <h1>Katalog</h1>
-                    <p class="catalog-sidebar-copy">Wybierz kategorię albo przeglądaj wszystkie propozycje.</p>
+                    <p class="catalog-sidebar-copy">Wybierz klimat wieczoru i zobacz propozycje, które od razu łatwiej dopasować do planu.</p>
+                    <div class="catalog-sidebar-stats">
+                        <span>{{ results_count }} propozycji</span>
+                        {% if active_filters_count %}
+                            <span>{{ active_filters_count }} aktywne filtry</span>
+                        {% endif %}
+                    </div>
                     <ul class="catalog-category-list">
                         <li>
-                            <a class="{% if not active_category %}is-active{% endif %}" href="{% url 'posts:list' %}">Wszystkie</a>
+                            <a class="{% if not active_category %}is-active{% endif %}" href="{% url 'posts:list' %}{% if filter_query %}?{{ filter_query }}{% endif %}">Wszystkie</a>
                         </li>
                         {% for value, label in categories %}
                             <li>
-                                <a class="{% if active_category == value %}is-active{% endif %}" href="{% url 'posts:list' %}?category={{ value }}">{{ label }}</a>
+                                {# Link kategorii zachowuje pozostałe filtry,
+                                   żeby przełączanie między kategoriami nie resetowało całego widoku. #}
+                                <a class="{% if active_category == value %}is-active{% endif %}" href="{% url 'posts:list' %}?category={{ value }}{% if filter_query %}&{{ filter_query }}{% endif %}">{{ label }}</a>
                             </li>
                         {% endfor %}
                     </ul>
+
+                    {# Formularz filtrów działa metodą GET,
+                       więc użytkownik może odświeżyć stronę albo skopiować link do aktualnego widoku. #}
+                    <form class="catalog-filter-form" method="get" action="{% url 'posts:list' %}">
+                        {% if active_category %}
+                            <input type="hidden" name="category" value="{{ active_category }}">
+                        {% endif %}
+                        <div>
+                            <label for="catalog-search">Szukasz konkretnego tytułu albo tagu?</label>
+                            <input
+                                id="catalog-search"
+                                type="search"
+                                name="q"
+                                value="{{ search_query }}"
+                                placeholder="Np. randka, binge, planszowki"
+                            >
+                        </div>
+                        <div>
+                            <label for="catalog-tag">Który tag pasuje do planu?</label>
+                            <select id="catalog-tag" name="tag">
+                                <option value="">Dowolny tag</option>
+                                {% for tag in catalog_tags %}
+                                    <option value="{{ tag.slug }}" {% if active_tag == tag.slug %}selected{% endif %}>{{ tag.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="btn-custom-solid catalog-add-button" type="submit">Pokaż propozycje</button>
+                    </form>
+
+                    {% if has_active_filters %}
+                        <a class="catalog-reset-link" href="{% url 'posts:list' %}{% if active_category %}?category={{ active_category }}{% endif %}">Wyczyść filtry</a>
+                    {% endif %}
+
                     {% if user.is_authenticated %}
                         <a class="btn-custom-solid catalog-add-button" href="{% url 'posts:new-post' %}">Dodaj do katalogu</a>
                     {% endif %}
                 </div>
             </aside>
 
-            <div class="catalog-grid">
-                {% for post in posts %}
-                    <article class="catalog-card">
-                        <a class="catalog-card-image-wrap" href="{% url 'posts:page' slug=post.slug %}">
-                            <img class="catalog-card-image" src="{{ post.banner.url }}" alt="{{ post.title }}">
-                        </a>
-                        <div class="catalog-card-body">
-                            <span class="catalog-card-category">{{ post.get_category_display }}</span>
-                            {% if user.is_authenticated and post.is_favorite %}
-                                <span class="catalog-card-favorite">Ulubione</span>
-                            {% endif %}
-                            <h2>
-                                <a href="{% url 'posts:page' slug=post.slug %}">{{ post.title }}</a>
-                            </h2>
-                            <p>{{ post.body|truncatechars:115 }}</p>
-                        </div>
-                    </article>
-                {% empty %}
-                    <div class="catalog-empty">
-                        <h2>Brak pozycji w katalogu</h2>
-                        <p>Dodaj pierwszy film, serial, grę albo aktywność.</p>
+            <div class="catalog-main">
+                {# Hero streszcza aktywny widok katalogu:
+                   pokazuje, po czym użytkownik właśnie przegląda wpisy. #}
+                <section class="catalog-hero-card">
+                    <p class="catalog-eyebrow">Pomysły na wieczór</p>
+                    <h2>Wybierz klimat, nie tylko kategorię.</h2>
+                    <p>Ten katalog ma pomagać podjąć decyzję szybciej: po klimacie, tagach i czasie potrzebnym na wieczór.</p>
+                    <div class="catalog-chip-list">
+                        {% if active_category_label %}
+                            <span class="catalog-chip">{{ active_category_label }}</span>
+                        {% endif %}
+                        {% if active_tag_label %}
+                            <span class="catalog-chip">{{ active_tag_label }}</span>
+                        {% endif %}
+                        {% if search_query %}
+                            <span class="catalog-chip">Szukasz: {{ search_query }}</span>
+                        {% endif %}
+                        {% if not has_active_filters %}
+                            <span class="catalog-chip">Wszystkie propozycje</span>
+                        {% endif %}
                     </div>
-                {% endfor %}
+                </section>
+
+                {# Losowanie jest osobnym krokiem nad listą,
+                   bo ma działać jako szybka decyzja bez przeglądania wszystkich kart. #}
+                <section class="catalog-spotlight">
+                    <div class="catalog-spotlight-copy">
+                        <p class="catalog-eyebrow">Nie wiesz co wybrać?</p>
+                        <h3>Wylosuj coś na ten wieczór.</h3>
+                        <p>Losowanie bierze pod uwagę aktualne filtry, więc podpowiedź zostaje w tym samym klimacie.</p>
+                    </div>
+                    <form class="catalog-random-form" method="get" action="{% url 'posts:list' %}">
+                        {% if active_category %}
+                            <input type="hidden" name="category" value="{{ active_category }}">
+                        {% endif %}
+                        {% if active_tag %}
+                            <input type="hidden" name="tag" value="{{ active_tag }}">
+                        {% endif %}
+                        {% if search_query %}
+                            <input type="hidden" name="q" value="{{ search_query }}">
+                        {% endif %}
+                        <input type="hidden" name="random" value="1">
+                        <button class="btn-custom-solid" type="submit">Losuj propozycję</button>
+                    </form>
+
+                    {% if random_pick %}
+                        {# Wylosowana karta wygląda podobnie do zwykłej karty katalogu,
+                           żeby decyzja "biorę to" nie wymagała uczenia się nowego układu. #}
+                        <a class="catalog-random-pick" href="{% url 'posts:page' slug=random_pick.slug %}">
+                            <div class="catalog-card-badges">
+                                <span class="catalog-card-category">{{ random_pick.get_category_display }}</span>
+                                {% if random_pick.subcategory_label %}
+                                    <span class="catalog-card-subcategory">{{ random_pick.subcategory_label }}</span>
+                                {% endif %}
+                                {% for tag in random_pick.display_tags|slice:":3" %}
+                                    <span class="catalog-card-vibe">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <h4>{{ random_pick.title }}</h4>
+                            <p class="catalog-card-hook">{{ random_pick.pick_reason }}</p>
+                            <p class="catalog-card-author">Dodane przez {{ random_pick.author.username }}</p>
+                            <div class="catalog-card-community">
+                                <span>{{ random_pick.favorite_count_label }}</span>
+                                <span>{{ random_pick.forum_status_label }}</span>
+                            </div>
+                        </a>
+                    {% endif %}
+                </section>
+
+                {# Tematy działają jako skróty do gotowych, "redakcyjnych" widoków katalogu. #}
+                <section class="catalog-topic-grid">
+                    {% for theme in theme_cards %}
+                        <a class="catalog-topic-card" href="{% url 'posts:theme' theme_slug=theme.slug %}">
+                            <p class="catalog-eyebrow">Temat katalogu</p>
+                            <h3>{{ theme.title }}</h3>
+                            <p>{{ theme.description }}</p>
+                            <div class="catalog-topic-meta">
+                                <span>{{ theme.count }} propozycji</span>
+                                <span>Zobacz temat <i class="fa-solid fa-arrow-right"></i></span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </section>
+
+                {# To jest już zwykła lista wyników po wszystkich aktywnych filtrach. #}
+                <section class="catalog-results-header">
+                    <div>
+                        <p class="catalog-eyebrow">Pełna lista</p>
+                        <h3>Wszystkie propozycje</h3>
+                    </div>
+                    <p>{{ results_count }} wyników dopasowanych do obecnego widoku.</p>
+                </section>
+
+                <div class="catalog-grid">
+                    {% for post in posts %}
+                        {# Każda karta ma ten sam rytm:
+                           okładka -> badge'e -> tytuł -> hook -> autor i sygnały społeczne. #}
+                        <article class="catalog-card">
+                            <a class="catalog-card-image-wrap" href="{% url 'posts:page' slug=post.slug %}">
+                                <img class="catalog-card-image" src="{{ post.banner.url }}" alt="{{ post.title }}">
+                            </a>
+                            <div class="catalog-card-body">
+                                <div class="catalog-card-badges">
+                                    <span class="catalog-card-category">{{ post.get_category_display }}</span>
+                                    {% if post.subcategory_label %}
+                                        <span class="catalog-card-subcategory">{{ post.subcategory_label }}</span>
+                                    {% endif %}
+                                    {% for tag in post.display_tags|slice:":3" %}
+                                        <span class="catalog-card-vibe">{{ tag.name }}</span>
+                                    {% endfor %}
+                                    {% if user.is_authenticated and post.is_favorite %}
+                                        <span class="catalog-card-favorite">Ulubione</span>
+                                    {% endif %}
+                                </div>
+                                <h2>
+                                    <a href="{% url 'posts:page' slug=post.slug %}">{{ post.title }}</a>
+                                </h2>
+                                <p class="catalog-card-hook">{{ post.pick_reason }}</p>
+                                <p class="catalog-card-author">Dodane przez {{ post.author.username }}</p>
+                                <div class="catalog-card-community">
+                                    <span>{{ post.favorite_count_label }}</span>
+                                    <span>{{ post.forum_status_label }}</span>
+                                </div>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="catalog-empty">
+                            <h2>Brak pozycji w katalogu</h2>
+                            <p>Dodaj pierwszy film, serial, grę albo aktywność.</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </section>
