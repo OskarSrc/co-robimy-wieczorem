@@ -105,7 +105,7 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('postgresql://neondb_owner:npg_mIdNqGb5EO2z@ep-morning-hall-abqlhg3t-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require'),
+        default='postgresql://neondb_owner:npg_mIdNqGb5EO2z@ep-morning-hall-abqlhg3t-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
         conn_max_age=600
     )
 }
