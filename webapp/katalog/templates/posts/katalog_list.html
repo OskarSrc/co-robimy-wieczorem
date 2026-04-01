@@ -36,7 +36,12 @@
                 {% for post in posts %}
                     <article class="catalog-card">
                         <a class="catalog-card-image-wrap" href="{% url 'posts:page' slug=post.slug %}">
-                            <img class="catalog-card-image" src="{{ post.banner.url }}" alt="{{ post.title }}">
+                           
+    <img class="catalog-card-image img-fluid w-100" 
+     style="height: 200px; object-fit: cover;" 
+     src="{{ post.banner.url }}" 
+     alt="{{ post.title }}"
+     loading="lazy">
                         </a>
                         <div class="catalog-card-body">
                             <span class="catalog-card-category">{{ post.get_category_display }}</span>

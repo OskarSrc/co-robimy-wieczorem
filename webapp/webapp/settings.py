@@ -39,11 +39,32 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+'cloudinary_storage', # MUSI być przed django.contrib.staticfiles
+'cloudinary',
+
     # custom apps
     'main',
     'katalog',
     'forum',
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dwgz2quan',
+    'API_KEY': '276823346831793',
+    'API_SECRET': 'IoD80_L8BPRD1vAV7eBAO3YEn-0'
+}
+
+import cloudinary
+
+cloudinary.config( 
+    cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'], 
+    api_key = CLOUDINARY_STORAGE['API_KEY'], 
+    api_secret = CLOUDINARY_STORAGE['API_SECRET'],
+    secure = True
+)
+
+# Ustawienie Cloudinary jako domyślnego miejsca zapisu mediów
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [ # now default, used for verification/modification processing data from requests
     'django.middleware.security.SecurityMiddleware',
