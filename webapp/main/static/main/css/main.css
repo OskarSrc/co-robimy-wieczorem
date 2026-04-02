@@ -84,7 +84,7 @@ body {
         opacity: 0.7;
     }
     50%{
-        opacity: 0.4;
+        opacity: 0.1;
     }
     33% {
         transform: translate(50px, -50px) scale(1.1);
