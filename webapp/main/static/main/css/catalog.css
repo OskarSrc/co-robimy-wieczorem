@@ -450,10 +450,11 @@ ul {
 .catalog-detail-card {
     overflow: hidden;
     padding: 1.2rem;
-    background:
-        radial-gradient(circle at top center, rgba(255, 255, 255, 0.06), transparent 45%),
-        linear-gradient(180deg, rgba(35, 47, 98, 0.92), rgba(18, 28, 63, 0.96));
+    background: rgba(10, 10, 10, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
 }
 
 /* Oprawa obrazka w widoku szczegółów. */
@@ -462,27 +463,20 @@ ul {
     margin-bottom: 1.35rem;
     padding: 0.9rem;
     border-radius: 28px;
-    background:
-        linear-gradient(180deg, rgba(4, 8, 24, 0.78), rgba(10, 16, 38, 0.92));
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow:
-        inset 0 0 0 1px rgba(122, 148, 255, 0.08),
-        inset 0 0 22px rgba(58, 84, 185, 0.2),
-        0 0 18px rgba(34, 56, 148, 0.14),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04),
-        0 18px 40px rgba(0, 0, 0, 0.24);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 18px 40px rgba(0, 0, 0, 0.4);
     transition: border-color 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease;
 }
 
 /* Delikatnie wzmacnia swiecenie ciemnej ramki wokol obrazka. */
 .catalog-detail-hero:hover {
-    border-color: rgba(154, 178, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.15);
     box-shadow:
-        inset 0 0 0 1px rgba(150, 176, 255, 0.1),
-        inset 0 0 28px rgba(78, 106, 220, 0.24),
-        0 0 24px rgba(52, 78, 182, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 20px 44px rgba(0, 0, 0, 0.26);
+        inset 0 0 0 1px rgba(250, 250, 250, 0.08),
+        0 20px 44px rgba(0, 0, 0, 0.6);
 }
 
 /* Bazowy styl dużego obrazka wpisu. */
@@ -566,6 +560,7 @@ ul {
     transform: translateY(-2px);
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(8px);
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.06),
         0 14px 26px rgba(0, 0, 0, 0.2);
