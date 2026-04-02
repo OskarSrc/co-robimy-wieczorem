@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,11 +40,32 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+'cloudinary_storage', # MUSI być przed django.contrib.staticfiles
+'cloudinary',
+
     # custom apps
     'main',
     'katalog',
     'forum',
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dwgz2quan',
+    'API_KEY': '276823346831793',
+    'API_SECRET': os.getenv('IoD80_L8BPRD1vAV7eBAO3YEn-0')
+}
+
+import cloudinary
+
+cloudinary.config( 
+    cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'], 
+    api_key = CLOUDINARY_STORAGE['API_KEY'], 
+    api_secret = CLOUDINARY_STORAGE['API_SECRET'],
+    secure = True
+)
+
+# Ustawienie Cloudinary jako domyślnego miejsca zapisu mediów
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 MIDDLEWARE = [ # now default, used for verification/modification processing data from requests
     'django.middleware.security.SecurityMiddleware',
@@ -79,11 +101,13 @@ WSGI_APPLICATION = 'webapp.wsgi.application' #created as an implementation-neutr
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://neondb_owner:npg_mIdNqGb5EO2z@ep-morning-hall-abqlhg3t-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+        conn_max_age=600
+    )
 }
 
 
