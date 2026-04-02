@@ -38,34 +38,39 @@ body {
     width: 300px;
     height: 300px;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    top: -15%;
+    top: -10%;
     left: -10%;
+    animation-delay: 0s;
 }
+
 
 .dot2 {
     width: 300px;
     height: 300px;
     background: linear-gradient(135deg, #ec4899, #8b5cf6);
-    bottom: -15%;
+    bottom: -10%;
     right: -10%;
     animation-delay: -7s;
+    animation: float-alt 18s ease-in-out infinite; 
 }
+
 
 .dot3 {
     width: 300px;
     height: 300px;
     background: linear-gradient(135deg, #06b6d4, #6366f1);
     top: 45%;
-    left: 48%;
+    left: 40%;
     animation-delay: -10s;
 }
+
 
 .dot4 {
     width: 250px;
     height: 250px;
     background: linear-gradient(135deg, #8b5cf6, #3b82f6); 
-    bottom: 20%;
-    left: 10%;
+    bottom: 5%;
+    left: 5%;
     animation-delay: -3s;
 }
 
@@ -73,9 +78,67 @@ body {
     width: 350px;
     height: 350px;
     background: linear-gradient(135deg, #10b981, #06b6d4); 
-    top: 10%;
-    right: 15%;
+    top: 5%;
+    right: 5%;
     animation-delay: -12s;
+}
+
+.dot6 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #d946ef, #8b5cf6); 
+    top: 40%;
+    left: -15%;
+    animation-delay: -2s;
+}
+
+.dot7 {
+    width: 150px; 
+    height: 150px;
+    background: linear-gradient(135deg, #22d3ee, #3b82f6); 
+    bottom: 30%;
+    right: 20%;
+    animation-delay: -5s;
+    animation: float-alt 14s ease-in-out infinite;
+}
+
+.dot8 {
+    width: 450px; 
+    height: 450px;
+    background: linear-gradient(135deg, #312e81, #4338ca); 
+    bottom: -15%;
+    left: 45%;
+    animation-delay: -22s;
+}
+
+.dot9 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #f59e0b, #ef4444); 
+    top: -10%;
+    right: 35%;
+    animation-delay: -15s;
+    opacity: 0.5; 
+    animation: float-alt 19s ease-in-out infinite;
+}
+
+.dot10 {
+    width: 280px;
+    height: 280px;
+    background: linear-gradient(135deg, #059669, #14b8a6); 
+    top: 25%;
+    right: -5%;
+    animation-delay: -9s;
+}
+
+.dot11 {
+    width: 240px;
+    height: 240px;
+    background: linear-gradient(135deg, #ec4899, #8b5cf6); 
+    top: -7%;
+    left: 25%;
+    animation-delay: -14s; 
+    animation: float-alt 16s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -84,7 +147,7 @@ body {
         opacity: 0.7;
     }
     50%{
-        opacity: 0.1;
+        opacity: 0.3;
     }
     33% {
         transform: translate(50px, -50px) scale(1.1);
@@ -93,6 +156,7 @@ body {
         transform: translate(30px, -30px) scale(1);
     }
 }
+
 /* Navbar po przyciski */
 
 .custom-navbar {
