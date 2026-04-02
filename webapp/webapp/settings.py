@@ -50,9 +50,9 @@ INSTALLED_APPS = [
 ]
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dwgz2quan',
-    'API_KEY': '276823346831793',
-    'API_SECRET': os.getenv('IoD80_L8BPRD1vAV7eBAO3YEn-0')
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'dwgz2quan'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY', '276823346831793'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', 'IoD80_L8BPRD1vAV7eBAO3YEn-0'),
 }
 
 import cloudinary

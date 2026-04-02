@@ -22,16 +22,38 @@
             <div class="catalog-detail-content">
                 <span class="catalog-card-category">{{ post.get_category_display }}</span>
                 <h1>{{ post.title }}</h1>
-                <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.date|date:"d.m.Y H:i" }}</p>
+                <p class="catalog-detail-meta">Dodano przez {{ post.author }} &bull; {{ post.date|date:"d.m.Y H:i" }}</p>
+                {% if post.tagi or post.podtag_anime or post.okazja or post.liczba_osob or post.cena %}
+                    <div class="catalog-detail-features">
+                        {% if post.tagi %}
+                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Tag:</span> {{ post.get_tagi_display }}</span>
+                        {% endif %}
+                        {% if post.podtag_anime %}
+                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Tag anime:</span> {{ post.get_podtag_anime_display }}</span>
+                        {% endif %}
+                        {% if post.okazja %}
+                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Okazja:</span> {{ post.get_okazja_display }}</span>
+                        {% endif %}
+                        {% if post.liczba_osob %}
+                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Liczba os&#243;b:</span> {{ post.get_liczba_osob_display }}</span>
+                        {% endif %}
+                        {% if post.cena %}
+                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Cena:</span> {{ post.get_cena_display }}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
                 <div class="catalog-detail-actions">
                     <form action="{% url 'posts:favorite' slug=post.slug %}" method="post" class="catalog-detail-action-form">
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.path }}">
                         <button type="submit" class="catalog-detail-action">
-                            {% if is_favorite %}Usuń z ulubionych{% else %}Dodaj do ulubionych{% endif %}
+                            {% if is_favorite %}Usu&#324; z ulubionych{% else %}Dodaj do ulubionych{% endif %}
                         </button>
                     </form>
-                    <a href="{% url 'forum:new-post' %}?catalog={{ post.slug }}" class="catalog-detail-action">Udostępnij na forum</a>
+                    {% if request.user.is_authenticated and request.user == post.author %}
+                        <a href="{% url 'posts:edit-post' slug=post.slug %}" class="catalog-detail-action">Edytuj</a>
+                    {% endif %}
+                    <a href="{% url 'forum:new-post' %}?catalog={{ post.slug }}" class="catalog-detail-action">Udost&#281;pnij na forum</a>
                 </div>
                 <p class="catalog-detail-description">{{ post.body }}</p>
             </div>

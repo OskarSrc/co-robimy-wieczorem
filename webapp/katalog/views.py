@@ -7,6 +7,14 @@ from .models import FavoritePost, Post
 # Create your views here.
 
 
+def _save_post_from_form(form, author):
+    # Wspolna logika zapisu dla dodawania i edycji wpisu.
+    newpost = form.save(commit=False)
+    newpost.author = author
+    newpost.save()
+    return newpost
+
+
 def posts_list(request):
     category = request.GET.get('category')
     posts = Post.objects.all()
@@ -42,13 +50,65 @@ def post_new(request):
     if request.method == 'POST': 
         form = forms.CreatePost(request.POST, request.FILES) 
         if form.is_valid():
-            newpost = form.save(commit=False) 
-            newpost.author = request.user 
-            newpost.save()
-            return redirect('posts:list')
+            try:
+                newpost = _save_post_from_form(form, request.user)
+                return redirect('posts:list')
+            except ValueError as error:
+                # Zamiast bledu 500 pokazujemy prosty komunikat przy problemie z uploadem.
+                if "api_secret" in str(error).lower():
+                    form.add_error(
+                        "banner",
+                        "Nie udalo sie wyslac obrazka do Cloudinary. Sprawdz konfiguracje CLOUDINARY_API_SECRET.",
+                    )
+                else:
+                    raise
     else:
         form = forms.CreatePost()
-    return render(request, 'posts/katalog_new.html', { 'form': form })
+    return render(
+        request,
+        'posts/katalog_new.html',
+        {
+            'form': form,
+            'page_title': 'Dodaj do katalogu',
+            'page_description': 'Uzupełnij kategorię, tytuł, tag i pozostałe cechy wpisu.',
+            'submit_label': 'Zapisz w katalogu',
+        },
+    )
+
+
+@login_required(login_url="/login")
+def post_edit(request, slug):
+    # Edytowac wpis moze tylko jego autor.
+    post = get_object_or_404(Post, slug=slug, author=request.user)
+
+    if request.method == 'POST':
+        form = forms.CreatePost(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            try:
+                updated_post = _save_post_from_form(form, request.user)
+                return redirect('posts:page', slug=updated_post.slug)
+            except ValueError as error:
+                if "api_secret" in str(error).lower():
+                    form.add_error(
+                        "banner",
+                        "Nie udalo sie wyslac obrazka do Cloudinary. Sprawdz konfiguracje CLOUDINARY_API_SECRET.",
+                    )
+                else:
+                    raise
+    else:
+        form = forms.CreatePost(instance=post)
+
+    return render(
+        request,
+        'posts/katalog_new.html',
+        {
+            'form': form,
+            'post': post,
+            'page_title': 'Edytuj wpis w katalogu',
+            'page_description': 'Możesz poprawić tytuł, tagi, opis i pozostałe cechy swojego wpisu.',
+            'submit_label': 'Zapisz zmiany',
+        },
+    )
 
 
 @login_required(login_url="/login")
