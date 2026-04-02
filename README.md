@@ -2,7 +2,7 @@
 
 **Znasz to uczucie, gdy spędzacie dwie godziny na komunikatorze tylko po to, żeby ustalić, że... nikt nie wie, w co zagrać albo co obejrzeć? My też.**
 
-<img width="3812" height="1866" alt="image" src="https://github.com/user-attachments/assets/58feb5e8-edb8-48f2-8ed6-0766152d85a0" />
+<img width="3813" height="1874" alt="image" src="https://github.com/user-attachments/assets/71c718b5-9294-4961-af54-f80112adf9b6" />
 
 "Co Robimy Wieczorem?" to aplikacja, która pomaga grupom znajomych błyskawicznie wybrać film, grę lub serial do wspólnego spędzenia czasu.
 
