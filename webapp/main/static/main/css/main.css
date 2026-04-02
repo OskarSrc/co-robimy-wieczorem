@@ -248,8 +248,21 @@ body {
 .my-box:hover {
     transform: translateY(-10px);
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(0, 123, 255, 0.5); /* Niebieski akcent */
-    box-shadow: 0 10px 40px -10px rgba(0, 123, 255, 0.3);
+}
+
+.box-orange:hover {
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 10px 40px -10px rgba(245, 158, 11, 0.3);
+}
+
+.box-blue:hover {
+    border-color: rgba(59, 130, 246, 0.5); 
+    box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.3);
+}
+
+.box-pink:hover {
+    border-color: rgba(236, 72, 153, 0.5); 
+    box-shadow: 0 10px 40px -10px rgba(236, 72, 153, 0.3);
 }
 
 .my-box::before {
