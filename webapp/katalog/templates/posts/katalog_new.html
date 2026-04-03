@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-   Dodaj do katalogu
+   {{ page_title|default:"Dodaj do katalogu" }}
 {% endblock %}
 
 {% block extra_head %}
@@ -12,13 +12,106 @@
 {% block content %}
     <section class="content-shell catalog-form-shell">
         <div class="catalog-form-header">
-            <h1>Dodaj do katalogu</h1>
-            <p>Uzupełnij kategorię, tytuł, okładkę i krótki opis.</p>
+            <h1>{{ page_title|default:"Dodaj do katalogu" }}</h1>
+            <p>{{ page_description|default:"Uzupełnij kategorię, tytuł, tag i pozostałe cechy wpisu." }}</p>
         </div>
-        <form class="form-with-validation" action="{% url 'posts:new-post' %}" method="post" enctype="multipart/form-data">
+        <form
+            class="form-with-validation"
+            action="{% if post %}{% url 'posts:edit-post' slug=post.slug %}{% else %}{% url 'posts:new-post' %}{% endif %}"
+            method="post"
+            enctype="multipart/form-data"
+        >
             {% csrf_token %}
-            {{ form }}
-            <button class="form-submit">Zapisz w katalogu</button>
+            {{ form.non_field_errors }}
+
+            <div>
+                {{ form.category.label_tag }}
+                {{ form.category }}
+                {{ form.category.errors }}
+            </div>
+
+            <div>
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {{ form.title.errors }}
+            </div>
+
+            <div>
+                {{ form.tagi.label_tag }}
+                {{ form.tagi }}
+                {% if form.tagi.help_text %}
+                    <div class="helptext">{{ form.tagi.help_text }}</div>
+                {% endif %}
+                {{ form.tagi.errors }}
+            </div>
+
+            <div id="anime-tag-wrapper">
+                {{ form.podtag_anime.label_tag }}
+                {{ form.podtag_anime }}
+                {% if form.podtag_anime.help_text %}
+                    <div class="helptext">{{ form.podtag_anime.help_text }}</div>
+                {% endif %}
+                {{ form.podtag_anime.errors }}
+            </div>
+
+            <div>
+                {{ form.okazja.label_tag }}
+                {{ form.okazja }}
+                {{ form.okazja.errors }}
+            </div>
+
+            <div>
+                {{ form.liczba_osob.label_tag }}
+                {{ form.liczba_osob }}
+                {{ form.liczba_osob.errors }}
+            </div>
+
+            <div>
+                {{ form.cena.label_tag }}
+                {{ form.cena }}
+                {% if form.cena.help_text %}
+                    <div class="helptext">{{ form.cena.help_text }}</div>
+                {% endif %}
+                {{ form.cena.errors }}
+            </div>
+
+            <div>
+                {{ form.banner.label_tag }}
+                {{ form.banner }}
+                {{ form.banner.errors }}
+            </div>
+
+            <div>
+                {{ form.body.label_tag }}
+                {{ form.body }}
+                {{ form.body.errors }}
+            </div>
+
+            <button class="form-submit">{{ submit_label|default:"Zapisz w katalogu" }}</button>
         </form>
     </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tagiField = document.getElementById("id_tagi");
+            const animeTagWrapper = document.getElementById("anime-tag-wrapper");
+            const animeTagField = document.getElementById("id_podtag_anime");
+
+            if (!tagiField || !animeTagWrapper || !animeTagField) {
+                return;
+            }
+
+            function toggleAnimeTagField() {
+                const showAnimeTag = tagiField.value === "anime";
+                animeTagWrapper.hidden = !showAnimeTag;
+
+                if (!showAnimeTag) {
+                    animeTagField.value = "";
+                }
+            }
+
+            toggleAnimeTagField();
+            tagiField.addEventListener("change", toggleAnimeTagField);
+        });
+    </script>
 {% endblock %}

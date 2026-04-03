@@ -579,6 +579,30 @@ ul {
     font-size: 0.98rem;
 }
 
+.catalog-detail-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 1.3rem;
+}
+
+.catalog-detail-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(245, 245, 247, 0.92);
+    font-size: 0.86rem;
+}
+
+.catalog-detail-chip-label {
+    color: var(--muted);
+    font-weight: 600;
+}
+
 /* Przyciski akcji pod nazwą wpisu. */
 .catalog-detail-actions {
     display: flex;
