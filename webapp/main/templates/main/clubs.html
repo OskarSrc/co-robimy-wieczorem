@@ -1,0 +1,39 @@
+{% extends 'main/layout/base.html' %}
+
+{% block title %}Kluby tematyczne - Co Robimy Wieczorem?{% endblock %}
+
+{% block content %}
+    <section class="section-spacing">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold">Kluby tematyczne</h1>
+                <p class="lead">Małe grupki wokół jednego klimatu. Bez spiny, bardziej po ludzku.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="my-box h-100">
+                        <h3>Klub horrorów</h3>
+                        <p>Dla osób, które lubią dreszczyk, napięcie i dziwne historie.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="my-box h-100">
+                        <h3>Klub co-op</h3>
+                        <p>Miejsce dla ludzi, którzy wolą grać razem niż przeciwko sobie.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="my-box h-100">
+                        <h3>Klub serialowy</h3>
+                        <p>Na rozmowy o odcinkach, sezonach i rzeczach idealnych na binge.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{% url 'community' %}" class="btn-custom-solid text-decoration-none">Wróć do społeczności</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

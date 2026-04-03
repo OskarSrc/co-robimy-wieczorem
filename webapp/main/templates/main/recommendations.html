@@ -1,0 +1,39 @@
+{% extends 'main/layout/base.html' %}
+
+{% block title %}Polecajki - Co Robimy Wieczorem?{% endblock %}
+
+{% block content %}
+    <section class="section-spacing">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold">Polecajki</h1>
+                <p class="lead">Krótko i konkretnie. Co warto obejrzeć albo ograć dzisiaj?</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="my-box h-100">
+                        <h3>Na luźny wieczór</h3>
+                        <p>Coś lekkiego, przyjemnego i bez wielkiego skupienia.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="my-box h-100">
+                        <h3>Dla ekipy</h3>
+                        <p>Filmy, seriale i gry, które najlepiej smakują w grupie znajomych.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="my-box h-100">
+                        <h3>Na krótki czas</h3>
+                        <p>Pomysły na wieczór, kiedy macie tylko godzinę albo dwie.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{% url 'community' %}" class="btn-custom-solid text-decoration-none">Wróć do społeczności</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

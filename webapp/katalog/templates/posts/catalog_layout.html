@@ -41,7 +41,7 @@
                         <a class="nav-link custom-link {% block katalog_nav_class %}active{% endblock %}" href="{% url 'posts:list' %}">Katalog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link custom-link {% block forum_nav_class %}{% endblock %}" href="{% url 'forum:index' %}">Społeczność</a>
+                        <a class="nav-link custom-link {% block forum_nav_class %}{% endblock %}" href="{% url 'community' %}">Społeczność</a>
                     </li>
                 </ul>
             </div>
@@ -61,6 +61,35 @@
     <main class="catalog-page-main">
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="custom-footer mt-5">
+        <div class="container">
+            <div class="row py-5">
+                <div class="col-md-4">
+                    <h4 class="navbar-brand"><i class="fa-solid fa-ghost"></i> Co Robimy Wieczorem?</h4>
+                    <p class="opacity-50">System głosowania, który ułatwia wspólne podejmowanie decyzji.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Nawigacja</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}" class="footer-link">Strona Główna</a></li>
+                        <li><a href="{% url 'posts:list' %}" class="footer-link">Katalog</a></li>
+                        <li><a href="{% url 'community' %}" class="footer-link">Społeczność</a></li>
+                        <li><a href="{% url 'register_user' %}" class="footer-link">Rejestracja</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Zespół Projektowy</h5>
+                    <p class="small m-0">Mateusz Dudek, Martyna Figiel</p>
+                    <p class="small m-0">Julia Góra, Oskar Jakosz</p>
+                </div>
+            </div>
+            <hr class="opacity-10">
+            <div class="text-center py-3 opacity-25">
+                <small>&copy; 2026 Co Robimy Wieczorem? All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

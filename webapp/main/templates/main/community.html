@@ -1,0 +1,41 @@
+{% extends 'main/layout/base.html' %}
+
+{% block title %}Społeczność - Co Robimy Wieczorem?{% endblock %}
+
+{% block content %}
+    <section class="section-spacing">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold">Społeczność</h1>
+                <p class="lead">Takie nasze spokojne miejsce. Możesz pogadać na forum, wrzucić polecajki albo zajrzeć do klubów tematycznych.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="{% url 'forum:index' %}" class="home-card-link text-decoration-none d-block h-100">
+                        <div class="my-box box-blue h-100">
+                            <h3>Forum</h3>
+                            <p>Miejsce na dłuższe rozmowy o filmach, grach i serialach z katalogu.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'recommendations' %}" class="home-card-link text-decoration-none d-block h-100">
+                        <div class="my-box box-pink h-100">
+                            <h3>Polecajki</h3>
+                            <p>Szybkie inspiracje na wieczór, kiedy nie chcecie długo szukać.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="{% url 'clubs' %}" class="home-card-link text-decoration-none d-block h-100">
+                        <div class="my-box box-orange h-100">
+                            <h3>Kluby tematyczne</h3>
+                            <p>Małe kąty dla osób, które lubią podobny klimat i gatunki.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

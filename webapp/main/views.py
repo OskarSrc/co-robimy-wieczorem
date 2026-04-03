@@ -56,6 +56,15 @@ def cars(request):
 def about(request):
     return render(request, 'main/about.html')
 
+def community(request):
+    return render(request, 'main/community.html')
+
+def recommendations(request):
+    return render(request, 'main/recommendations.html')
+
+def clubs(request):
+    return render(request, 'main/clubs.html')
+
 # Using the Django authentication system (Django Documentation)
 # https://docs.djangoproject.com/en/5.1/topics/auth/default/
 def login_user(request):
