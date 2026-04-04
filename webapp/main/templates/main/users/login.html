@@ -1,7 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %} 
 
-{% block title %}Zaloguj się{% endblock %}
+{% block title %}Zaloguj się - Co Robimy Wieczorem?{% endblock %}
  
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
@@ -9,12 +9,17 @@
 {% endblock %}
 
 {% block content%}
- <div class="d-flex align-items-center justify-content-center px-4" style="height: 80vh">
-     <div style="max-width: 500px" class="w-100">
-         <h1>Zaloguj się</h1>
+ <div class="d-flex align-items-center justify-content-center px-4" style="min-height: 90vh">
+     <div class="my-box w-100" style="max-width: 550px; padding: 2.5rem; z-index: 10;">
+
+      <div class="text-center mb-4">
+            <h1 class="fw-bold mb-2">Zaloguj się</h1>
+            <p class="text-white-50" style="font-size: 0.95rem;">Witaj ponownie! Zobaczmy, co dziś robimy wieczorem.</p>
+        </div>
+
          {% if messages %}
-         <div class="alert alert-danger" role="alert">
-           <ul class="mb-0">
+         <div class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-danger" role="alert">
+           <ul class="mb-0 px-3">
              {% for message in messages %}
             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
              {% endfor %}
@@ -22,21 +27,27 @@
          </div>
          
          {% endif %}
-         <form method="POST" action="/login">
+         <form method="POST" action="/login" class="form-with-validation bg-transparent border-0 p-0 m-0 shadow-none">
              {% csrf_token %}
  
-             <div class="mb-3">
-               <label for="username" class="form-label">Nazwa użytkownika</label>
-               <input type="text" class="form-control" id="username" name="username" aria-describedby="username" required>
+             <div>
+               <label for="username" class="form-label mb-1">Nazwa użytkownika</label>
+               <input type="text" id="username" name="username" required>
              </div>
  
-             <div class="mb-3">
-               <label for="password" class="form-label">Hasło</label>
-               <input type="password" class="form-control" id="password" name="password" required>
+             <div class="mt-3 mb-4">
+               <label for="password" class="form-label mb-1">Hasło</label>
+               <input type="password" id="password" name="password" required>
              </div>
- 
-             <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
-           </form>
+
+             <button type="submit" class="btn-custom-solid w-100 py-2" style="font-size: 1rem;">Zaloguj się</button>
+
+             <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+              <p class="text-white-50 mb-0" style="font-size: 0.9rem">
+                Nie masz jeszcze konta? <a href="{% url 'register_user' %}" class="text-white text-decoration-none fw-bold">Zarejestruj się</a>
+             </p>
+             </div>
+        </form>
      </div>
  </div>
  
