@@ -1,35 +1,39 @@
 {% extends 'main/layout/base.html' %}
 
-{% block title %}Polecajki - Co Robimy Wieczorem?{% endblock %}
+{% block title %}Społeczność poleca - Co Robimy Wieczorem?{% endblock %}
 
 {% block content %}
     <section class="section-spacing">
         <div class="container">
             <div class="text-center mb-5">
-                <h1 class="display-4 fw-bold">Polecajki</h1>
-                <p class="lead">Krótko i konkretnie. Co warto obejrzeć albo ograć dzisiaj?</p>
+                <h1 class="display-4 fw-bold">Społeczność poleca</h1>
+                <p class="lead">Tutaj pokazujemy to, co użytkownicy najczęściej dodają do ulubionych i o czym najczęściej zakładają tematy na forum.</p>
             </div>
 
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="my-box h-100">
-                        <h3>Na luźny wieczór</h3>
-                        <p>Coś lekkiego, przyjemnego i bez wielkiego skupienia.</p>
-                    </div>
+            {# Jeśli są dane, pokazujemy ranking zbudowany z aktywności społeczności. #}
+            {% if recommended_posts %}
+                <div class="row g-4">
+                    {% for post in recommended_posts %}
+                        <div class="col-lg-4 col-md-6">
+                            <div class="my-box h-100">
+                                {# Każda karta pokazuje podstawowe informacje o wpisie i jego wynik. #}
+                                <p class="small text-uppercase opacity-75 mb-2">{{ post.get_category_display }}</p>
+                                <h3>{{ post.title }}</h3>
+                                <p>{{ post.body|truncatechars:140 }}</p>
+                                <p class="small opacity-75 mb-1">Ulubione: {{ post.favorites_count }}</p>
+                                <p class="small opacity-75 mb-4">Tematy na forum: {{ post.forum_topics_count }}</p>
+                                <a href="{% url 'posts:page' slug=post.slug %}" class="btn-custom-solid text-decoration-none">Zobacz wpis</a>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="col-md-4">
-                    <div class="my-box h-100">
-                        <h3>Dla ekipy</h3>
-                        <p>Filmy, seriale i gry, które najlepiej smakują w grupie znajomych.</p>
-                    </div>
+            {% else %}
+                {# Ten komunikat pojawia się, gdy społeczność nie ma jeszcze danych do rankingu. #}
+                <div class="my-box text-center">
+                    <h3>Jeszcze nie ma danych do poleceń</h3>
+                    <p>Gdy użytkownicy zaczną dodawać wpisy do ulubionych i rozmawiać na forum, tutaj pojawią się najciekawsze propozycje.</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="my-box h-100">
-                        <h3>Na krótki czas</h3>
-                        <p>Pomysły na wieczór, kiedy macie tylko godzinę albo dwie.</p>
-                    </div>
-                </div>
-            </div>
+            {% endif %}
 
             <div class="text-center mt-5">
                 <a href="{% url 'community' %}" class="btn-custom-solid text-decoration-none">Wróć do społeczności</a>
