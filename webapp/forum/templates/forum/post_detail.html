@@ -1,4 +1,6 @@
+{# Ten widok pokazuje szczegóły jednego wybranego posta forum. #}
 {% extends 'posts/catalog_layout.html' %}
+{# Ładowanie tagu static jest potrzebne do dołączenia stylów CSS. #}
 {% load static %}
 
 {% block title %}{{ post.subject }}{% endblock %}
@@ -7,21 +9,38 @@
 {% block forum_nav_class %}active{% endblock %}
 
 {% block extra_head %}
+    {# Podpinamy te same style bazowe i forumowe co na innych stronach forum. #}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
     <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
 {% endblock %}
 
 {% block content %}
+    {# Karta szczegółów zbiera informacje o powiązanej pozycji i treści tematu. #}
     <section class="content-shell forum-shell">
         <article class="catalog-detail-card forum-detail-card">
             <div class="catalog-detail-content forum-detail-content">
                 <span class="catalog-card-category">{{ post.catalog_post.get_category_display }}</span>
                 <p class="forum-linked-item">
                     Dyskusja o:
+                    {# Ten link wraca do strony wybranej pozycji z katalogu. #}
                     <a href="{% url 'posts:page' slug=post.catalog_post.slug %}">{{ post.catalog_post.title }}</a>
                 </p>
                 <h1>{{ post.subject }}</h1>
                 <p class="catalog-detail-meta">Dodano przez {{ post.author }} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
+                {% if request.user.is_authenticated and request.user == post.author %}
+                    <div class="catalog-detail-actions">
+                        <form
+                            action="{% url 'forum:delete-post' post_id=post.id %}"
+                            method="post"
+                            class="catalog-detail-action-form"
+                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten post z forum?');"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="catalog-detail-action">Usuń post</button>
+                        </form>
+                    </div>
+                {% endif %}
+                {# `linebreaksbr` zamienia Enter z formularza na znaczniki `<br>` w HTML. #}
                 <p class="catalog-detail-description">{{ post.body|linebreaksbr }}</p>
             </div>
         </article>

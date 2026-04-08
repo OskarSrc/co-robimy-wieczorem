@@ -1,4 +1,6 @@
+{# Ten szablon korzysta ze wspólnego układu strony katalogu. #}
 {% extends 'posts/catalog_layout.html' %}
+{# Ładowanie tagu static pozwala podpinać lokalne pliki CSS. #}
 {% load static %}
 
 {% block title %}Forum{% endblock %}
@@ -7,40 +9,50 @@
 {% block forum_nav_class %}active{% endblock %}
 
 {% block extra_head %}
+    {# Najpierw wspólne style katalogu, potem dopasowania tylko dla forum. #}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
     <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
 {% endblock %}
 
 {% block content %}
+    {# Główna sekcja dzieli stronę na panel boczny i siatkę postów. #}
     <section class="catalog-shell forum-shell">
         <div class="catalog-layout forum-layout">
             <aside class="catalog-sidebar">
                 <div class="catalog-panel forum-panel">
+                    {# Panel boczny krótko wyjaśnia sens tej podstrony. #}
                     <h1>Forum</h1>
                     <p class="catalog-sidebar-copy">Rozpocznij rozmowę o filmie, serialu, grze albo aktywności z katalogu.</p>
                     {% if user.is_authenticated %}
+                        {# Przycisk dodawania tematu widzi tylko zalogowany użytkownik. #}
                         <a class="btn-custom-solid catalog-add-button" href="{% url 'forum:new-post' %}">Nowy post</a>
                     {% endif %}
                 </div>
             </aside>
 
             <div class="catalog-grid forum-grid">
+                {# Pętla wyświetla wszystkie posty przekazane z widoku index. #}
                 {% for post in posts %}
                     <article class="catalog-card forum-card">
                         <div class="catalog-card-body">
+                            {# Kategoria pochodzi z powiązanego wpisu katalogu. #}
                             <span class="catalog-card-category">{{ post.catalog_post.get_category_display }}</span>
                             <p class="forum-card-link">
                                 O pozycji:
+                                {# Link prowadzi do szczegółów pozycji w katalogu. #}
                                 <a href="{% url 'posts:page' slug=post.catalog_post.slug %}">{{ post.catalog_post.title }}</a>
                             </p>
                             <h2>
+                                {# Tytuł posta jest jednocześnie linkiem do szczegółów dyskusji. #}
                                 <a href="{% url 'forum:detail' post_id=post.id %}">{{ post.subject }}</a>
                             </h2>
+                            {# `truncatechars` skraca długą treść, żeby lista była czytelna. #}
                             <p>{{ post.body|truncatechars:160 }}</p>
                             <p class="forum-card-meta">Dodano przez {{ post.author }} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
                         </div>
                     </article>
                 {% empty %}
+                    {# Ten stan pusty pojawia się, gdy forum nie ma jeszcze żadnych tematów. #}
                     <div class="catalog-empty">
                         <h2>Na forum nie ma jeszcze postów</h2>
                         <p>Rozpocznij pierwszą dyskusję na podstawie pozycji z katalogu.</p>
