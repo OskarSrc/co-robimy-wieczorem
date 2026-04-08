@@ -182,8 +182,6 @@ def delete_account(request):
     return redirect('profile_user')
 
 def widok_eventow(request):
-    tmdb_key = os.getenv('TMDB_API_KEY')
-    rawg_key = os.getenv('RAWG_API_KEY')
 
     dzisiaj = date.today()
     za_pol_roku = dzisiaj + timedelta(180)
