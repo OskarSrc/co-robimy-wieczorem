@@ -1,7 +1,9 @@
+/* Kontener forum ma zajmować całą dostępną szerokość. */
 .forum-shell {
     width: 100%;
 }
 
+/* Tło głównej części strony buduje ciemny, gradientowy klimat forum. */
 main.py-5 {
     width: 100%;
     min-height: 100vh;
@@ -11,25 +13,30 @@ main.py-5 {
     color: #f5f5f7;
 }
 
+/* Ograniczenie szerokości pomaga utrzymać czytelny układ na dużych ekranach. */
 .container-sm {
     min-width: 0 !important;
     width: min(100%, 1320px);
 }
 
+/* Na desktopie panel boczny i lista postów stoją obok siebie. */
 .forum-layout {
     grid-template-columns: 280px minmax(0, 1fr);
 }
 
+/* Delikatne rozmycie odróżnia karty forum od tła strony. */
 .forum-panel,
 .forum-card,
 .forum-detail-card {
     backdrop-filter: blur(10px);
 }
 
+/* Siatka kart automatycznie dopasowuje liczbę kolumn do szerokości ekranu. */
 .forum-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
+/* Meta informacje mają słabszy kolor, żeby nie konkurowały z treścią. */
 .forum-card-link,
 .forum-card-meta,
 .forum-linked-item {
@@ -37,11 +44,13 @@ main.py-5 {
     font-size: 0.92rem;
 }
 
+/* Odstęp pod linkiem poprawia czytelność kart i szczegółów. */
 .forum-card-link,
 .forum-linked-item {
     margin-bottom: 0.7rem;
 }
 
+/* Linki do pozycji z katalogu mają być widoczne i wyraźnie podkreślone. */
 .forum-card-link a,
 .forum-linked-item a {
     color: #ffffff;
@@ -50,27 +59,33 @@ main.py-5 {
     text-underline-offset: 0.18rem;
 }
 
+/* Meta dane pod kartą dostają dodatkowy odstęp od głównej treści. */
 .forum-card-meta {
     margin-top: 1rem;
 }
 
+/* Formularz nie powinien być zbyt szeroki, żeby wygodnie się go wypełniało. */
 .forum-form {
     max-width: 760px;
 }
 
+/* Duży nagłówek nadaje stronie tworzenia posta mocny punkt startowy. */
 .forum-header h1 {
     font-size: clamp(2.4rem, 5vw, 4rem);
 }
 
+/* Karta szczegółów jest szersza, bo mieści całą treść posta. */
 .forum-detail-card {
     max-width: 980px;
     margin: 0 auto;
 }
 
+/* Górny odstęp odsuwa treść od krawędzi karty szczegółów. */
 .forum-detail-content {
     padding-top: 1rem;
 }
 
+/* Na mniejszych ekranach układ przechodzi do jednej kolumny. */
 @media (max-width: 991px) {
     .forum-layout {
         grid-template-columns: 1fr;

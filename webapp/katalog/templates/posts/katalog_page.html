@@ -52,6 +52,15 @@
                     </form>
                     {% if request.user.is_authenticated and request.user == post.author %}
                         <a href="{% url 'posts:edit-post' slug=post.slug %}" class="catalog-detail-action">Edytuj</a>
+                        <form
+                            action="{% url 'posts:delete-post' slug=post.slug %}"
+                            method="post"
+                            class="catalog-detail-action-form"
+                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten wpis z katalogu?');"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="catalog-detail-action">Usuń z katalogu</button>
+                        </form>
                     {% endif %}
                     <a href="{% url 'forum:new-post' %}?catalog={{ post.slug }}" class="catalog-detail-action">Udost&#281;pnij na forum</a>
                 </div>

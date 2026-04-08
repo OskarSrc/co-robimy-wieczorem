@@ -1,4 +1,6 @@
+{# Szablon formularza dziedziczy wspólny układ z katalogu. #}
 {% extends 'posts/catalog_layout.html' %}
+{# Tag static jest potrzebny do dołączenia arkuszy stylów. #}
 {% load static %}
 
 {% block title %}Nowy post na forum{% endblock %}
@@ -7,18 +9,22 @@
 {% block forum_nav_class %}active{% endblock %}
 
 {% block extra_head %}
+    {# Ładowane są style ogólne katalogu i dodatkowe style forum. #}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
     <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
 {% endblock %}
 
 {% block content %}
+    {# Nagłówek tłumaczy, jakie dane trzeba wpisać w formularzu. #}
     <section class="content-shell catalog-form-shell forum-shell">
         <div class="catalog-form-header forum-header">
             <h1>Utwórz post na forum</h1>
             <p>Wybierz pozycję z katalogu, dodaj temat i opisz, o czym chcesz pogadać.</p>
         </div>
         <form class="form-with-validation forum-form" action="{% url 'forum:new-post' %}" method="post">
+            {# `csrf_token` zabezpiecza formularz przed atakami CSRF. #}
             {% csrf_token %}
+            {# Django samo renderuje pola zdefiniowane w formularzu `CreateForumPost`. #}
             {{ form }}
             <button class="form-submit" type="submit">Opublikuj na forum</button>
         </form>
