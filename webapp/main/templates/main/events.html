@@ -1,0 +1,107 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="content-shell mt-5 text-center">
+    <div class="catalog-form-header mb-4">
+        <h1>Nadchodzące Wydarzenia</h1>
+        <p>Najciekawsze premiery filmowe i growe w jednym miejscu.</p>
+        
+        <div class="d-flex justify-content-center gap-2 mt-4">
+            <button id="btn-m" class="form-submit m-0" onclick="pokaz('movies')">Filmy</button>
+            <button id="btn-g" class="btn-custom-outline text-white border-secondary" onclick="pokaz('games')">Gry</button>
+            <button id="btn-a" class="btn-custom-outline text-white border-secondary" onclick="pokaz('anime')">Anime</button>
+        </div>
+    </div>
+
+    <div id="movies-list" class="catalog-grid">
+        {% for m in movies %}
+        <article class="catalog-card">
+            <div class="catalog-card-image-wrap">
+                <img src="https://image.tmdb.org/t/p/w500{{ m.poster_path }}" class="catalog-card-image img-fluid w-100" style="height: 300px; object-fit: cover;">
+            </div>
+            <div class="catalog-card-body">
+                <span class="catalog-card-category">KINO • {{ m.release_date }}</span>
+                <h2 class="text-white">{{ m.title }}</h2>
+                <p class="small text-white-50">{{ m.overview|truncatewords:15 }}</p>
+            </div>
+        </article>
+        {% empty %}
+            <p class="text-white">Brak nadchodzących filmów.</p>
+        {% endfor %}
+    </div>
+
+    <div id="games-list" class="catalog-grid d-none">
+        {% for g in games %}
+        <article class="catalog-card">
+            <div class="catalog-card-image-wrap">
+                <img src="{{ g.background_image }}" class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+            </div>
+            <div class="catalog-card-body">
+                <span class="catalog-card-category">GRA • {{ g.released }}</span>
+                <h2 class="text-white">{{ g.name }}</h2>
+                <p class="small text-white-50">Ocena społeczności: {{ g.rating }}/5</p>
+            </div>
+        </article>
+        {% empty %}
+            <p class="text-white">Brak nadchodzących gier.</p>
+        {% endfor %}
+    </div>
+
+    <div id="anime-list" class="catalog-grid d-none">
+        {% for a in anime %}
+        <article class="catalog-card">
+            <div class="catalog-card-image-wrap">
+                <img src="{{ a.images.jpg.large_image_url }}" class="img-fluid w-100" style="height: 300px; object-fit: cover;">
+            </div>
+            <div class="catalog-card-body">
+                <span class="catalog-card-category">ANIME • {{ a.aired.from|slice:":10" }}</span>
+                <h2 class="text-white">{{ a.title }}</h2>
+                <p class="small text-white-50">{{ a.synopsis|truncatewords:15 }}</p>
+            </div>
+        </article>
+        {% empty %}
+            <p class="text-white">Brak nadchodzących anime.</p>
+        {% endfor %}
+    </div>
+
+</section>
+
+<script>
+function pokaz(typ) {
+    const filmy = document.getElementById('movies-list');
+    const gry = document.getElementById('games-list');
+    const anime = document.getElementById('anime-list');
+
+    const btnM = document.getElementById('btn-m');
+    const btnG = document.getElementById('btn-g');
+    const btnA = document.getElementById('btn-a');
+
+    filmy.classList.add('d-none');
+    gry.classList.add('d-none');
+    anime.classList.add('d-none');
+
+    btnM.className = 'btn-custom-outline text-white border-secondary';
+    btnG.className = 'btn-custom-outline text-white border-secondary';
+    btnA.className = 'btn-custom-outline text-white border-secondary';
+
+    if(typ === 'movies') {
+        filmy.classList.remove('d-none');
+        btnM.className = 'form-submit m-0'; 
+    } 
+    else if(typ === 'games') {
+        gry.classList.remove('d-none');
+        btnG.className = 'form-submit m-0';
+    } 
+    else if(typ === 'anime') {
+        anime.classList.remove('d-none');
+        btnA.className = 'form-submit m-0';
+    }
+}
+</script>
+{% endblock %}
