@@ -4,9 +4,11 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.db.models import Count
 from django.contrib import messages #to show message back for errors
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from katalog.models import Post
 from .forms import UserUpdateForm, ProfileUpdateForm
 from .models import Profile
 from django.contrib.auth import update_session_auth_hash
@@ -60,7 +62,36 @@ def community(request):
     return render(request, 'main/community.html')
 
 def recommendations(request):
-    return render(request, 'main/recommendations.html')
+    # Dla każdego wpisu liczymy osobno liczbę ulubionych i liczbę tematów na forum.
+    posts = list(
+        Post.objects.annotate(
+            favorites_count=Count("favorited_by", distinct=True),
+            forum_topics_count=Count("forum_posts", distinct=True),
+        )
+    )
+
+    for post in posts:
+        # Prosty wynik polecajki to suma dwóch aktywności społeczności.
+        post.recommendation_score = post.favorites_count + post.forum_topics_count
+
+    # Sortujemy od najwyższego wyniku i pokazujemy tylko kilka najmocniejszych propozycji.
+    recommended_posts = sorted(
+        posts,
+        key=lambda post: (
+            post.recommendation_score,
+            post.forum_topics_count,
+            post.favorites_count,
+            post.date,
+        ),
+        reverse=True,
+    )[:6]
+
+    # Do szablonu przekazujemy gotową listę wpisów do pokazania.
+    return render(
+        request,
+        'main/recommendations.html',
+        {'recommended_posts': recommended_posts},
+    )
 
 def clubs(request):
     return render(request, 'main/clubs.html')
