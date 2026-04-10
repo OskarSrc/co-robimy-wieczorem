@@ -50,6 +50,7 @@
             <div class="d-flex gap-2 align-items-center">
                 {% if request.user.is_authenticated %}
                     <a href="{% url 'profile_user' %}" class="btn-custom-outline text-decoration-none">Profil</a>
+                    <a href="{% url 'friends_list' %}" class="btn-custom-outline text-decoration-none">Znajomi</a>
                     <a href="{% url 'logout_user' %}" class="btn-custom-outline text-decoration-none">Wyloguj</a>
                 {% else %}
                     <a href="{% url 'login_user' %}" class="btn-custom-outline text-decoration-none">Zaloguj</a>
