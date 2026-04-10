@@ -1,0 +1,118 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}Znajomi{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="content-shell friends-shell mt-5">
+    <div class="catalog-form-header mb-4">
+        <h1>Znajomi</h1>
+        <p>Dodawaj znajomych, akceptuj zaproszenia i rozwijaj swoją sieć użytkowników.</p>
+    </div>
+
+    <div class="friends-glass-card p-4">
+        <div class="row gx-4 gy-4 friends-page-row">
+            <div class="col-12 col-lg-6">
+                <h3 class="section-title">Twoi znajomi</h3>
+                {% if friends %}
+                    <ul class="list-group list-group-flush friends-list">
+                        {% for friend in friends %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ friend.user.username }}</span>
+                                <form method="POST" action="{% url 'remove_friend' friend.user.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-custom-outline btn-sm">Usuń</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-white-50 friends-card-note">Nie masz jeszcze żadnych znajomych.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <h3 class="section-title">Otrzymane zaproszenia</h3>
+                {% if incoming_requests %}
+                    <ul class="list-group list-group-flush friends-list">
+                        {% for request in incoming_requests %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ request.from_user.username }}</span>
+                                <div class="d-flex gap-2">
+                                    <form method="POST" action="{% url 'accept_friend_request' request.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="form-submit btn-sm">Akceptuj</button>
+                                    </form>
+                                    <form method="POST" action="{% url 'decline_friend_request' request.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-custom-outline btn-sm">Odrzuć</button>
+                                    </form>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-white-50 friends-card-note">Brak nowych zaproszeń.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <h3 class="section-title">Wysłane zaproszenia</h3>
+                {% if outgoing_requests %}
+                    <ul class="list-group list-group-flush friends-list">
+                        {% for request in outgoing_requests %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ request.to_user.username }}</span>
+                                <form method="POST" action="{% url 'cancel_friend_request' request.to_user.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-custom-outline btn-sm">Anuluj</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-white-50 friends-card-note">Nie wysłałeś żadnych zaproszeń.</p>
+                {% endif %}
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <h3 class="section-title">Znajdź nowych znajomych</h3>
+                <form method="GET" class="mb-3 search-friends-form">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ search_query }}"
+                            placeholder="Szukaj użytkownika..."
+                            class="form-control bg-transparent text-white border-secondary"
+                        />
+                        <button type="submit" class="btn btn-custom-solid">
+                            Szukaj
+                        </button>
+                    </div>
+                </form>
+                {% if suggested_users %}
+                    <ul class="list-group list-group-flush friends-list friends-suggested-list">
+                        {% for user in suggested_users %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ user.username }}</span>
+                                <form method="POST" action="{% url 'send_friend_request' user.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-custom-outline btn-sm">Dodaj</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-white-50 friends-card-note">Brak dostępnych użytkowników do zaproszenia.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

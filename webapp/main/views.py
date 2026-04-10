@@ -1,16 +1,15 @@
 # Plik do definiowania widoków, które są renderowane za pomocą szablonizatora Jinja oraz wyświetlane w przeglądarce
 
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db.models import Count
 from django.contrib import messages #to show message back for errors
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from katalog.models import Post
 from .forms import UserUpdateForm, ProfileUpdateForm
-from .models import Profile
+from .models import FriendRequest, Profile
 from django.contrib.auth import update_session_auth_hash
 from .forms import CustomPasswordChangeForm
 import requests
@@ -21,6 +20,11 @@ tmdb_key = os.getenv('TMDB_API_KEY', '66e04b4f6358d30ea3723852498abc1f')
 rawg_key = os.getenv('RAWG_API_KEY', 'dd42fbb3cb5a4e179856baa0b34521e1')
 
 # Create your views here.
+
+def get_profile(user):
+    profile, _ = Profile.objects.get_or_create(user=user)
+    return profile
+
 def index(request):
     return render(request, 'main/index.html')
 
@@ -140,6 +144,90 @@ def logout_user(request):
     logout(request)
      
     return redirect('home')
+
+@login_required
+def friends_list(request):
+    profile = get_profile(request.user)
+    friends = profile.friends.all()
+    incoming_requests = FriendRequest.objects.filter(to_user=request.user)
+    outgoing_requests = FriendRequest.objects.filter(from_user=request.user)
+    friend_ids = set(friends.values_list('user_id', flat=True))
+    incoming_ids = set(incoming_requests.values_list('from_user_id', flat=True))
+    outgoing_ids = set(outgoing_requests.values_list('to_user_id', flat=True))
+    suggested_users = User.objects.exclude(pk=request.user.pk).exclude(pk__in=friend_ids).exclude(pk__in=incoming_ids).exclude(pk__in=outgoing_ids).order_by('username')
+
+    query = request.GET.get('q', '').strip()
+    if query:
+        suggested_users = suggested_users.filter(username__icontains=query)
+
+    return render(request, 'main/users/friends.html', {
+        'friends': friends,
+        'incoming_requests': incoming_requests,
+        'outgoing_requests': outgoing_requests,
+        'suggested_users': suggested_users,
+        'search_query': query,
+    })
+
+@login_required
+def send_friend_request(request, user_id):
+    if request.method != 'POST':
+        return redirect('friends_list')
+
+    target_user = get_object_or_404(User, pk=user_id)
+    if target_user == request.user:
+        return redirect('friends_list')
+
+    sender_profile = get_profile(request.user)
+    receiver_profile = get_profile(target_user)
+
+    if receiver_profile in sender_profile.friends.all():
+        return redirect('friends_list')
+
+    existing_request = FriendRequest.objects.filter(from_user=target_user, to_user=request.user).first()
+    if existing_request:
+        existing_request.accept()
+        return redirect('friends_list')
+
+    FriendRequest.objects.get_or_create(from_user=request.user, to_user=target_user)
+    return redirect('friends_list')
+
+@login_required
+def cancel_friend_request(request, user_id):
+    if request.method != 'POST':
+        return redirect('friends_list')
+
+    target_user = get_object_or_404(User, pk=user_id)
+    FriendRequest.objects.filter(from_user=request.user, to_user=target_user).delete()
+    return redirect('friends_list')
+
+@login_required
+def accept_friend_request(request, request_id):
+    if request.method != 'POST':
+        return redirect('friends_list')
+
+    friend_request = get_object_or_404(FriendRequest, pk=request_id, to_user=request.user)
+    friend_request.accept()
+    return redirect('friends_list')
+
+@login_required
+def decline_friend_request(request, request_id):
+    if request.method != 'POST':
+        return redirect('friends_list')
+
+    friend_request = get_object_or_404(FriendRequest, pk=request_id, to_user=request.user)
+    friend_request.delete()
+    return redirect('friends_list')
+
+@login_required
+def remove_friend(request, user_id):
+    if request.method != 'POST':
+        return redirect('friends_list')
+
+    target_user = get_object_or_404(User, pk=user_id)
+    profile = get_profile(request.user)
+    target_profile = get_profile(target_user)
+    profile.friends.remove(target_profile)
+    return redirect('friends_list')
 
 @login_required
 def profile_user(request):
