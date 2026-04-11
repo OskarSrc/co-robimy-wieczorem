@@ -1,0 +1,145 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}Pokoje głosowań - Co Robimy Wieczorem?{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/voting_rooms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="section-spacing voting-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-xl-7">
+                    <span class="voting-eyebrow">Wspólne wybieranie bez przeciągania decyzji</span>
+                    <h1 class="display-3 fw-bold mb-4">Pokoje głosowań</h1>
+                    <p class="lead voting-lead">
+                        Załóż prywatny pokój dla swojej ekipy, wybierz kilka pozycji z katalogu i zbierz głosy w jednym miejscu.
+                        Pokój zakończy się po czasie albo od razu po oddaniu wszystkich głosów.
+                    </p>
+
+                    <div class="voting-actions d-flex flex-wrap gap-3">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'voting_room_new' %}" class="btn-custom-solid text-decoration-none">Utwórz pokój</a>
+                            <a href="{% url 'friends_list' %}" class="btn-custom-outline text-decoration-none">Zarządzaj znajomymi</a>
+                        {% else %}
+                            <a href="{% url 'register_user' %}" class="btn-custom-solid text-decoration-none">Załóż konto</a>
+                            <a href="{% url 'login_user' %}" class="btn-custom-outline text-decoration-none">Zaloguj się</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-spacing pt-0">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-10">
+                    <div class="voting-panel">
+                        <div class="voting-panel__header">
+                            <h2>Twoje pokoje</h2>
+                            <p>Tutaj wrócisz do aktywnych głosowań i sprawdzisz zakończone pokoje.</p>
+                        </div>
+
+                        {% if request.user.is_authenticated %}
+                            {% if active_rooms %}
+                                <div class="room-list-section">
+                                    <h3 class="room-list-title">Aktywne</h3>
+                                    <div class="room-list">
+                                        {% for room in active_rooms %}
+                                            <article class="room-list-card">
+                                                <div class="room-list-card__top">
+                                                    <div>
+                                                        <p class="room-list-card__eyebrow">Pokój głosowania</p>
+                                                        <h3>{{ room.name }}</h3>
+                                                    </div>
+                                                    <span class="room-list-card__status">{{ room.status_text }}</span>
+                                                </div>
+                                                <p class="room-list-card__meta">
+                                                    Uczestnicy: {{ room.participants_total }} • Pozycje: {{ room.items_total }} • Głosy: {{ room.votes_total }}/{{ room.participants_total }}
+                                                </p>
+                                                <a href="{% url 'voting_room_detail' room.id %}" class="btn-custom-outline text-decoration-none">Wejdź do pokoju</a>
+                                            </article>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if finished_rooms %}
+                                <div class="room-list-section {% if active_rooms %}mt-4{% endif %}">
+                                    <h3 class="room-list-title">Zakończone</h3>
+                                    <div class="room-list">
+                                        {% for room in finished_rooms %}
+                                            <article class="room-list-card room-list-card--finished">
+                                                <div class="room-list-card__top">
+                                                    <div>
+                                                        <p class="room-list-card__eyebrow">Pokój głosowania</p>
+                                                        <h3>{{ room.name }}</h3>
+                                                    </div>
+                                                    <span class="room-list-card__status">{{ room.status_text }}</span>
+                                                </div>
+                                                <p class="room-list-card__meta">
+                                                    Uczestnicy: {{ room.participants_total }} • Pozycje: {{ room.items_total }} • Oddane głosy: {{ room.votes_total }}
+                                                </p>
+                                                <a href="{% url 'voting_room_detail' room.id %}" class="btn-custom-outline text-decoration-none">Zobacz wynik</a>
+                                            </article>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if not active_rooms and not finished_rooms %}
+                                <div class="empty-room-state">
+                                    <h3>Nie masz jeszcze żadnego pokoju</h3>
+                                    <p>Utwórz pierwszy pokój przyciskiem u góry i zaproś znajomych do wspólnego głosowania.</p>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="empty-room-state">
+                                <h3>Pokoje pojawią się po zalogowaniu</h3>
+                                <p>Po zalogowaniu zobaczysz tutaj listę aktywnych i zakończonych głosowań.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-spacing pt-0">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Jak to działa</h2>
+                <p class="voting-section-copy">
+                    Cały mechanizm jest prosty: jedna grupa, jedna lista propozycji i jeden głos od każdej osoby.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="my-box voting-step h-100">
+                        <span class="voting-step__number">01</span>
+                        <h3>Zakładasz pokój</h3>
+                        <p>Nadajesz nazwę, wybierasz czas trwania i zapraszasz znajomych z własnej listy kontaktów.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="my-box voting-step h-100">
+                        <span class="voting-step__number">02</span>
+                        <h3>Dodajesz propozycje</h3>
+                        <p>Pokój dostaje zestaw pozycji z katalogu, więc wszyscy głosują dokładnie na te same opcje.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="my-box voting-step h-100">
+                        <span class="voting-step__number">03</span>
+                        <h3>Zbierasz wynik</h3>
+                        <p>Pokój zamyka się sam, gdy minie czas albo kiedy ostatnia osoba odda swój głos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

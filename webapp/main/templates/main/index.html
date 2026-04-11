@@ -53,12 +53,14 @@
                 <div class="col-md-6">
                     <h2 class="display-5">Pokoje Głosowań</h2>
                     <p>Twórz własne profile, dodawaj znajomych i organizuj szybkie głosowania w prywatnych pokojach.</p>
-                    <button class="btn-custom-solid">Zobacz jak to działa</button>
+                    <a href="{% url 'voting_rooms' %}" class="btn-custom-solid text-decoration-none">Zobacz jak to działa</a>
                 </div>
                 <div class="col-md-6">
-                    <div class="my-box box-orange">
-                        <p class="text-center m-0">Podgląd systemu głosowania</p>
-                    </div>
+                    <a href="{% url 'voting_rooms' %}" class="home-card-link text-decoration-none d-block">
+                        <div class="my-box box-orange">
+                            <p class="text-center m-0">Podgląd systemu głosowania</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

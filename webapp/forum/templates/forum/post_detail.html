@@ -1,12 +1,11 @@
 {# Ten widok pokazuje szczegóły jednego wybranego posta forum. #}
-{% extends 'posts/catalog_layout.html' %}
+{% extends 'main/layout/base.html' %}
 {# Ładowanie tagu static jest potrzebne do dołączenia stylów CSS. #}
 {% load static %}
 
 {% block title %}{{ post.subject }}{% endblock %}
 
-{% block katalog_nav_class %}{% endblock %}
-{% block forum_nav_class %}active{% endblock %}
+{% block community_nav_class %}active{% endblock %}
 
 {% block extra_head %}
     {# Podpinamy te same style bazowe i forumowe co na innych stronach forum. #}

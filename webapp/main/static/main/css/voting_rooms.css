@@ -1,0 +1,385 @@
+.voting-hero {
+    padding-top: 96px;
+}
+
+.voting-hero--detail {
+    min-height: auto;
+}
+
+.voting-eyebrow {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+}
+
+.voting-lead,
+.voting-panel__header p,
+.room-detail-copy,
+.empty-room-state p,
+.picker-empty,
+.voting-section-copy,
+.voting-step p {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.room-preview,
+.voting-panel {
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 28px;
+    background:
+        linear-gradient(145deg, rgba(78, 84, 200, 0.16), rgba(255, 255, 255, 0.04)),
+        rgba(8, 8, 12, 0.88);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(12px);
+}
+
+.voting-panel--detail {
+    padding-bottom: 28px;
+}
+
+.voting-panel__header {
+    margin-bottom: 24px;
+}
+
+.voting-panel__header h2,
+.picker-block__top h3,
+.room-list-card h3,
+.vote-option-card h3,
+.result-card h3,
+.empty-room-state h3 {
+    margin-bottom: 10px;
+}
+
+.room-preview__top,
+.room-list-card__top,
+.room-detail-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.room-preview__label,
+.room-list-card__eyebrow,
+.room-preview__item-label,
+.choice-card__type,
+.back-link {
+    color: rgba(255, 255, 255, 0.62);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+}
+
+.room-preview__badge,
+.room-list-card__status {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(129, 140, 248, 0.35);
+    color: #d7dcff;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.room-preview__panel,
+.room-detail-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin: 24px 0;
+}
+
+.room-detail-meta {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 0;
+}
+
+.room-preview__item,
+.member-pill,
+.picker-card,
+.room-list-card,
+.participant-card,
+.vote-option-card,
+.result-card,
+.room-detail-meta__card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.room-preview__item,
+.room-detail-meta__card {
+    padding: 18px;
+}
+
+.room-preview__members,
+.room-list,
+.participant-list,
+.result-list {
+    display: grid;
+    gap: 12px;
+}
+
+.member-pill,
+.participant-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+}
+
+.member-pill__avatar,
+.participant-card__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(129, 140, 248, 0.9), rgba(236, 72, 153, 0.75));
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.member-pill strong,
+.choice-card strong,
+.participant-card strong {
+    display: block;
+}
+
+.member-pill span:last-child,
+.participant-card span,
+.room-list-card__meta,
+.vote-option-card p,
+.result-card p,
+.picker-block__top span {
+    color: rgba(255, 255, 255, 0.66);
+}
+
+.room-preview__choices {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.choice-card {
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.picker-block__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.picker-list,
+.vote-options {
+    display: grid;
+    gap: 12px;
+}
+
+.picker-list {
+    max-height: 240px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.picker-list--posts {
+    max-height: 320px;
+}
+
+.picker-card,
+.vote-option-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    transition: border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+    cursor: pointer;
+}
+
+.picker-card:hover,
+.vote-option-card--selectable:hover,
+.room-list-card:hover {
+    border-color: rgba(129, 140, 248, 0.35);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+}
+
+.picker-card input,
+.vote-option-card input {
+    margin-top: 4px;
+    accent-color: #818cf8;
+}
+
+.picker-card span {
+    display: block;
+    font-weight: 500;
+}
+
+.picker-empty {
+    margin: 0;
+    padding: 18px;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+}
+
+.picker-empty a,
+.back-link:hover {
+    color: #ffffff;
+}
+
+.empty-room-state {
+    padding: 22px;
+    border: 1px dashed rgba(255, 255, 255, 0.16);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.room-list-title {
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.9rem;
+}
+
+.room-list-card {
+    padding: 20px;
+}
+
+.room-list-card--finished {
+    opacity: 0.88;
+}
+
+.room-list-card__meta {
+    margin: 14px 0 18px;
+}
+
+.form-label {
+    color: #f5f5f7;
+}
+
+.form-control,
+.form-select {
+    background: rgba(255, 255, 255, 0.04) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.form-select option {
+    background: #f5f5f7;
+    color: #111111;
+}
+
+.form-error {
+    margin: 8px 0 0;
+    color: #ff9b9b;
+    font-size: 0.92rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-link i {
+    font-size: 0.85rem;
+}
+
+.room-detail-copy {
+    margin: 10px 0 24px;
+}
+
+.room-detail-meta__card span {
+    display: block;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.room-detail-meta__card strong,
+.vote-option-card__score strong {
+    font-size: 1.35rem;
+}
+
+.vote-option-card {
+    justify-content: space-between;
+}
+
+.vote-option-card--winner {
+    border-color: rgba(74, 222, 128, 0.35);
+    background: rgba(74, 222, 128, 0.08);
+}
+
+.vote-option-card__score {
+    min-width: 92px;
+    text-align: right;
+}
+
+.result-card {
+    padding: 18px;
+}
+
+.voting-section-copy {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.voting-step__number {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: rgba(129, 140, 248, 0.95);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+@media (max-width: 991.98px) {
+    .voting-hero {
+        padding-top: 72px;
+    }
+
+    .room-preview__choices,
+    .room-preview__panel,
+    .room-detail-meta {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .room-preview,
+    .voting-panel {
+        padding: 24px;
+    }
+
+    .room-preview__top,
+    .room-list-card__top,
+    .room-detail-heading,
+    .picker-block__top,
+    .vote-option-card {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .vote-option-card__score {
+        text-align: left;
+        min-width: auto;
+    }
+}

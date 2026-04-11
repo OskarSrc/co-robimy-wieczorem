@@ -1,9 +1,7 @@
-{% extends 'posts/catalog_layout.html' %}
+{% extends 'main/layout/base.html' %}
 {% load static %}
 
-{% block title %}
-    {{ post.title }}
-{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">

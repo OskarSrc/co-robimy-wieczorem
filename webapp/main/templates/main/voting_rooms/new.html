@@ -1,0 +1,97 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}Nowy pokój głosowań - Co Robimy Wieczorem?{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/voting_rooms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="section-spacing voting-hero voting-hero--detail">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-9">
+                    <a href="{% url 'voting_rooms' %}" class="back-link text-decoration-none">
+                        <i class="fa-solid fa-arrow-left"></i> Wróć do pokoi
+                    </a>
+
+                    <div class="voting-panel mt-4">
+                        <div class="voting-panel__header">
+                            <h1 class="display-6 fw-bold">Utwórz pokój</h1>
+                            <p>Wybierz znajomych, ustaw czas i dorzuć pozycje z katalogu do wspólnego głosowania.</p>
+                        </div>
+
+                        <form method="POST" class="room-builder-form">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="{{ room_form.name.id_for_label }}" class="form-label">Nazwa pokoju</label>
+                                {{ room_form.name }}
+                                {% for error in room_form.name.errors %}
+                                    <p class="form-error">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="{{ room_form.duration_minutes.id_for_label }}" class="form-label">Czas trwania</label>
+                                {{ room_form.duration_minutes }}
+                                {% for error in room_form.duration_minutes.errors %}
+                                    <p class="form-error">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+
+                            <div class="picker-block mb-4">
+                                <div class="picker-block__top">
+                                    <h3>Znajomi do pokoju</h3>
+                                    <span>Wybierz przynajmniej 1 osobę</span>
+                                </div>
+                                <div class="picker-list">
+                                    {% for checkbox in room_form.friends %}
+                                        <label class="picker-card">
+                                            {{ checkbox.tag }}
+                                            <span>{{ checkbox.choice_label }}</span>
+                                        </label>
+                                    {% empty %}
+                                        <p class="picker-empty">
+                                            Nie masz jeszcze znajomych do zaproszenia.
+                                            <a href="{% url 'friends_list' %}">Przejdź do listy znajomych</a>.
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                                {% for error in room_form.friends.errors %}
+                                    <p class="form-error">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+
+                            <div class="picker-block mb-4">
+                                <div class="picker-block__top">
+                                    <h3>Pozycje z katalogu</h3>
+                                    <span>Wybierz przynajmniej 2 propozycje</span>
+                                </div>
+                                <div class="picker-list picker-list--posts">
+                                    {% for checkbox in room_form.posts %}
+                                        <label class="picker-card">
+                                            {{ checkbox.tag }}
+                                            <span>{{ checkbox.choice_label }}</span>
+                                        </label>
+                                    {% empty %}
+                                        <p class="picker-empty">
+                                            Katalog jest jeszcze pusty.
+                                            <a href="{% url 'posts:new-post' %}">Dodaj pierwszą pozycję</a>.
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                                {% for error in room_form.posts.errors %}
+                                    <p class="form-error">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn-custom-solid">Utwórz pokój</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

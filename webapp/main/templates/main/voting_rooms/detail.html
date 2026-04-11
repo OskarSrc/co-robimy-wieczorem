@@ -1,0 +1,185 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}{{ room.name }} - Pokój głosowań{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/voting_rooms.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="section-spacing voting-hero voting-hero--detail">
+        <div class="container">
+            <a href="{% url 'voting_rooms' %}" class="back-link text-decoration-none">
+                <i class="fa-solid fa-arrow-left"></i> Wróć do pokoi
+            </a>
+
+            <div class="row g-4 mt-2 align-items-start">
+                <div class="col-xl-7">
+                    <div class="voting-panel voting-panel--detail">
+                        <div class="room-detail-heading">
+                            <div>
+                                <p class="room-preview__label">Pokój głosowania</p>
+                                <h1 class="display-5 fw-bold mb-3">{{ room.name }}</h1>
+                            </div>
+                            <span class="room-list-card__status">{{ room_status_text }}</span>
+                        </div>
+
+                        <p class="room-detail-copy">
+                            Założył: <strong>{{ room.creator.username }}</strong> •
+                            Utworzono: {{ room.created_at|date:"d.m.Y H:i" }} •
+                            Koniec: {{ room.closes_at|date:"d.m.Y H:i" }}
+                        </p>
+
+                        <div class="room-detail-meta">
+                            <div class="room-detail-meta__card">
+                                <span>Uczestnicy</span>
+                                <strong>{{ participants_total }}</strong>
+                            </div>
+                            <div class="room-detail-meta__card">
+                                <span>Oddane głosy</span>
+                                <strong>{{ votes_total }}</strong>
+                            </div>
+                            <div class="room-detail-meta__card">
+                                <span>Brakuje</span>
+                                <strong>{{ remaining_votes }}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="voting-panel mt-4">
+                        <div class="voting-panel__header">
+                            <h2>Pozycje do głosowania</h2>
+                            {% if room_finished %}
+                                <p>Pokój jest już zamknięty, więc poniżej widać finalny wynik głosowania.</p>
+                            {% elif current_vote %}
+                                <p>Twój głos jest zapisany, ale dopóki pokój trwa, możesz go jeszcze zmienić.</p>
+                            {% else %}
+                                <p>Wybierz jedną pozycję i zapisz swój głos.</p>
+                            {% endif %}
+                        </div>
+
+                        {% if vote_form.room_item.errors %}
+                            {% for error in vote_form.room_item.errors %}
+                                <p class="form-error">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if room_items %}
+                            {% if room_finished %}
+                                <div class="vote-options">
+                                    {% for room_item in room_items %}
+                                        <article class="vote-option-card {% if room_item.is_winner %}vote-option-card--winner{% endif %}">
+                                            <div>
+                                                <span class="choice-card__type">{{ room_item.post.get_category_display }}</span>
+                                                <h3>{{ room_item.post.title }}</h3>
+                                                <p>{{ room_item.post.body|truncatechars:120 }}</p>
+                                            </div>
+                                            <div class="vote-option-card__score">
+                                                <strong>{{ room_item.votes_total }}</strong>
+                                                <span>głosów</span>
+                                            </div>
+                                        </article>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <form method="POST" action="{% url 'submit_room_vote' room.id %}">
+                                    {% csrf_token %}
+                                    <div class="vote-options">
+                                        {% for room_item in room_items %}
+                                            <label class="vote-option-card vote-option-card--selectable">
+                                                <input
+                                                    type="radio"
+                                                    name="room_item"
+                                                    value="{{ room_item.id }}"
+                                                    {% if current_vote and current_vote.room_item_id == room_item.id %}checked{% endif %}
+                                                >
+                                                <div>
+                                                    <span class="choice-card__type">{{ room_item.post.get_category_display }}</span>
+                                                    <h3>{{ room_item.post.title }}</h3>
+                                                    <p>{{ room_item.post.body|truncatechars:120 }}</p>
+                                                </div>
+                                                <div class="vote-option-card__score">
+                                                    <strong>{{ room_item.votes_total }}</strong>
+                                                    <span>głosów teraz</span>
+                                                </div>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                    <button type="submit" class="btn-custom-solid mt-4">
+                                        {% if current_vote %}Zapisz zmianę głosu{% else %}Oddaj głos{% endif %}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-xl-5">
+                    <div class="voting-panel">
+                        <div class="voting-panel__header">
+                            <h2>Uczestnicy pokoju</h2>
+                            <p>Na bieżąco widać, kto już zagłosował, a kto jeszcze czeka.</p>
+                        </div>
+
+                        <div class="participant-list">
+                            {% for participant in participants %}
+                                <div class="participant-card">
+                                    <div class="participant-card__avatar">{{ participant.username|slice:":1"|upper }}</div>
+                                    <div>
+                                        <strong>{{ participant.username }}</strong>
+                                        {% if participant.current_vote %}
+                                            <span>
+                                                głos oddany
+                                                {% if room_finished %}
+                                                    • {{ participant.current_vote.room_item.post.title }}
+                                                {% endif %}
+                                            </span>
+                                        {% else %}
+                                            <span>jeszcze bez głosu</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="voting-panel mt-4">
+                        <div class="voting-panel__header">
+                            <h2>Wynik</h2>
+                            {% if room_finished %}
+                                <p>Pokój został zamknięty. Poniżej masz zwycięską propozycję albo remis.</p>
+                            {% else %}
+                                <p>Pokój nadal trwa. Wynik końcowy pojawi się po czasie albo po komplecie głosów.</p>
+                            {% endif %}
+                        </div>
+
+                        {% if room_finished %}
+                            {% if winning_items %}
+                                <div class="result-list">
+                                    {% for winning_item in winning_items %}
+                                        <div class="result-card">
+                                            <span class="choice-card__type">{{ winning_item.post.get_category_display }}</span>
+                                            <h3>{{ winning_item.post.title }}</h3>
+                                            <p>{{ winning_item.votes_total }} głosów</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="empty-room-state">
+                                    <h3>Brak oddanych głosów</h3>
+                                    <p>Nikt nie zdążył zagłosować przed zakończeniem pokoju.</p>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="empty-room-state">
+                                <h3>Pokój jeszcze działa</h3>
+                                <p>Po zamknięciu pokoju tutaj pojawi się finalny wynik głosowania.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

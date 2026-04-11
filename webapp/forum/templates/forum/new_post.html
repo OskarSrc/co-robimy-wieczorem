@@ -1,12 +1,11 @@
-{# Szablon formularza dziedziczy wspólny układ z katalogu. #}
-{% extends 'posts/catalog_layout.html' %}
+{# Szablon formularza dziedziczy wspólny układ. #}
+{% extends 'main/layout/base.html' %}
 {# Tag static jest potrzebny do dołączenia arkuszy stylów. #}
 {% load static %}
 
 {% block title %}Nowy post na forum{% endblock %}
 
-{% block katalog_nav_class %}{% endblock %}
-{% block forum_nav_class %}active{% endblock %}
+{% block community_nav_class %}active{% endblock %}
 
 {% block extra_head %}
     {# Ładowane są style ogólne katalogu i dodatkowe style forum. #}
