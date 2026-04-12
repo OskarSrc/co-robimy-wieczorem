@@ -1,9 +1,7 @@
-{% extends 'posts/catalog_layout.html' %}
+{% extends 'main/layout/base.html' %}
 {% load static %}
 
-{% block title %}
-   {{ page_title|default:"Dodaj do katalogu" }}
-{% endblock %}
+{% block title %}{{ page_title|default:"Dodaj do katalogu" }}{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">

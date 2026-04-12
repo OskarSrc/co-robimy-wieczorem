@@ -62,8 +62,6 @@ class CreatePost(forms.ModelForm):
         # Krótkie podpowiedzi pomagają zrozumieć mniej oczywiste pola.
         help_texts = {
             "tagi": "Wybierz jeden prosty tag tematyczny.",
-            "podtag_anime": "To pole pojawia sie przy tagu Anime.",
-            "cena": "To pole najbardziej przydaje sie przy aktywnosciach.",
         }
         # Widgety kontrolują sposób renderowania pól w HTML.
         widgets = {
