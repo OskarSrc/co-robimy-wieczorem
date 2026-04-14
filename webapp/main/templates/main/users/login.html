@@ -18,14 +18,13 @@
         </div>
 
          {% if messages %}
-         <div class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-danger" role="alert">
+         {% for message in messages %}
+         <div class="alert {% if message.level == 40 %}alert-danger bg-danger bg-opacity-10 border border-danger text-danger{% else %}alert-success bg-success bg-opacity-10 border border-success text-success{% endif %}" role="alert">
            <ul class="mb-0 px-3">
-             {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-             {% endfor %}
+             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
            </ul>
          </div>
-         
+         {% endfor %}
          {% endif %}
          <form method="POST" action="/login" class="form-with-validation bg-transparent border-0 p-0 m-0 shadow-none">
              {% csrf_token %}

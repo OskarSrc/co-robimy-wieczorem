@@ -1,0 +1,102 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}{{ club.name }} - Co Robimy Wieczorem?{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell">
+        <div class="catalog-detail-card">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <h1 class="display-4 fw-bold" style="color: {{ club.color }};">
+                    {{ club.name }} {{ club.icon }}
+                </h1>
+                {% if user.is_superuser %}
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'admin:main_club_change' club.id %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="fa-solid fa-edit"></i> Edytuj
+                        </a>
+                        <a href="{% url 'admin:main_club_delete' club.id %}" class="btn btn-sm btn-outline-danger">
+                            <i class="fa-solid fa-trash"></i> Usuń
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <p class="lead text-white mb-5" style="color: #ffffff !important;">{{ club.description }}</p>
+
+            {% if user.is_authenticated %}
+                <div class="mb-5">
+                    {% if user.profile.club.id == club.id %}
+                        <a href="{% url 'leave_club' club.id %}" class="btn btn-outline-danger" onclick="return confirm('Na pewno chcesz opuścić ten klub?');">
+                            <i class="fa-solid fa-door-open"></i> Opuść klub
+                        </a>
+                    {% else %}
+                        <a href="{% url 'join_club' club.id %}" class="btn-custom-solid text-decoration-none">
+                            <i class="fa-solid fa-plus"></i> Dołącz do klubu
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="catalog-layout">
+                <aside class="catalog-sidebar">
+                    <div class="catalog-panel">
+                        <h3 class="mb-4">Członkowie ({{ members.count }})</h3>
+                        {% if members %}
+                            <div class="friends-list">
+                                {% for member in members %}
+                                    <div class="friends-list">
+                                        <a href="{% url 'profile_user' %}" class="text-white text-decoration-none">
+                                            {{ member.user.username }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-white-50 small">Brak członków</p>
+                        {% endif %}
+                    </div>
+                </aside>
+
+                <main>
+                    <div class="catalog-panel">
+                        <h3 class="mb-4">Pozycje w klubie</h3>
+                        {% if posts %}
+                            <div class="catalog-grid">
+                                {% for post in posts %}
+                                    <a href="{% url 'posts:page' slug=post.slug %}" class="text-decoration-none">
+                                        <article class="catalog-card">
+                                            <div class="catalog-card-image-wrap">
+                                                {% if post.banner %}
+                                                    <img src="{{ post.banner.url }}" class="w-100" alt="{{ post.title }}">
+                                                {% else %}
+                                                    <div style="width: 100%; height: 200px; background: rgba(99, 102, 241, 0.2); display: flex; align-items: center; justify-content: center;">
+                                                        <i class="fa-solid fa-image text-white-50 fa-3x"></i>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="catalog-card-body">
+                                                <p class="catalog-card-category">{{ post.get_category_display }}</p>
+                                                <h2>{{ post.title }}</h2>
+                                                <p class="text-white-50 small">{{ post.body|truncatechars:100 }}</p>
+                                            </div>
+                                        </article>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-white-50">Brak pozycji w tym klubie</p>
+                        {% endif %}
+                    </div>
+                </main>
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="{% url 'clubs' %}" class="btn-custom-solid text-decoration-none">Wróć do klubów</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

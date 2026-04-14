@@ -47,7 +47,7 @@
                             </h2>
                             {# `truncatechars` skraca długą treść, żeby lista była czytelna. #}
                             <p>{{ post.body|truncatechars:160 }}</p>
-                            <p class="forum-card-meta">Dodano przez {{ post.author }} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
+                            <p class="forum-card-meta">Dodano przez {% if post.author.profile.club %}<span style="color: {{ post.author.profile.club.color }};">{{ post.author.username }} {{ post.author.profile.club.icon }}</span>{% else %}{{ post.author.username }}{% endif %} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
                         </div>
                     </article>
                 {% empty %}

@@ -1,0 +1,33 @@
+{% extends 'main/layout/base.html' %}
+{% load static %}
+
+{% block title %}Zmiana klubu - Co Robimy Wieczorem?{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell">
+        <div class="catalog-detail-card" style="max-width: 600px; margin: 0 auto;">
+            <h1 class="display-4 fw-bold mb-4">Zmiana klubu</h1>
+            
+            <div class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-danger" role="alert">
+                <p class="mb-3">Jesteś już członkiem klubu <strong style="color: {{ old_club.color }};">{{ old_club.name }} {{ old_club.icon }}</strong></p>
+                <p class="mb-0">Czy chcesz opuścić ten klub i dołączyć do <strong style="color: {{ new_club.color }};">{{ new_club.name }} {{ new_club.icon }}</strong>?</p>
+            </div>
+
+            <form method="POST" class="d-flex gap-3 justify-content-center mt-5">
+                {% csrf_token %}
+                
+                <button type="submit" name="confirm" value="yes" class="btn-custom-solid text-decoration-none">
+                    Tak, zmień klub
+                </button>
+                
+                <a href="{% url 'club_detail' old_club.id %}" class="btn btn-outline-secondary text-decoration-none">
+                    Anuluj
+                </a>
+            </form>
+        </div>
+    </section>
+{% endblock %}
