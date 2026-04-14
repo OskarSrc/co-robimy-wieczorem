@@ -24,3 +24,22 @@ class ForumPost(models.Model):
     def __str__(self):
         # Czytelny podpis obiektu przydaje się w panelu admina i debugowaniu.
         return f"{self.subject} ({self.catalog_post.title})"
+
+
+class ForumReply(models.Model):
+    # Odpowiedź jest przypisana do konkretnego posta forum
+    post = models.ForeignKey(ForumPost, on_delete=models.CASCADE, related_name='replies')
+    # Treść odpowiedzi
+    body = models.TextField()
+    # Autor odpowiedzi
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='forum_replies')
+    # Data dodania
+    created_at = models.DateTimeField(auto_now_add=True)
+    # Data ostatniej edycji
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"Odpowiedź {self.author.username} do {self.post.subject}"

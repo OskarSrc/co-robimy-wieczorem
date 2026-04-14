@@ -3,8 +3,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from katalog.models import Post
 
-from .forms import CreateForumPost
-from .models import ForumPost
+from .forms import CreateForumPost, EditForumPost, CreateForumReply, EditForumReply
+from .models import ForumPost, ForumReply
 
 
 # Widok główny pobiera wszystkie tematy forum i wyświetla je na liście.
@@ -21,7 +21,11 @@ def post_detail(request, post_id):
         ForumPost.objects.select_related("catalog_post", "author"),
         pk=post_id,
     )
-    return render(request, 'forum/post_detail.html', {'post': post})
+    
+    # Formularz dla nowej odpowiedzi
+    reply_form = CreateForumReply() if request.user.is_authenticated else None
+    
+    return render(request, 'forum/post_detail.html', {'post': post, 'reply_form': reply_form})
 
 
 @login_required(login_url="/login")
@@ -66,3 +70,65 @@ def post_delete(request, post_id):
 
     post.delete()
     return redirect('forum:index')
+
+
+@login_required(login_url="/login")
+def post_edit(request, post_id):
+    # Edytować może tylko autor posta
+    post = get_object_or_404(ForumPost, pk=post_id, author=request.user)
+    
+    if request.method == 'POST':
+        form = EditForumPost(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('forum:detail', post_id=post.pk)
+    else:
+        form = EditForumPost(instance=post)
+    
+    return render(request, 'forum/edit_post.html', {'form': form, 'post': post})
+
+
+@login_required(login_url="/login")
+def reply_new(request, post_id):
+    post = get_object_or_404(ForumPost, pk=post_id)
+    
+    if request.method == 'POST':
+        form = CreateForumReply(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.post = post
+            reply.author = request.user
+            reply.save()
+            return redirect('forum:detail', post_id=post.pk)
+    else:
+        form = CreateForumReply()
+    
+    return render(request, 'forum/reply_new.html', {'form': form, 'post': post})
+
+
+@login_required(login_url="/login")
+def reply_edit(request, reply_id):
+    reply = get_object_or_404(ForumReply, pk=reply_id, author=request.user)
+    post = reply.post
+    
+    if request.method == 'POST':
+        form = EditForumReply(request.POST, instance=reply)
+        if form.is_valid():
+            form.save()
+            return redirect('forum:detail', post_id=post.pk)
+    else:
+        form = EditForumReply(instance=reply)
+    
+    return render(request, 'forum/edit_reply.html', {'form': form, 'reply': reply, 'post': post})
+
+
+@login_required(login_url="/login")
+def reply_delete(request, reply_id):
+    reply = get_object_or_404(ForumReply, pk=reply_id, author=request.user)
+    post = reply.post
+    
+    if request.method != 'POST':
+        return redirect('forum:detail', post_id=post.pk)
+    
+    reply.delete()
+    return redirect('forum:detail', post_id=post.pk)

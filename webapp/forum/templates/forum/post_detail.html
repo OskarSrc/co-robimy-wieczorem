@@ -26,22 +26,80 @@
                 </p>
                 <h1>{{ post.subject }}</h1>
                 <p class="catalog-detail-meta">Dodano przez {% if post.author.profile.club %}<span style="color: {{ post.author.profile.club.color }};">{{ post.author.username }} {{ post.author.profile.club.icon }}</span>{% else %}{{ post.author.username }}{% endif %} • {{ post.created_at|date:"d.m.Y H:i" }}</p>
-                {% if request.user.is_authenticated and request.user == post.author %}
-                    <div class="catalog-detail-actions">
-                        <form
-                            action="{% url 'forum:delete-post' post_id=post.id %}"
-                            method="post"
-                            class="catalog-detail-action-form"
-                            onsubmit="return confirm('Czy na pewno chcesz usunąć ten post z forum?');"
-                        >
-                            {% csrf_token %}
-                            <button type="submit" class="catalog-detail-action">Usuń post</button>
-                        </form>
-                    </div>
-                {% endif %}
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    {% if request.user.is_authenticated and request.user == post.author %}
+                        <div class="catalog-detail-actions">
+                            <a href="{% url 'forum:edit-post' post_id=post.id %}" class="catalog-detail-action">Edytuj</a>
+                            <form
+                                action="{% url 'forum:delete-post' post_id=post.id %}"
+                                method="post"
+                                class="catalog-detail-action-form"
+                                onsubmit="return confirm('Czy na pewno chcesz usunąć ten post z forum?');"
+                            >
+                                {% csrf_token %}
+                                <button type="submit" class="catalog-detail-action">Usuń post</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div></div>
+                    {% endif %}
+                    <a href="{% url 'forum:index' %}" class="btn btn-light">Wróć do forum</a>
+                </div>
                 {# `linebreaksbr` zamienia Enter z formularza na znaczniki `<br>` w HTML. #}
                 <p class="catalog-detail-description">{{ post.body|linebreaksbr }}</p>
             </div>
         </article>
+
+        {# Replies - odpowiedzi na post #}
+        <section class="content-shell forum-shell mt-5">
+            <div class="voting-panel">
+                <div class="voting-panel__header text-center">
+                    <h2>Odpowiedzi ({{ post.replies.count }})</h2>
+                    <p>{% if post.replies.all %}Przeczytaj co myślą inni użytkownicy{% else %}Bądź pierwszym, który odpowie!{% endif %}</p>
+                </div>
+
+                {% if post.replies.all %}
+                    <div class="replies-list">
+                        {% for reply in post.replies.all %}
+                            <div class="catalog-detail-card forum-detail-card mb-3">
+                                <div class="catalog-detail-content forum-detail-content">
+                                    <p class="catalog-detail-meta">
+                                        {% if reply.author.profile.club %}<span style="color: {{ reply.author.profile.club.color }};">{{ reply.author.username }} {{ reply.author.profile.club.icon }}</span>{% else %}{{ reply.author.username }}{% endif %} • {{ reply.created_at|date:"d.m.Y H:i" }}
+                                    </p>
+                                    {% if request.user.is_authenticated and request.user == reply.author %}
+                                        <div class="catalog-detail-actions">
+                                            <a href="{% url 'forum:edit-reply' reply_id=reply.id %}" class="catalog-detail-action">Edytuj</a>
+                                            <form
+                                                action="{% url 'forum:delete-reply' reply_id=reply.id %}"
+                                                method="post"
+                                                class="catalog-detail-action-form"
+                                                onsubmit="return confirm('Czy na pewno chcesz usunąć tę odpowiedź?');"
+                                            >
+                                                {% csrf_token %}
+                                                <button type="submit" class="catalog-detail-action">Usuń</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                    <p class="catalog-detail-description">{{ reply.body|linebreaksbr }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                </div>
+                {% else %}
+                    <p class="text-white-50">Brak odpowiedzi. Bądź pierwszym, który odpowie!</p>
+                {% endif %}
+
+                {# Formularz dla nowej odpowiedzi #}
+                {% if request.user.is_authenticated %}
+                    <div class="mt-5 pt-4 border-top border-secondary border-opacity-25 text-center">
+                        <h3 class="mb-4">Dodaj odpowiedź</h3>
+                        <form method="POST" action="{% url 'forum:new-reply' post_id=post.id %}" class="form-with-validation forum-form">
+                            {% csrf_token %}
+                            {{ reply_form }}
+                            <button type="submit" class="form-submit">Wyślij odpowiedź</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
     </section>
 {% endblock %}
