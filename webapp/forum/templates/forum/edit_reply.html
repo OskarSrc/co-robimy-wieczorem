@@ -1,0 +1,31 @@
+{# Szablon formularza dziedziczy wspólny układ. #}
+{% extends 'main/layout/base.html' %}
+{# Tag static jest potrzebny do dołączenia arkuszy stylów. #}
+{% load static %}
+
+{% block title %}Edytuj odpowiedź{% endblock %}
+
+{% block community_nav_class %}active{% endblock %}
+
+{% block extra_head %}
+    {# Ładowane są style ogólne katalogu i dodatkowe style forum. #}
+    <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="content-shell catalog-form-shell forum-shell">
+        <div class="catalog-form-header forum-header">
+            <h1>Edytuj odpowiedź</h1>
+            <p><strong>{{ post.subject }}</strong></p>
+            <p class="text-white-50">Zaktualizuj treść swojej odpowiedzi.</p>
+        </div>
+        <form class="form-with-validation forum-form" action="{% url 'forum:edit-reply' reply_id=reply.id %}" method="post">
+            {# `csrf_token` zabezpiecza formularz przed atakami CSRF. #}
+            {% csrf_token %}
+            {# Django samo renderuje pola zdefiniowane w formularzu `EditForumReply`. #}
+            {{ form }}
+            <button class="form-submit" type="submit">Zaktualizuj odpowiedź</button>
+        </form>
+    </section>
+{% endblock %}
