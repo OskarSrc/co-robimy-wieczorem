@@ -20,7 +20,7 @@
             <div class="catalog-detail-content">
                 <span class="catalog-card-category">{{ post.get_category_display }}</span>
                 <h1>{{ post.title }}</h1>
-                <p class="catalog-detail-meta">Dodano przez {{ post.author }} &bull; {{ post.date|date:"d.m.Y H:i" }}</p>
+                <p class="catalog-detail-meta">Dodano przez {% if post.author.profile.club %}<span style="color: {{ post.author.profile.club.color }};">{{ post.author.username }} {{ post.author.profile.club.icon }}</span>{% else %}{{ post.author.username }}{% endif %} &bull; {{ post.date|date:"d.m.Y H:i" }}</p>
                 {% if post.tagi or post.podtag_anime or post.okazja or post.liczba_osob or post.cena %}
                     <div class="catalog-detail-features">
                         {% if post.tagi %}

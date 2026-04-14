@@ -4,10 +4,25 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from katalog.models import Post
 
+class Club(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    color = models.CharField(max_length=7, default='#6366f1')
+    icon = models.CharField(max_length=50, default='')
+    posts = models.ManyToManyField(Post, blank=True, related_name='clubs')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=40, blank=True, null=True)
     friends = models.ManyToManyField('self', blank=True)
+    club = models.ForeignKey(Club, on_delete=models.SET_NULL, null=True, blank=True, related_name='members')
 
     def __str__(self):
         return f"Profil {self.user.username}"

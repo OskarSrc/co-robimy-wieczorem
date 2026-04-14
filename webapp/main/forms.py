@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from katalog.models import Post
-from .models import Profile, VotingRoomItem
+from .models import Profile, VotingRoomItem, Club
 from django.contrib.auth.forms import PasswordChangeForm
 
 class UserUpdateForm(forms.ModelForm):
@@ -126,3 +126,32 @@ class VotingForm(forms.Form):
     def __init__(self, room, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['room_item'].queryset = room.room_items.select_related('post')
+
+
+class ClubForm(forms.ModelForm):
+    class Meta:
+        model = Club
+        fields = ['name', 'description', 'color', 'icon', 'posts']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control bg-transparent text-white border-secondary',
+                'placeholder': 'Np. Klub horrorów',
+                'style': '--placeholder-color: rgba(255, 255, 255, 0.9);',
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control bg-transparent text-white border-secondary',
+                'rows': 3,
+                'placeholder': 'Opisz klimat klubu...',
+                'style': '--placeholder-color: rgba(255, 255, 255, 0.9);',
+            }),
+            'color': forms.TextInput(attrs={
+                'type': 'color',
+                'class': 'form-control bg-transparent text-white border-secondary',
+            }),
+            'icon': forms.TextInput(attrs={
+                'class': 'form-control bg-transparent text-white border-secondary',
+                'placeholder': 'Wklej emoji tutaj',
+                'maxlength': '2',
+            }),
+            'posts': forms.CheckboxSelectMultiple(),
+        }

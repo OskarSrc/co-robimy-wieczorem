@@ -30,14 +30,11 @@
 
 .room-preview,
 .voting-panel {
-    padding: 32px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 28px;
-    background:
-        linear-gradient(145deg, rgba(78, 84, 200, 0.16), rgba(255, 255, 255, 0.04)),
-        rgba(8, 8, 12, 0.88);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
-    backdrop-filter: blur(12px);
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
 }
 
 .voting-panel--detail {
@@ -258,6 +255,8 @@
 
 .room-list-card {
     padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 14px;
 }
 
 .room-list-card--finished {
@@ -280,7 +279,18 @@
 }
 
 .form-control::placeholder {
-    color: rgba(255, 255, 255, 0.55);
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.form-control::-moz-placeholder {
+    color: #ffffff !important;
+    opacity: 1 !important;
 }
 
 .form-select option {
@@ -349,6 +359,17 @@
     font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: 0.08em;
+}
+
+/* Checkbosy dla formularzy */
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: #818cf8;
+    cursor: pointer;
+}
+
+label {
+    color: #f5f5f7;
 }
 
 @media (max-width: 991.98px) {
