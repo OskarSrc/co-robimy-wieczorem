@@ -23,9 +23,9 @@ from django.contrib.auth import update_session_auth_hash
 import requests
 import os
 from datetime import date, timedelta
-# Wczesniej byl w .env ale zapomnialem, że wykładowczyni musi widzieć efekt strony więc jest publiczny teraz.
-tmdb_key = os.getenv('TMDB_API_KEY', '66e04b4f6358d30ea3723852498abc1f')
-rawg_key = os.getenv('RAWG_API_KEY', 'dd42fbb3cb5a4e179856baa0b34521e1')
+
+tmdb_key = os.getenv('TMDB_API_KEY')
+rawg_key = os.getenv('RAWG_API_KEY')
 
 # Create your views here.
 
