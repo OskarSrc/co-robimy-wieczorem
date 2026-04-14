@@ -26,7 +26,7 @@
                         </div>
 
                         <p class="room-detail-copy">
-                            Założył: <strong>{{ room.creator.username }}</strong> •
+                            Założył: {% if room.creator.profile.club %}<span style="color: {{ room.creator.profile.club.color }};"><strong>{{ room.creator.username }} {{ room.creator.profile.club.icon }}</strong></span>{% else %}<strong>{{ room.creator.username }}</strong>{% endif %} •
                             Utworzono: {{ room.created_at|date:"d.m.Y H:i" }} •
                             Koniec: {{ room.closes_at|date:"d.m.Y H:i" }}
                         </p>
@@ -127,7 +127,11 @@
                                 <div class="participant-card">
                                     <div class="participant-card__avatar">{{ participant.username|slice:":1"|upper }}</div>
                                     <div>
-                                        <strong>{{ participant.username }}</strong>
+                                        {% if participant.profile.club %}
+                                            <strong style="color: {{ participant.profile.club.color }};">{{ participant.username }} {{ participant.profile.club.icon }}</strong>
+                                        {% else %}
+                                            <strong>{{ participant.username }}</strong>
+                                        {% endif %}
                                         {% if participant.current_vote %}
                                             <span>
                                                 głos oddany

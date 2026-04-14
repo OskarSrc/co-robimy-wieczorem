@@ -18,14 +18,15 @@
         </div>
 
          {% if messages %}
+         {% for message in messages %}
+         {% if message.level == 40 %}
          <div class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-danger" role="alert">
            <ul class="mb-0 px-3">
-             {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-             {% endfor %}
+             <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
            </ul>
          </div>
-         
+         {% endif %}
+         {% endfor %}
          {% endif %}
          <form method="POST" action="/login" class="form-with-validation bg-transparent border-0 p-0 m-0 shadow-none">
              {% csrf_token %}
