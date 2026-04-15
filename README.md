@@ -7,7 +7,7 @@
 
 ## Znasz to uczucie, gdy spędzacie dwie godziny na komunikatorze tylko po to, żeby ustalić, że... nikt nie wie, w co zagrać albo co obejrzeć? My też.
 
-<img width="2045" height="902" alt="image" src="https://github.com/user-attachments/assets/3dcbc299-5199-4140-88ad-c285f00aea0b" />
+<img width="2505" height="1304" alt="image" src="https://github.com/user-attachments/assets/9fc86329-1543-4264-96ce-735c8850cdcb" />
 
 
  ### **"Co Robimy Wieczorem?"** to aplikacja webowa, która pomaga grupom znajomych błyskawicznie wybrać film, grę lub serial do wspólnego spędzenia czasu. Projekt został zrealizowany w ramach zajęć akademickich, symulując pełen cykl tworzenia aplikacji.
