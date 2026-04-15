@@ -134,6 +134,10 @@
     font-weight: 600;
 }
 
+.friends-list .list-group-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
 .friends-suggested-list {
     max-height: 360px;
     overflow-y: auto;
