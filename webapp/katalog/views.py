@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import Exists, OuterRef
+from django.db.models import Exists, OuterRef, Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 from . import forms
@@ -19,11 +19,20 @@ def _save_post_from_form(form, author):
 # Widok listy pokazuje wszystkie wpisy albo tylko wpisy z wybranej kategorii.
 def posts_list(request):
     category = request.GET.get('category')
+    query = request.GET.get('q', '').strip()
     # Na start pobieramy pełną listę wpisów.
     posts = Post.objects.all()
     if category:
         # Jeśli użytkownik wybrał kategorię, zawężamy wyniki.
         posts = posts.filter(category=category)
+
+    if query:
+        posts = posts.filter(
+            Q(title__icontains=query)
+            | Q(body__icontains=query)
+            | Q(tagi__icontains=query)
+            | Q(podtag_anime__icontains=query)
+        )
 
     if request.user.is_authenticated:
         # To podzapytanie sprawdza, czy dany wpis jest w ulubionych zalogowanej osoby.
@@ -42,6 +51,7 @@ def posts_list(request):
         'posts': posts,
         'categories': Post.CATEGORY_CHOICES,
         'active_category': category,
+        'search_query': query,
     }
     return render(request, 'posts/katalog_list.html', context)
 
