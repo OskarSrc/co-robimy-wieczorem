@@ -53,9 +53,9 @@ INSTALLED_APPS = [
 ]
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', 'dwgz2quan'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY', '276823346831793'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', 'IoD80_L8BPRD1vAV7eBAO3YEn-0'),
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
 }
 
 import cloudinary
@@ -109,7 +109,7 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://neondb_owner:npg_mIdNqGb5EO2z@ep-morning-hall-abqlhg3t-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+        default=os.getenv('DATABASE_URL'),
         conn_max_age=600
     )
 }
