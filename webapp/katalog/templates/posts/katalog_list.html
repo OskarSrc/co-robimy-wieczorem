@@ -14,13 +14,28 @@
                 <div class="catalog-panel">
                     <h1>Katalog</h1>
                     <p class="catalog-sidebar-copy">Wybierz kategorię albo przeglądaj wszystkie propozycje.</p>
+                    <form method="GET" class="catalog-search-form mb-4">
+                        {% if active_category %}
+                            <input type="hidden" name="category" value="{{ active_category }}">
+                        {% endif %}
+                        <div class="input-group">
+                            <input
+                                type="text"
+                                name="q"
+                                value="{{ search_query }}"
+                                placeholder="Wyszukaj..."
+                                class="form-control bg-transparent text-white border-secondary"
+                            />
+                            <button type="submit" class="form-submit">Szukaj</button>
+                        </div>
+                    </form>
                     <ul class="catalog-category-list">
                         <li>
-                            <a class="{% if not active_category %}is-active{% endif %}" href="{% url 'posts:list' %}">Wszystkie</a>
+                            <a class="{% if not active_category %}is-active{% endif %}" href="{% url 'posts:list' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}">Wszystkie</a>
                         </li>
                         {% for value, label in categories %}
                             <li>
-                                <a class="{% if active_category == value %}is-active{% endif %}" href="{% url 'posts:list' %}?category={{ value }}">{{ label }}</a>
+                                <a class="{% if active_category == value %}is-active{% endif %}" href="{% url 'posts:list' %}?category={{ value }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}">{{ label }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -30,8 +45,14 @@
                 </div>
             </aside>
 
-            <div class="catalog-grid">
-                {% for post in posts %}
+            <div class="catalog-results-column">
+                {% if search_query and posts.exists %}
+                    <p class="catalog-search-info">Wyniki dla „{{ search_query }}”</p>
+                {% elif search_query and not posts.exists %}
+                    <p class="catalog-search-info text-muted">Brak wyników dla „{{ search_query }}”. Spróbuj innej frazy.</p>
+                {% endif %}
+                <div class="catalog-grid">
+                    {% for post in posts %}
                     <article class="catalog-card">
                         <a class="catalog-card-image-wrap" href="{% url 'posts:page' slug=post.slug %}">
                            
@@ -60,5 +81,6 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
     </section>
 {% endblock %}
