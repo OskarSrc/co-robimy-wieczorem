@@ -29,7 +29,7 @@
 
 ## 🛠️ Zastosowane technologie
 
-* **Backend:** Python 3.11+, Django 5.x
+* **Backend:** Python 3.11+, Django 5.8.x
 * **Frontend:** HTML5, CSS3, Bootstrap 5, FontAwesome, JavaScript (Vanilla)
 * **Bazy danych:** SQLite3 (środowisko lokalne/deweloperskie) / PostgreSQL (Neon.tech - produkcja)
 * **Zewnętrzne API:** TMDB (filmy), RAWG (gry), Jikan (anime)
