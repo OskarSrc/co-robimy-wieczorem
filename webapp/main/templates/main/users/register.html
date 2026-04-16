@@ -17,6 +17,17 @@
         <p class="text-white-50" style="font-size: 0.95rem;">Dołącz do nas i zorganizuj idealny wieczór.</p>
       </div>
 
+      {% if messages %}
+        <div class="mb-3">
+          {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert" style="font-size: 0.85rem;">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
          <form method="POST" action="/register" class="form-with-validation">
              {% csrf_token %}
             <div>
