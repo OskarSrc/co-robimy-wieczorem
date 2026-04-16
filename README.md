@@ -1,7 +1,7 @@
 # 👻 Co Robimy Wieczorem?
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/Django-5.x-092E20.svg)](https://www.djangoproject.com/)
+[![Django](https://img.shields.io/badge/Django-5.8.x-092E20.svg)](https://www.djangoproject.com/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3.svg)]()
 [![Cloudinary](https://img.shields.io/badge/Cloud-Cloudinary-blue.svg)]()
 
@@ -34,7 +34,7 @@
 * **Bazy danych:** SQLite3 (środowisko lokalne/deweloperskie) / PostgreSQL (Neon.tech - produkcja)
 * **Zewnętrzne API:** TMDB (filmy), RAWG (gry), Jikan (anime)
 * **Zarządzanie mediami:** Cloudinary API
-* **Wdrażanie (Deployment):** Gunicorn, WhiteNoise
+* **Wdrażanie (Deployment):** Gunicorn, WhiteNoise (Przyszłe plany)
 
 ---
 
