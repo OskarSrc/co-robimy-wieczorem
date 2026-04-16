@@ -430,9 +430,23 @@ def register(request):
          return redirect('home')
     
     if request.method == 'POST':
-        user = User.objects.create_user(request.POST['username'], request.POST['email'], request.POST['password'])
-        login(request, user)
-        return redirect('home')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+    
+        #Sprawdzamy, czy nazwa użytkownika jest już zajęta
+        if User.objects.filter(username=username).exists():
+            messages.error(request, f'Nazwa "{username}" jest już zajęta. Wybierz inną!')
+            return render(request, 'main/users/register.html')
+        
+        try:
+            user = User.objects.create_user(username, email, password)
+            login(request, user)
+            messages.success(request, f'Witaj {username}! Twoje konto zostało utworzone.')
+            return redirect('home')
+        except Exception as e:
+            messages.error(request, 'Wystąpił nieoczekiwany błąd przy tworzeniu konta.')
+            return render(request, 'main/users/register.html')
     
     return render(request, 'main/users/register.html')
 
@@ -527,8 +541,10 @@ def remove_friend(request, user_id):
 
 @login_required
 def profile_user(request):
+    # Zabezpieczenie: jeśli user nie ma profilu w bazie.
     Profile.objects.get_or_create(user=request.user)
 
+    # formularzy danymi aktualnie zalogowanego użytkownika
     u_form = UserUpdateForm(instance=request.user)
     p_form = ProfileUpdateForm(instance=request.user.profile)
     pass_form = CustomPasswordChangeForm(user=request.user)
@@ -537,17 +553,18 @@ def profile_user(request):
             u_form = UserUpdateForm(request.POST, instance=request.user)
             p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
             if u_form.is_valid() and p_form.is_valid():
-                u_form.save()
-                p_form.save()
+                u_form.save() # Zapisz zmiany w tabeli user
+                p_form.save() # Zapisz zmiany w tabeli profile
                 return redirect('profile_user')
 
     elif 'change_password' in request.POST:
             pass_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
             if pass_form.is_valid():
-                user = pass_form.save()
+                user = pass_form.save() # Zapisuje nowe ukryte hasło
                 update_session_auth_hash(request, user)
                 return redirect('profile_user')
 
+    # Przekazanie formularzy do szablonu HTML
     context = {
         'u_form': u_form,
         'p_form': p_form,
@@ -559,8 +576,8 @@ def profile_user(request):
 def delete_account(request):
     if request.method == 'POST':
         user = request.user
-        user.delete()
-        logout(request)
+        user.delete() #usuwamy uzytkownika
+        logout(request) #czysci jego sesje 
         return redirect('home')
     
     return redirect('profile_user')
