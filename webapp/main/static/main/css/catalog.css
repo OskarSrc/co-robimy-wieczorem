@@ -452,6 +452,18 @@ ul {
     padding: 2rem;
 }
 
+.catalog-random-box {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+    text-align: center;
+}
+
+.catalog-random-box p {
+    max-width: 560px;
+    color: var(--muted);
+}
+
 /* Nagłówek pustego stanu. */
 .catalog-empty h2 {
     margin-bottom: 0.6rem;
@@ -650,6 +662,10 @@ ul {
     margin-bottom: 1.5rem;
 }
 
+.catalog-detail-back-link {
+    margin-left: auto;
+}
+
 /* Wygląd dodatkowych akcji w szczegółach wpisu. */
 .catalog-detail-action {
     display: inline-flex;
@@ -730,5 +746,9 @@ ul {
     .form-submit,
     .catalog-detail-action {
         width: 100%;
+    }
+
+    .catalog-detail-back-link {
+        margin-left: 0;
     }
 }
