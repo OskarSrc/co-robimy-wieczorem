@@ -77,17 +77,14 @@ Aby uruchomić projekt:
 
     `TMDB_API_KEY=`
     `RAWG_API_KEY=`
+    `CLOUDINARY_CLOUD_NAME=`
+    `CLOUDINARY_API_KEY=`
+    `CLOUDINARY_API_SECRET=`
+    `DATABASE_URL=`
       
 *(Wiadomość do osoby sprawdzającej: Aktywne klucze dla tego projektu zostały przekazane w prywatnej wiadomości).*
 
-### 6. Baza danych i Migracje
-Zalecamy testowanie projektu na lokalnej bazie SQLite. Wykonaj migracje, aby zbudować strukturę:
-
-    cd webapp
-    python manage.py makemigrations
-    python manage.py migrate
-
-### 7. Uruchomienie serwera
+### 6. Uruchomienie serwera
 
     python manage.py runserver
 
