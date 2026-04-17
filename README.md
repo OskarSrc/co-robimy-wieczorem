@@ -110,20 +110,20 @@ Aby ułatwić testowanie funkcjonalności bez konieczności samodzielnej rejestr
 
 Projekt opiera się na logicznym podziale na aplikacje wewnątrz frameworka Django:
 
-    webapp/                   # Główny folder roboczy projektu
-    ├── forum/                
-    ├── katalog/              
-    ├── main/                 
-    ├── media/               
-    ├── news/                
-    ├── users/               
-    ├── webapp/               # Główny katalog konfiguracyjny (settings.py, urls.py)
-    ├── .env                  # Zmienne środowiskowe i klucze API (ignorowany przez Git)
-    ├── db.sqlite3            # Baza danych
-    ├── manage.py             # Główny skrypt zarządzający projektem Django
-    ├── .gitignore            # Reguły ukrywania plików przed wyciekiem
-    ├── README.md             # Dokumentacja projektu
-    └── requirements.txt      # Lista wymaganych bibliotek do instalacji
+    co-robimy-wieczorem/
+    ├── webapp/                     # Główny katalog projektu Django
+    │   ├── forum/                  # Forum dyskusyjne powiązane z wpisami z katalogu
+    │   ├── katalog/                # Katalog filmów, gier, seriali i innych propozycji
+    │   ├── main/                   # Strona główna, community, kluby, pokoje głosowań, wydarzenia i profile
+    │   ├── media/                  # Pliki multimedialne i zasoby przesyłane przez użytkowników
+    │   ├── users/                  # Dodatkowa aplikacja użytkowników, przygotowana pod dalszą rozbudowę
+    │   ├── webapp/                 # Główny katalog konfiguracyjny Django (settings.py, urls.py, asgi.py, wsgi.py)
+    │   ├── .env                    # Zmienne środowiskowe i klucze API
+    │   ├── db.sqlite3              # Lokalna baza danych SQLite
+    │   └── manage.py               # Główny skrypt zarządzający projektem Django
+    ├── .gitignore                  # Reguły ignorowania plików tymczasowych i danych wrażliwych
+    ├── README.md                   # Dokumentacja projektu
+    └── requirements.txt            # Lista wymaganych bibliotek do instalacji
 
 ---
 *Projekt zrealizowany jako wersja końcowa na zaliczenie przedmiotu, 2026 r.*
