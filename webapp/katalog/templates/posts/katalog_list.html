@@ -79,6 +79,15 @@
                         <p>Dodaj pierwszy film, serial, grę albo aktywność.</p>
                     </div>
                 {% endfor %}
+                </div>
+
+                {% if random_post %}
+                    <div class="catalog-empty catalog-random-box">
+                        <h2>Nic nie zwróciło twojej uwagi?</h2>
+                        <p>To może zdaj się na los! Jedno kliknięcie i przenosimy Cię do przypadkowej pozycji z katalogu.</p>
+                        <a class="btn-custom-solid" href="{% url 'posts:page' slug=random_post.slug %}">Losuj pozycję</a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

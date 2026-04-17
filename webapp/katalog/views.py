@@ -34,6 +34,9 @@ def posts_list(request):
             | Q(podtag_anime__icontains=query)
         )
 
+    # Losowanie działa na aktualnie widocznym zestawie wpisów, więc szanuje filtry i wyszukiwarkę.
+    random_post = posts.order_by('?').first()
+
     if request.user.is_authenticated:
         # To podzapytanie sprawdza, czy dany wpis jest w ulubionych zalogowanej osoby.
         favorite_subquery = FavoritePost.objects.filter(
@@ -52,6 +55,7 @@ def posts_list(request):
         'categories': Post.CATEGORY_CHOICES,
         'active_category': category,
         'search_query': query,
+        'random_post': random_post,
     }
     return render(request, 'posts/katalog_list.html', context)
 

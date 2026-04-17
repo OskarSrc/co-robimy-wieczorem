@@ -33,7 +33,7 @@
                             <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Okazja:</span> {{ post.get_okazja_display }}</span>
                         {% endif %}
                         {% if post.liczba_osob %}
-                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Liczba os&#243;b:</span> {{ post.get_liczba_osob_display }}</span>
+                            <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Liczba osób:</span> {{ post.get_liczba_osob_display }}</span>
                         {% endif %}
                         {% if post.cena %}
                             <span class="catalog-detail-chip"><span class="catalog-detail-chip-label">Cena:</span> {{ post.get_cena_display }}</span>
@@ -45,7 +45,7 @@
                         {% csrf_token %}
                         <input type="hidden" name="next" value="{{ request.path }}">
                         <button type="submit" class="catalog-detail-action">
-                            {% if is_favorite %}Usu&#324; z ulubionych{% else %}Dodaj do ulubionych{% endif %}
+                            {% if is_favorite %}Usuń z ulubionych{% else %}Dodaj do ulubionych{% endif %}
                         </button>
                     </form>
                     {% if request.user.is_authenticated and request.user == post.author %}
@@ -60,7 +60,8 @@
                             <button type="submit" class="catalog-detail-action">Usuń z katalogu</button>
                         </form>
                     {% endif %}
-                    <a href="{% url 'forum:new-post' %}?catalog={{ post.slug }}" class="catalog-detail-action">Udost&#281;pnij na forum</a>
+                    <a href="{% url 'forum:new-post' %}?catalog={{ post.slug }}" class="catalog-detail-action">Udostępnij na forum</a>
+                    <a href="{% url 'posts:list' %}" class="btn-custom-solid text-decoration-none catalog-detail-back-link">Wróć do katalogu</a>
                 </div>
                 <p class="catalog-detail-description">{{ post.body }}</p>
             </div>
