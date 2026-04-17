@@ -1,9 +1,12 @@
 from django import template
 
-register = template.Library();
+# Ten prosty tag zwraca linki do starszego bocznego menu.
+# Lista jest wpisana ręcznie, bo ma służyć tylko do renderowania stałej nawigacji.
+register = template.Library()
 
 @register.simple_tag
 def get_links():
+    # To są najważniejsze skróty prowadzące do głównych sekcji projektu.
     return [{
         'name': 'Home',
         'href': '/',
@@ -31,6 +34,6 @@ def get_links():
     },{
         'name': 'Społeczność',
         'href': '/spolecznosc/',
-        'icon': 'fa-comment', #look for your icon here https://fontawesome.com/search?ic=free
+        'icon': 'fa-comment',  # Ikony są z darmowej paczki Font Awesome.
     }]
     

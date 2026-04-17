@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
  
+{# Formularz zakładania konta. #}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/profile.css' %}">
@@ -12,11 +13,13 @@
  <div class="d-flex align-items-center justify-content-center px-4" style="min-height: 90vh">
      <div class="my-box w-100" style="max-width: 550px; padding: 2.5rem; z-index:10;">
 
+      {# Wstęp zachęca do wejścia do projektu bez przeładowywania strony treścią. #}
       <div class="text-center mb-4">
         <h1 class="fw-bold mb-2">Rejestracja</h1>
         <p class="text-white-50" style="font-size: 0.95rem;">Dołącz do nas i zorganizuj idealny wieczór.</p>
       </div>
 
+      {# Ten blok pokazuje komunikaty zwrócone przez widok, np. zajęty login albo sukces. #}
       {% if messages %}
         <div class="mb-3">
           {% for message in messages %}
@@ -28,6 +31,7 @@
         </div>
       {% endif %}
 
+         {# Formularz zbiera tylko to, co potrzebne na start. #}
          <form method="POST" action="/register" class="form-with-validation">
              {% csrf_token %}
             <div>

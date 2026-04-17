@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Ekran potwierdzenia przy zmianie klubu, żeby użytkownik nie stracił poprzedniego przez przypadek. #}
 {% block title %}Zmiana klubu - Co Robimy Wieczorem?{% endblock %}
 
 {% block extra_head %}
@@ -12,11 +13,13 @@
         <div class="catalog-detail-card" style="max-width: 600px; margin: 0 auto;">
             <h1 class="display-4 fw-bold mb-4">Zmiana klubu</h1>
             
+            {# Najpierw pokazujemy jasno, z którego klubu użytkownik wychodzi i do którego przechodzi. #}
             <div class="alert alert-danger bg-danger bg-opacity-10 border border-danger text-danger" role="alert">
                 <p class="mb-3">Jesteś już członkiem klubu <strong style="color: {{ old_club.color }};">{{ old_club.name }} {{ old_club.icon }}</strong></p>
                 <p class="mb-0">Czy chcesz opuścić ten klub i dołączyć do <strong style="color: {{ new_club.color }};">{{ new_club.name }} {{ new_club.icon }}</strong>?</p>
             </div>
 
+            {# Przyciski potwierdzają zmianę albo pozwalają wrócić bez działania. #}
             <form method="POST" class="d-flex gap-3 justify-content-center mt-5">
                 {% csrf_token %}
                 

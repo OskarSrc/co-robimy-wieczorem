@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Profil użytkownika łączy trzy tryby: podgląd, edycję danych i zmianę hasła. #}
 {% block title %}Mój Profil{% endblock %}
 
 {% block extra_head %}
@@ -10,6 +11,7 @@
 
 {% block content %}
     <section class="content-shell profile-shell mt-5">
+        {# Nagłówek strony profilu. #}
         <div class="catalog-form-header mb-4">
             <h1>Mój Profil</h1>
             <p>Zarządzaj swoimi danymi i ustawieniami konta.</p>
@@ -19,6 +21,7 @@
                 <i class="fa-solid fa-user-astronaut profile-avatar-icon"></i>
             </div>
             <div id="profil-widok">
+            {# Domyślny widok pokazuje dane konta bez edycji. #}
             <div class="d-flex flex-column gap-3">
                 <div>
                     <label class="profile-label">Nazwa użytkownika</label>
@@ -77,6 +80,7 @@
                 </a>
             </div>
                 </div>
+            {# Ten blok pokazuje formularz edycji podstawowych danych. #}
             <div id="profil-edycja" class="d-none">
                 <form method="POST" action="{% url 'profile_user' %}">
                     {% csrf_token %}
@@ -107,6 +111,7 @@
                     </div>
                 </form>
             </div>
+            {# Osobny widok jest tylko dla zmiany hasła, żeby nie mieszać go z resztą danych. #}
             <div id="profil-haslo" class="d-none">
                 <form method="POST" action="{% url 'profile_user' %}">
                     {% csrf_token %}
@@ -137,6 +142,7 @@
         </div>
     </section>
 
+{# Modal pilnuje, żeby usunięcie konta nie stało się przez przypadkowe kliknięcie. #}
 <div class="modal fade" id="deleteAccountModal">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content profile-modal-content">
@@ -165,6 +171,7 @@
     </div>
 
 <script>
+// Te trzy funkcje tylko przełączają widoczność sekcji w obrębie jednego ekranu profilu.
 function showView() {
             document.getElementById('profil-widok').classList.remove('d-none');
             document.getElementById('profil-edycja').classList.add('d-none');

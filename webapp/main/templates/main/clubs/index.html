@@ -1,10 +1,12 @@
 {% extends 'main/layout/base.html' %}
 
+{# Lista wszystkich klubów tematycznych widocznych w community. #}
 {% block title %}Kluby tematyczne - Co Robimy Wieczorem?{% endblock %}
 
 {% block content %}
     <section class="section-spacing">
         <div class="container">
+            {# Nagłówek sekcji i przycisk dodawania klubu dla administratora. #}
             <div class="text-center mb-5">
                 <h1 class="display-4 fw-bold">Kluby tematyczne</h1>
                 <p class="lead">Małe groupki wokół jednego klimatu. Bez spiny, bardziej po ludzku.</p>
@@ -13,6 +15,7 @@
                 {% endif %}
             </div>
 
+            {# Karty klubów prowadzą dalej do szczegółów i listy członków. #}
             <div class="row g-4">
                 {% for club in clubs %}
                     <div class="col-md-4">
@@ -32,6 +35,7 @@
                 {% endfor %}
             </div>
 
+            {# Powrót na główną stronę community. #}
             <div class="text-center mt-5">
                 <a href="{% url 'community' %}" class="btn-custom-solid text-decoration-none">Wróć do społeczności</a>
             </div>

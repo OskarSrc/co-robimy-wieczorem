@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Widok premier zewnętrznych. Dane wpadają z API filmowego, growego i anime. #}
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
@@ -8,6 +9,7 @@
 
 {% block content %}
 <section class="content-shell mt-5 text-center">
+    {# Nagłówek i proste przełączniki między trzema typami wydarzeń. #}
     <div class="catalog-form-header mb-4">
         <h1>Nadchodzące Wydarzenia</h1>
         <p>Najciekawsze premiery filmowe i growe w jednym miejscu.</p>
@@ -19,6 +21,7 @@
         </div>
     </div>
 
+    {# Lista premier filmowych z TMDB. #}
     <div id="movies-list" class="catalog-grid">
         {% for m in movies %}
         <article class="catalog-card">
@@ -36,6 +39,7 @@
         {% endfor %}
     </div>
 
+    {# Lista nadchodzących gier z RAWG. #}
     <div id="games-list" class="catalog-grid d-none">
         {% for g in games %}
         <article class="catalog-card">
@@ -53,6 +57,7 @@
         {% endfor %}
     </div>
 
+    {# Lista nadchodzących anime z Jikan API. #}
     <div id="anime-list" class="catalog-grid d-none">
         {% for a in anime %}
         <article class="catalog-card">
@@ -73,6 +78,7 @@
 </section>
 
 <script>
+// Ten prosty przełącznik pokazuje jedną kategorię naraz bez przeładowania całej strony.
 function pokaz(typ) {
     const filmy = document.getElementById('movies-list');
     const gry = document.getElementById('games-list');

@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Formularz zakładania nowego pokoju głosowań. #}
 {% block title %}Nowy pokój głosowań - Co Robimy Wieczorem?{% endblock %}
 
 {% block extra_head %}
@@ -12,16 +13,19 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-9">
+                    {# Prosty powrót do listy wszystkich pokoi. #}
                     <a href="{% url 'voting_rooms' %}" class="back-link text-decoration-none">
                         <i class="fa-solid fa-arrow-left"></i> Wróć do pokoi
                     </a>
 
                     <div class="voting-panel mt-4">
+                        {# Wstęp do formularza, żeby było jasne co trzeba przygotować przed założeniem pokoju. #}
                         <div class="voting-panel__header">
                             <h1 class="display-6 fw-bold">Utwórz pokój</h1>
                             <p>Wybierz znajomych, ustaw czas i dorzuć pozycje z katalogu do wspólnego głosowania.</p>
                         </div>
 
+                        {# Jeden formularz zbiera nazwę, czas, znajomych i pozycje z katalogu. #}
                         <form method="POST" class="room-builder-form">
                             {% csrf_token %}
 
@@ -41,6 +45,7 @@
                                 {% endfor %}
                             </div>
 
+                            {# Wybór uczestników działa tylko na podstawie zaakceptowanych znajomych. #}
                             <div class="picker-block mb-4">
                                 <div class="picker-block__top">
                                     <h3>Znajomi do pokoju</h3>
@@ -64,6 +69,7 @@
                                 {% endfor %}
                             </div>
 
+                            {# Drugi blok dokłada propozycje z katalogu, na które będzie można głosować. #}
                             <div class="picker-block mb-4">
                                 <div class="picker-block__top">
                                     <h3>Pozycje z katalogu</h3>

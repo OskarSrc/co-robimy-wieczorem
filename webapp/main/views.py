@@ -1,4 +1,7 @@
-# Plik do definiowania widoków, które są renderowane za pomocą szablonizatora Jinja oraz wyświetlane w przeglądarce
+# Ten plik spina praktycznie cały "front" aplikacji `main`.
+# Są tu obok siebie widoki strony głównej, społeczności, klubów, pokoi głosowań,
+# kont użytkowników i strony z wydarzeniami, więc komentarze niżej rozdzielają
+# te kawałki tak, żeby dało się szybciej znaleźć potrzebny fragment.
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -6,7 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import transaction
 from django.db.models import Count
-from django.contrib import messages #to show message back for errors
+from django.contrib import messages  # komunikaty wracające do użytkownika po akcji
 from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -24,18 +27,21 @@ from django.contrib.auth import update_session_auth_hash
 import requests
 import os
 from datetime import date, timedelta
-# Wczesniej byl w .env ale zapomnialem, że wykładowczyni musi widzieć efekt strony więc jest publiczny teraz.
+
+# Klucze do zewnętrznych API pobieramy z `.env`, żeby widok wydarzeń mógł działać bez sztywnego wpisywania ich w kodzie.
 tmdb_key = os.getenv('TMDB_API_KEY')
 rawg_key = os.getenv('RAWG_API_KEY')
 
-# Create your views here.
+# Funkcje pomocnicze dla profilu i mechaniki pokoi głosowań.
 
 def get_profile(user):
+    # Profil jest tworzony przy pierwszej potrzebie, więc reszta widoków nie musi tego pilnować osobno.
     profile, _ = Profile.objects.get_or_create(user=user)
     return profile
 
 
 def get_room_status_text(room, participants_total, votes_total, current_time):
+    # Ten tekst trafia prosto do kart i szczegółów pokoju, więc zbieramy całą logikę statusu w jednym miejscu.
     if participants_total and votes_total >= participants_total:
         return 'Wszyscy oddali głosy'
     if current_time >= room.closes_at:
@@ -53,6 +59,7 @@ def get_room_status_text(room, participants_total, votes_total, current_time):
 
 
 def get_user_rooms(user):
+    # Przy liście pokoi od razu dociągamy potrzebne relacje, żeby później nie robić wielu małych zapytań.
     rooms = list(
         VotingRoom.objects.filter(participants=user)
         .select_related('creator')
@@ -63,6 +70,7 @@ def get_user_rooms(user):
     current_time = timezone.now()
 
     for room in rooms:
+        # Tu dopinamy pola pomocnicze tylko na potrzeby widoku, bez zapisywania ich do bazy.
         participants = list(room.participants.all())
         room_items = list(room.room_items.all())
         votes = list(room.votes.all())
@@ -85,6 +93,7 @@ def get_user_rooms(user):
 
 
 def get_voting_room_or_404(room_id, user):
+    # Pokój ma być widoczny tylko dla uczestników, więc filtr uprawnień załatwiamy już tutaj.
     return get_object_or_404(
         VotingRoom.objects.select_related('creator').prefetch_related(
             'participants',
@@ -98,6 +107,8 @@ def get_voting_room_or_404(room_id, user):
 
 
 def build_voting_room_context(room, user, vote_form=None):
+    # Ten helper przygotowuje cały kontekst szczegółów pokoju:
+    # uczestników, aktualne głosy, zwycięzców i stan formularza.
     participants = list(room.participants.all().order_by('username'))
     room_items = list(room.room_items.all())
     votes = list(room.votes.all())
@@ -149,11 +160,14 @@ def build_voting_room_context(room, user, vote_form=None):
         'remaining_votes': max(participants_total - votes_total, 0),
     }
 
+# Widoki strony głównej i prostych podstron.
+
 def index(request):
     return render(request, 'main/index.html')
 
 @login_required
 def cars(request):
+    # To został prosty widok testowy z wcześniejszego etapu projektu.
     values = {
         'cars': [
             {
@@ -192,10 +206,14 @@ def cars(request):
 def about(request):
     return render(request, 'main/about.html')
 
+
+# Część związana z community i pokojami głosowań.
+
 def community(request):
     return render(request, 'main/community.html')
 
 def voting_rooms(request):
+    # Na liście rozdzielamy pokoje aktywne i zakończone, żeby interfejs był czytelniejszy.
     active_rooms = []
     finished_rooms = []
 
@@ -218,6 +236,7 @@ def voting_room_new(request):
             duration_minutes = room_form.cleaned_data['duration_minutes']
 
             with transaction.atomic():
+                # Pokój, uczestnicy i pozycje startowe zapisują się razem, żeby nie zostawić połowy danych.
                 room = VotingRoom.objects.create(
                     name=room_form.cleaned_data['name'],
                     creator=request.user,
@@ -264,6 +283,7 @@ def submit_room_vote(request, room_id):
 
     vote_form = VotingForm(room, request.POST)
     if vote_form.is_valid():
+        # Jedna osoba ma mieć jeden głos, ale do końca pokoju może go jeszcze podmienić.
         VotingVote.objects.update_or_create(
             room=room,
             voter=request.user,
@@ -308,6 +328,9 @@ def recommendations(request):
         'main/recommendations.html',
         {'recommended_posts': recommended_posts},
     )
+
+
+# Widoki klubów działających w obrębie społeczności.
 
 def clubs(request):
     clubs_list = Club.objects.all()
@@ -402,6 +425,9 @@ def confirm_club_switch(request, old_club_id, new_club_id):
         'new_club': new_club,
     })
 
+
+# Logowanie i rejestracja oparte o standardowy system Django.
+
 # Using the Django authentication system (Django Documentation)
 # https://docs.djangoproject.com/en/5.1/topics/auth/default/
 def login_user(request):
@@ -434,17 +460,19 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
     
-        #Sprawdzamy, czy nazwa użytkownika jest już zajęta
+        # Najpierw pilnujemy, żeby nie powstały dwa konta z tym samym loginem.
         if User.objects.filter(username=username).exists():
             messages.error(request, f'Nazwa "{username}" jest już zajęta. Wybierz inną!')
             return render(request, 'main/users/register.html')
         
         try:
+            # Jeśli dane są poprawne, tworzymy konto i od razu logujemy nową osobę.
             user = User.objects.create_user(username, email, password)
             login(request, user)
             messages.success(request, f'Witaj {username}! Twoje konto zostało utworzone.')
             return redirect('home')
         except Exception as e:
+            # Zamiast błędu technicznego pokazujemy prosty komunikat i zostajemy na formularzu.
             messages.error(request, 'Wystąpił nieoczekiwany błąd przy tworzeniu konta.')
             return render(request, 'main/users/register.html')
     
@@ -454,6 +482,9 @@ def logout_user(request):
     logout(request)
      
     return redirect('home')
+
+
+# Znajomi i profil użytkownika.
 
 @login_required
 def friends_list(request):
@@ -541,10 +572,11 @@ def remove_friend(request, user_id):
 
 @login_required
 def profile_user(request):
-    # Zabezpieczenie: jeśli user nie ma profilu w bazie.
+    # Jedna strona obsługuje podgląd profilu, edycję danych i zmianę hasła.
+    # Na wejściu pilnujemy też, żeby zalogowany użytkownik miał już swój rekord profilu.
     Profile.objects.get_or_create(user=request.user)
 
-    # formularzy danymi aktualnie zalogowanego użytkownika
+    # Na start wypełniamy formularze danymi aktualnie zalogowanego użytkownika.
     u_form = UserUpdateForm(instance=request.user)
     p_form = ProfileUpdateForm(instance=request.user.profile)
     pass_form = CustomPasswordChangeForm(user=request.user)
@@ -553,18 +585,18 @@ def profile_user(request):
             u_form = UserUpdateForm(request.POST, instance=request.user)
             p_form = ProfileUpdateForm(request.POST, instance=request.user.profile)
             if u_form.is_valid() and p_form.is_valid():
-                u_form.save() # Zapisz zmiany w tabeli user
-                p_form.save() # Zapisz zmiany w tabeli profile
+                u_form.save() # Zapis zmian w podstawowych danych użytkownika.
+                p_form.save() # Zapis zmian w rozszerzeniu profilu.
                 return redirect('profile_user')
 
     elif 'change_password' in request.POST:
             pass_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
             if pass_form.is_valid():
-                user = pass_form.save() # Zapisuje nowe ukryte hasło
+                user = pass_form.save() # Zapis nowego hasła w bezpiecznej, zahaszowanej formie.
                 update_session_auth_hash(request, user)
                 return redirect('profile_user')
 
-    # Przekazanie formularzy do szablonu HTML
+    # Na końcu oddajemy do szablonu wszystkie trzy formularze.
     context = {
         'u_form': u_form,
         'p_form': p_form,
@@ -576,11 +608,14 @@ def profile_user(request):
 def delete_account(request):
     if request.method == 'POST':
         user = request.user
-        user.delete() #usuwamy uzytkownika
-        logout(request) #czysci jego sesje 
+        user.delete() # Usuwamy konto z bazy.
+        logout(request) # Czyścimy sesję, żeby użytkownik został poprawnie wylogowany.
         return redirect('home')
     
     return redirect('profile_user')
+
+
+# Widok zewnętrznych wydarzeń i premier.
 
 def widok_eventow(request):
 
@@ -590,18 +625,18 @@ def widok_eventow(request):
     filmy = []
     try:
         url_filmy = f"https://api.themoviedb.org/3/movie/upcoming?api_key={tmdb_key}&language=pl-PL&page=1"
-        #wysyła zapytanie i zapisuje odpowiedź w tej zmiennej
+        # Wysyłamy zapytanie do TMDB i na jego podstawie budujemy listę najbliższych premier.
         odp = requests.get(url_filmy, timeout=5)
 
-        #jeśli res ma odp status 200 to sukces
+        # Kod 200 oznacza, że możemy spokojnie czytać dane z odpowiedzi.
         if odp.status_code == 200:
             dane = odp.json()
-            #jeśli coś się zepsuje wysyła bezpieczną pustą liste po stronie strony
+            # Gdy API nie zwróci wyników, dalej oddajemy bezpieczną pustą listę.
             surowa_lista_filmy = dane.get('results', [])[:15]
-            # filtrowanie, str zmienia w stringa po prostu
+            # Zostawiamy tylko premiery od dzisiaj wzwyż.
             surowa_lista_filmy = [m for m in surowa_lista_filmy
                                   if m.get('release_date') and m.get('release_date') >= str(dzisiaj)]
-            # sortowanie i ucinanie
+            # Na końcu sortujemy je rosnąco po dacie, żeby najbliższe były pierwsze.
             filmy = sorted(surowa_lista_filmy, key=lambda film: film.get('release_date', ''))[:20]
         else:
             print("Nie wykryto klucza API.")

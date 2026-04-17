@@ -1,15 +1,18 @@
 {% extends 'main/layout/base.html' %}
 
+{# Strona zbiorcza dla community. Z tego miejsca użytkownik przechodzi do forum, polecajek i klubów. #}
 {% block title %}Społeczność - Co Robimy Wieczorem?{% endblock %}
 
 {% block content %}
     <section class="section-spacing">
         <div class="container">
+            {# Krótkie wprowadzenie do spokojniejszej, społecznościowej części aplikacji. #}
             <div class="text-center mb-5">
                 <h1 class="display-4 fw-bold">Społeczność</h1>
                 <p class="lead">Takie nasze spokojne miejsce. Możesz pogadać na forum, wrzucić polecajki albo zajrzeć do klubów tematycznych.</p>
             </div>
 
+            {# Trzy główne wejścia do modułów, które zostały z `main` częściowo powyciągane. #}
             <div class="row g-4">
                 <div class="col-md-4">
                     <a href="{% url 'forum:index' %}" class="home-card-link text-decoration-none d-block h-100">

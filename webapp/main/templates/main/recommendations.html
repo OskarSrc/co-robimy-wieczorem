@@ -1,10 +1,12 @@
 {% extends 'main/layout/base.html' %}
 
+{# Ranking poleceń budowany z aktywności społeczności: ulubionych i tematów na forum. #}
 {% block title %}Społeczność poleca - Co Robimy Wieczorem?{% endblock %}
 
 {% block content %}
     <section class="section-spacing">
         <div class="container">
+            {# Krótkie wyjaśnienie, skąd bierze się wynik polecajki. #}
             <div class="text-center mb-5">
                 <h1 class="display-4 fw-bold">Społeczność poleca</h1>
                 <p class="lead">Tutaj pokazujemy to, co użytkownicy najczęściej dodają do ulubionych i o czym najczęściej zakładają tematy na forum.</p>
@@ -35,6 +37,7 @@
                 </div>
             {% endif %}
 
+            {# Powrót do strony zbiorczej community. #}
             <div class="text-center mt-5">
                 <a href="{% url 'community' %}" class="btn-custom-solid text-decoration-none">Wróć do społeczności</a>
             </div>

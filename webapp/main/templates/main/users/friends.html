@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Panel znajomych: lista kontaktów, zaproszenia i wyszukiwarka nowych osób. #}
 {% block title %}Znajomi{% endblock %}
 
 {% block extra_head %}
@@ -10,6 +11,7 @@
 
 {% block content %}
 <section class="content-shell friends-shell mt-5">
+    {# Nagłówek strony porządkuje, że to bardziej panel zarządzania niż zwykła lista. #}
     <div class="catalog-form-header mb-4">
         <h1>Znajomi</h1>
         <p>Dodawaj znajomych, akceptuj zaproszenia i rozwijaj swoją sieć użytkowników.</p>
@@ -18,6 +20,7 @@
     <div class="friends-glass-card p-4">
         <div class="row gx-4 gy-4 friends-page-row">
             <div class="col-12 col-lg-6">
+                {# Aktualna lista znajomych z opcją usunięcia relacji. #}
                 <h3 class="section-title">Twoi znajomi</h3>
                 {% if friends %}
                     <ul class="list-group list-group-flush friends-list">
@@ -37,6 +40,7 @@
             </div>
 
             <div class="col-12 col-lg-6">
+                {# Zaproszenia oczekujące na decyzję zalogowanej osoby. #}
                 <h3 class="section-title">Otrzymane zaproszenia</h3>
                 {% if incoming_requests %}
                     <ul class="list-group list-group-flush friends-list">
@@ -62,6 +66,7 @@
             </div>
 
             <div class="col-12 col-lg-6">
+                {# Wysłane zaproszenia można jeszcze wycofać, zanim ktoś je zaakceptuje. #}
                 <h3 class="section-title">Wysłane zaproszenia</h3>
                 {% if outgoing_requests %}
                     <ul class="list-group list-group-flush friends-list">
@@ -81,6 +86,7 @@
             </div>
 
             <div class="col-12 col-lg-6">
+                {# Ostatni blok pomaga wyszukać osoby, których nie ma jeszcze w relacjach. #}
                 <h3 class="section-title">Znajdź nowych znajomych</h3>
                 <form method="GET" class="mb-3 search-friends-form">
                     <div class="input-group">

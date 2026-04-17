@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Szczegóły jednego pokoju: stan głosowania, uczestnicy i wynik końcowy. #}
 {% block title %}{{ room.name }} - Pokój głosowań{% endblock %}
 
 {% block extra_head %}
@@ -10,12 +11,14 @@
 {% block content %}
     <section class="section-spacing voting-hero voting-hero--detail">
         <div class="container">
+            {# Szybki powrót do listy pokoi bez klikania w przeglądarce "wstecz". #}
             <a href="{% url 'voting_rooms' %}" class="back-link text-decoration-none">
                 <i class="fa-solid fa-arrow-left"></i> Wróć do pokoi
             </a>
 
             <div class="row g-4 mt-2 align-items-start">
                 <div class="col-xl-7">
+                    {# Górna karta pokazuje metadane pokoju i bieżący status. #}
                     <div class="voting-panel voting-panel--detail">
                         <div class="room-detail-heading">
                             <div>
@@ -47,6 +50,7 @@
                         </div>
                     </div>
 
+                    {# W tym miejscu użytkownik oddaje głos albo ogląda finalny wynik dla każdej pozycji. #}
                     <div class="voting-panel mt-4">
                         <div class="voting-panel__header">
                             <h2>Pozycje do głosowania</h2>
@@ -116,6 +120,7 @@
                 </div>
 
                 <div class="col-xl-5">
+                    {# Prawa kolumna podgląda uczestników i informuje, kto już zagłosował. #}
                     <div class="voting-panel">
                         <div class="voting-panel__header">
                             <h2>Uczestnicy pokoju</h2>
@@ -148,6 +153,7 @@
                         </div>
                     </div>
 
+                    {# Osobna karta na zwycięską propozycję albo komunikat, że pokój nadal trwa. #}
                     <div class="voting-panel mt-4">
                         <div class="voting-panel__header">
                             <h2>Wynik</h2>
