@@ -74,14 +74,14 @@ Ze względów bezpieczeństwa, w repozytorium nie znajdują się klucze API, has
 Aby uruchomić projekt:
 1. Utwórz w głównym katalogu (tam gdzie manage.py) plik o nazwie `.env`.
 2. Uzupełnij go kluczami zgodnie z szablonem poniżej:
-
+```
     `TMDB_API_KEY=`
     `RAWG_API_KEY=`
     `CLOUDINARY_CLOUD_NAME=`
     `CLOUDINARY_API_KEY=`
     `CLOUDINARY_API_SECRET=`
     `DATABASE_URL=`
-      
+```    
 *(Wiadomość do osoby sprawdzającej: Aktywne klucze dla tego projektu zostały przekazane w prywatnej wiadomości).*
 
 ### 6. Uruchomienie serwera
