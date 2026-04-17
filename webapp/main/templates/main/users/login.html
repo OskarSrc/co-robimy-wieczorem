@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %} 
 
+{# Ekran logowania do całej aplikacji. #}
 {% block title %}Zaloguj się - Co Robimy Wieczorem?{% endblock %}
  
 {% block extra_head %}
@@ -12,11 +13,13 @@
  <div class="d-flex align-items-center justify-content-center px-4" style="min-height: 90vh">
      <div class="my-box w-100" style="max-width: 550px; padding: 2.5rem; z-index: 10;">
 
+      {# Krótkie przywitanie zamiast suchego formularza na start. #}
       <div class="text-center mb-4">
             <h1 class="fw-bold mb-2">Zaloguj się</h1>
             <p class="text-white-50" style="font-size: 0.95rem;">Witaj ponownie! Zobaczmy, co dziś robimy wieczorem.</p>
         </div>
 
+         {# Komunikat błędu pokazuje się tylko po nieudanej próbie logowania. #}
          {% if messages %}
          {% for message in messages %}
          {% if message.level == 40 %}
@@ -28,6 +31,7 @@
          {% endif %}
          {% endfor %}
          {% endif %}
+         {# Sam formularz jest możliwie prosty: login, hasło i przejście do rejestracji. #}
          <form method="POST" action="/login" class="form-with-validation bg-transparent border-0 p-0 m-0 shadow-none">
              {% csrf_token %}
  

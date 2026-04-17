@@ -4,7 +4,13 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from katalog.models import Post
 
+# Modele z `main` zbierają dwie większe rzeczy:
+# warstwę społecznościową (profil, znajomi, kluby)
+# oraz mechanikę prywatnych pokoi głosowań.
+
+# Kluby tematyczne widoczne w sekcji community.
 class Club(models.Model):
+    # Klub ma prosty zestaw pól: nazwę, opis, kolor i emoji do oznaczenia członków.
     name = models.CharField(max_length=100)
     description = models.TextField()
     color = models.CharField(max_length=7, default='#6366f1')
@@ -18,6 +24,8 @@ class Club(models.Model):
     class Meta:
         ordering = ['name']
 
+
+# Profil użytkownika i relacje znajomych.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=40, blank=True, null=True)
@@ -30,6 +38,8 @@ class Profile(models.Model):
     def friend_usernames(self):
         return ", ".join([friend.user.username for friend in self.friends.all()])
 
+
+# Zaproszenia do znajomych trzymamy osobno, żeby mieć etap "oczekuje" przed akceptacją.
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(
         User,
@@ -51,12 +61,14 @@ class FriendRequest(models.Model):
         return f"{self.from_user.username} -> {self.to_user.username}"
 
     def accept(self):
+        # Po akceptacji dokładamy profile do relacji znajomych i usuwamy samo zaproszenie.
         from_profile, _ = Profile.objects.get_or_create(user=self.from_user)
         to_profile, _ = Profile.objects.get_or_create(user=self.to_user)
         from_profile.friends.add(to_profile)
         self.delete()
 
 
+# Modele odpowiedzialne za tworzenie i zamykanie pokoi głosowań.
 class VotingRoom(models.Model):
     name = models.CharField(max_length=80)
     creator = models.ForeignKey(
@@ -81,6 +93,7 @@ class VotingRoom(models.Model):
         return self.votes.count()
 
     def is_finished(self):
+        # Pokój kończy się po czasie albo wtedy, gdy każdy uczestnik odda już swój głos.
         if timezone.now() >= self.closes_at:
             return True
         if not self.participants.exists():
@@ -89,6 +102,7 @@ class VotingRoom(models.Model):
 
 
 class VotingRoomItem(models.Model):
+    # To pojedyncza pozycja z katalogu wrzucona do konkretnego pokoju.
     room = models.ForeignKey(
         VotingRoom,
         on_delete=models.CASCADE,
@@ -109,6 +123,7 @@ class VotingRoomItem(models.Model):
 
 
 class VotingVote(models.Model):
+    # Głos wskazuje jednego uczestnika i jedną pozycję z wybranego pokoju.
     room = models.ForeignKey(
         VotingRoom,
         on_delete=models.CASCADE,
@@ -135,11 +150,14 @@ class VotingVote(models.Model):
         return f"{self.voter.username} -> {self.room_item.post.title}"
 
     def clean(self):
+        # Walidacja pilnuje, żeby nie dało się zagłosować na pozycję z innego pokoju.
         if self.room_item.room_id != self.room_id:
             raise ValidationError("Glos musi wskazywac pozycje z tego samego pokoju.")
+        # Dodatkowo głosować może tylko osoba faktycznie dopisana do uczestników.
         if not self.room.participants.filter(pk=self.voter_id).exists():
             raise ValidationError("Glosowac moga tylko uczestnicy pokoju.")
 
     def save(self, *args, **kwargs):
+        # Zapis zawsze przechodzi przez `clean()`, żeby ta zasada działała też poza formularzem.
         self.clean()
         super().save(*args, **kwargs)

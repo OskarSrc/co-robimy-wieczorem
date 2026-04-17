@@ -1,3 +1,6 @@
+/* Osobny arkusz dla całego modułu pokoi głosowań. */
+
+/* Górna sekcja strony listy i widoków szczegółowych. */
 .voting-hero {
     padding-top: 96px;
 }
@@ -54,6 +57,7 @@
     margin-bottom: 10px;
 }
 
+/* Wspólne układy kart i statusów. */
 .room-preview__top,
 .room-list-card__top,
 .room-detail-heading {
@@ -174,6 +178,7 @@
     background: rgba(255, 255, 255, 0.04);
 }
 
+/* Selektory uczestników i pozycji do głosowania. */
 .picker-block__top {
     display: flex;
     justify-content: space-between;
@@ -267,6 +272,7 @@
     margin: 14px 0 18px;
 }
 
+/* Formularze i komunikaty błędów. */
 .form-label {
     color: #f5f5f7;
 }
@@ -314,6 +320,7 @@
     font-size: 0.85rem;
 }
 
+/* Szczegóły pokoju i finalny wynik. */
 .room-detail-copy {
     margin: 10px 0 24px;
 }
@@ -361,7 +368,7 @@
     letter-spacing: 0.08em;
 }
 
-/* Checkbosy dla formularzy */
+/* Checkboxy i radio w formularzach. */
 input[type="checkbox"],
 input[type="radio"] {
     accent-color: #818cf8;
@@ -372,6 +379,7 @@ label {
     color: #f5f5f7;
 }
 
+/* Zachowanie układu na mniejszych ekranach. */
 @media (max-width: 991.98px) {
     .voting-hero {
         padding-top: 72px;

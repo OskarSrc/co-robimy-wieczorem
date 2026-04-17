@@ -1,6 +1,7 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Główna strona modułu głosowań. Pokazuje wejście do funkcji i listę pokoi użytkownika. #}
 {% block title %}Pokoje głosowań - Co Robimy Wieczorem?{% endblock %}
 
 {% block extra_head %}
@@ -8,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+    {# Hero tłumaczy, po co są pokoje i gdzie założyć nowy. #}
     <section class="section-spacing voting-hero">
         <div class="container">
             <div class="row">
@@ -33,6 +35,7 @@
         </div>
     </section>
 
+    {# Środkowy panel zbiera aktywne i zakończone pokoje tej osoby. #}
     <section class="section-spacing pt-0">
         <div class="container">
             <div class="row justify-content-center">
@@ -108,6 +111,7 @@
         </div>
     </section>
 
+    {# Na dole zostaje proste rozpisanie mechaniki działania krok po kroku. #}
     <section class="section-spacing pt-0">
         <div class="container">
             <div class="text-center mb-5">

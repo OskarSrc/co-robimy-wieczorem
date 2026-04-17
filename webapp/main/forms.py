@@ -4,6 +4,10 @@ from katalog.models import Post
 from .models import Profile, VotingRoomItem, Club
 from django.contrib.auth.forms import PasswordChangeForm
 
+# Formularze z `main` są mieszanką ustawień profilu, pokojów głosowań
+# i panelu klubów, więc niżej są rozdzielone na mniejsze grupy.
+
+# Formularze konta użytkownika.
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -19,6 +23,7 @@ class UserUpdateForm(forms.ModelForm):
                                              }),
         }
 
+
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -32,9 +37,11 @@ class ProfileUpdateForm(forms.ModelForm):
             }),
         }
 
+
 class CustomPasswordChangeForm (PasswordChangeForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(user, *args, **kwargs)
+        # Pola hasła dostają ten sam styl co reszta formularzy w profilu.
         for field in self.fields.values():
             field.widget.attrs.update({
                 'class': 'form-control text-white bg-transparent border-secondary',
@@ -42,6 +49,7 @@ class CustomPasswordChangeForm (PasswordChangeForm):
             })
 
 
+# Pomocnicze pola wyboru używane w głosowaniach.
 class FriendChoiceField(forms.ModelMultipleChoiceField):
     def label_from_instance(self, obj):
         return obj.username
@@ -57,6 +65,7 @@ class VotingRoomItemChoiceField(forms.ModelChoiceField):
         return f"{obj.post.title} ({obj.post.get_category_display()})"
 
 
+# Formularze związane z pokojami głosowań.
 class VotingRoomForm(forms.Form):
     DURATION_CHOICES = [
         (15, '15 minut'),
@@ -97,18 +106,21 @@ class VotingRoomForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Pokój można zakładać tylko ze swoimi znajomymi, a pozycje bierzemy z katalogu.
         profile, _ = Profile.objects.get_or_create(user=user)
         friend_ids = profile.friends.values_list('user_id', flat=True)
         self.fields['friends'].queryset = User.objects.filter(pk__in=friend_ids).order_by('username')
         self.fields['posts'].queryset = Post.objects.order_by('-date')
 
     def clean_friends(self):
+        # Minimum jedna osoba poza właścicielem pokoju musi być zaproszona.
         friends = self.cleaned_data['friends']
         if friends.count() < 1:
             raise forms.ValidationError('Wybierz przynajmniej jednego znajomego do pokoju.')
         return friends
 
     def clean_posts(self):
+        # Jedna opcja do wyboru nie miałaby sensu, więc pilnujemy minimum dwóch propozycji.
         posts = self.cleaned_data['posts']
         if posts.count() < 2:
             raise forms.ValidationError('Wybierz przynajmniej dwie pozycje z katalogu.')
@@ -125,9 +137,11 @@ class VotingForm(forms.Form):
 
     def __init__(self, room, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Formularz ma pokazać tylko te pozycje, które naprawdę należą do danego pokoju.
         self.fields['room_item'].queryset = room.room_items.select_related('post')
 
 
+# Formularz administracyjny do zakładania klubów tematycznych.
 class ClubForm(forms.ModelForm):
     class Meta:
         model = Club

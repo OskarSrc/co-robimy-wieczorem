@@ -1,11 +1,13 @@
 {% extends 'main/layout/base.html' %}
 {% load static %}
 
+{# Formularz dodawania nowego klubu. Używa stylu katalogu, żeby nie tworzyć kolejnego osobnego layoutu. #}
 {% block title %}Dodaj klub - Co Robimy Wieczorem?{% endblock %}
 
 {% block extra_head %}
     <link rel="stylesheet" href="{% static 'main/css/catalog.css' %}">
     <style>
+        /* Lokalna poprawka wyglądu checkboxów i placeholderów tylko dla tego formularza. */
         .checkbox-group {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -58,6 +60,7 @@
             <p class="lead text-white-50 mb-5">Stwórz nowy klub tematyczny dla społeczności.</p>
 
             <div class="catalog-panel" style="max-width: 700px;">
+                {# Formularz zbiera nazwę, opis, kolor, emoji i powiązane pozycje z katalogu. #}
                 <form method="POST">
                     {% csrf_token %}
 
@@ -113,6 +116,7 @@
                     <button type="submit" class="btn-custom-solid">Stwórz klub</button>
                 </form>
 
+                {# Prosty powrót bez zapisywania zmian. #}
                 <div class="mt-4">
                     <a href="{% url 'clubs' %}" class="btn-custom-outline text-decoration-none">Anuluj</a>
                 </div>

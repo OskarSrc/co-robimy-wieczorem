@@ -1,3 +1,6 @@
+/* Główny arkusz stylów dla strony startowej i wspólnego layoutu `main`. */
+
+/* Zmienne kolorów i baza całego motywu. */
 :root {
     --bg: #050505;
     --text: #ffffff;
@@ -7,6 +10,7 @@
     --glow: rgba(99, 102, 241, 0.5);
 }
 
+/* Ustawienia całego dokumentu i tła strony. */
 body {
     margin: 0;
     padding: 0;
@@ -19,6 +23,7 @@ body {
     overflow-x: hidden;
 }
 
+/* Rozmyte plamy w tle budują klimat wspólny dla większości podstron. */
 .bg {
     position: fixed;
     inset: 0;
@@ -157,7 +162,7 @@ body {
     }
 }
 
-/* Navbar po przyciski */
+/* Nawigacja i wspólne przyciski. */
 
 .custom-navbar {
     background: rgba(255, 255, 255, 0.08) !important;
@@ -192,6 +197,7 @@ body {
     transform: translateY(-1px) scale(1.025);
 }
 
+/* Mała kropka przy "Znajomych" sygnalizuje oczekujące zaproszenia. */
 .notification-link {
     position: relative;
 }
@@ -235,7 +241,7 @@ body {
     box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
 }
 
-/* Hero */
+/* Sekcje strony głównej i uniwersalne karty. */
 
 .hero-section {
     min-height: 100vh;
@@ -305,7 +311,7 @@ body {
     color: inherit;
 }
 
-
+/* Stopka i drobne elementy wspólne. */
 .custom-footer {
     background-color: #050505;
     border-top: 1px solid rgba(255, 255, 255, 0.05);

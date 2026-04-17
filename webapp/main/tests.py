@@ -9,7 +9,10 @@ from forum.models import ForumPost
 from katalog.models import FavoritePost, Post
 from .models import FriendRequest, Profile, VotingRoom, VotingRoomItem, VotingVote
 
+# Testy w `main` pilnują głównie trzech rzeczy:
+# rekomendacji społeczności, przepływu pokoi głosowań i systemu znajomych.
 
+# Część od polecajek opartych o aktywność społeczności.
 class RecommendationsViewTests(TestCase):
     def setUp(self):
         self.author = User.objects.create_user(username="martina", password="tajnehaslo123")
@@ -57,6 +60,7 @@ class RecommendationsViewTests(TestCase):
         self.assertEqual(recommended_posts[1], self.second_post)
 
 
+# Proste testy dostępności stron pokojów głosowań.
 class VotingRoomsViewTests(TestCase):
     def test_voting_rooms_page_is_available(self):
         response = self.client.get(reverse('voting_rooms'))
@@ -84,6 +88,7 @@ class VotingRoomsViewTests(TestCase):
         self.assertNotContains(response, 'tylu znajomych masz już gotowych do zaproszenia')
 
 
+# Pełny przebieg: utworzenie pokoju, wejście do środka i oddanie głosów.
 class VotingRoomFlowTests(TestCase):
     def setUp(self):
         self.creator = User.objects.create_user(username='mati', password='tajnehaslo123')
@@ -201,6 +206,7 @@ class VotingRoomFlowTests(TestCase):
         self.assertContains(response, '2 głosów')
 
 
+# Testy zaproszeń i akceptacji w systemie znajomych.
 class FriendSystemTests(TestCase):
     def setUp(self):
         self.user_a = User.objects.create_user(username='martina', password='tajnehaslo123')
